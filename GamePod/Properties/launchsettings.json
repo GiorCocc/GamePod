@@ -1,0 +1,10 @@
+﻿{
+    "profiles": {
+      "GamePod (Package)": {
+        "commandName": "MsixPackage"
+      },
+      "GamePod (Unpackaged)": {
+        "commandName": "Project"
+      }
+    }
+}

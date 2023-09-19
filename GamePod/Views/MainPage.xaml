@@ -1,0 +1,19 @@
+﻿<Page
+    x:Class="GamePod.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid x:Name="ContentArea">
+
+        <!-- Insert a text field that explains the porpuse of this screen -->
+        <TextBlock Text="This screen allows to create a new project" />
+
+        <!-- Insert a text field where the user can add the name of the project -->
+        
+        <!-- Insert an element that allows to select (from file explorer) the folder of the original project -->
+
+    </Grid>
+</Page>
