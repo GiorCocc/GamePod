@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid x:Name="ContentArea">
+    <StackPanel x:Name="ContentArea">
 
         <!-- Insert a text field that explains the porpuse of this screen -->
         <TextBlock Text="This screen allows to create a new project" />
@@ -15,5 +15,5 @@
         
         <!-- Insert an element that allows to select (from file explorer) the folder of the original project -->
 
-    </Grid>
+    </StackPanel>
 </Page>
