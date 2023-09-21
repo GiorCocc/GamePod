@@ -19,24 +19,27 @@
  * 
  */
 
+using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Microsoft.UI.Xaml;
-using Windows.Storage.AccessCache;
-using Windows.Storage.Pickers;
-using Windows.Storage;
-using Microsoft.UI.Xaml.Controls;
 
 namespace GamePod.ViewModels;
 
 public partial class MainViewModel : ObservableRecipient
 {
-    private static readonly string[] _linuxDistributions = new string[] { "Ubuntu", "Fedora", "Arch", "Debian", "CentOS", "OpenSUSE" };
-    private static readonly string[] _gameEngines = new string[] { "Unity", "Godot", "Unreal Engine", "CryEngine", "Lumberyard", "GameMaker Studio", "Construct", "RPG Maker", "Adventure Game Studio", "Ren'Py", "Twine", "RPG Toolkit", "Solarus", "GDevelop", "Stencyl", "Scratch", "GameSalad", "Clickteam Fusion", "Adventure Game Studio", "Adventure Game Studio" };
+    [ObservableProperty]
+    private string _projectName;
 
     public MainViewModel()
     {
         // TODO: Add your initialization logic here
+
     }
 
-    
+    public void CreateContainer()
+    {
+        // print the project name in the console
+        Debug.WriteLine("Project Name: " + ProjectName);
+    }
+
+
 }
