@@ -4,21 +4,22 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace GamePod.Views;
 
-public sealed partial class MainPage : Page
+public sealed partial class HomePage : Page
 {
     public MainViewModel ViewModel
     {
         get;
     }
 
-    public MainPage()
+    public HomePage()
     {
         ViewModel = App.GetService<MainViewModel>();
         InitializeComponent();
     }
 
-    private void CreateContainerButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private void CreateButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        ViewModel.CreateContainer();
+        // go to the CreatePage
+        Frame.Navigate(typeof(MainPage));
     }
 }

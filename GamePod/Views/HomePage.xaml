@@ -1,29 +1,169 @@
-﻿<Page
-    x:Class="GamePod.Views.HomePage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:viewmodels="using:GamePod.ViewModels" 
-    d:DataContext="{d:DesignInstance Type=viewmodels:HomeViewModel}"
-    mc:Ignorable="d">
+﻿<Page x:Class="GamePod.Views.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:ui="using:CommunityToolkit.WinUI"
+      xmlns:win="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:local="using:GamePod.ViewModels"
+      mc:Ignorable="d">
+    <Page.Resources>
+        <!--  These styles can be referenced to create a consistent SettingsPage layout  -->
 
-    <StackPanel x:Name="ContentArea">
+        <!--  Spacing between cards  -->
+        <x:Double x:Key="SettingsCardSpacing">4</x:Double>
 
-        <StackPanel Orientation="Horizontal">
-            <StackPanel Orientation="Vertical">
-                <TextBlock Text="Welcome to GamePod!" />
-                <TextBlock Text="This app will help you to create a container for your game, so you can build it and run it on any platform you want. " />
-                <TextBlock Text="To start, click on the CREATE button on the left." />
+        <!--  Style (inc. the correct spacing) of a section header  -->
+        <Style x:Key="SettingsSectionHeaderTextBlockStyle"
+               BasedOn="{StaticResource BodyStrongTextBlockStyle}"
+               TargetType="TextBlock">
+            <Style.Setters>
+                <Setter Property="Margin" Value="1,30,0,6" />
+            </Style.Setters>
+        </Style>
+    </Page.Resources>
+
+    <Page.DataContext>
+        <local:MainViewModel />
+    </Page.DataContext>
+
+    <ScrollViewer>
+        <Grid>
+            <StackPanel MaxWidth="1000"
+                        HorizontalAlignment="Stretch"
+                        Spacing="{StaticResource SettingsCardSpacing}">
+                <win:StackPanel.ChildrenTransitions>
+                    <win:EntranceThemeTransition FromVerticalOffset="50" />
+                    <win:RepositionThemeTransition IsStaggeringEnabled="False" />
+                </win:StackPanel.ChildrenTransitions>
+
+                <!-- Information section -->
+                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
+                           Text="Project informations" />
+
+                <controls:SettingsCard Header="Project name"
+                                       HeaderIcon="{ui:FontIcon Glyph=&#xE8AC;}"
+                                       Description="Set the project name (this will be the container name)">
+                    <TextBox x:Name="ProjectNameTextBox" PlaceholderText="Project name" Text="{x:Bind ViewModel.ProjectName, Mode=TwoWay}" />
+                </controls:SettingsCard>
+
+                <controls:SettingsCard Header="Project folder"
+                                       HeaderIcon="{ui:FontIcon Glyph=&#xE8AC;}"
+                                       Description="Set the project folder (this will be the container configuration folder)">
+                    <StackPanel VerticalAlignment="Top" 
+                                Orientation="Horizontal">
+                        <Button x:Name="PickFolderButton" 
+                                Content="Open a folder"
+                                Click="PickFolderButton_Click"
+                                Margin="0,0,0,10"/>
+                        <TextBlock x:Name="PickFolderOutputTextBlock" 
+                                   TextWrapping="Wrap" 
+                                   Padding="20,5,0,0"/>
+                    </StackPanel>
+                </controls:SettingsCard>
+
+                <controls:SettingsExpander Header="Linux distribution"
+                                           HeaderIcon="{ui:FontIcon Glyph=&#xE8AC;}"
+                                           Description="Select the linux distribution to be used for the container">
+                    <ComboBox ItemsSource="{x:Bind LinuxDistros}" x:Name="DistributionComboBox" PlaceholderText="Select a distro" />
+
+                    <controls:SettingsExpander.Items>
+                        <controls:SettingsCard Header="Version" 
+                                               Description="Select the version of the linux distribution (keep empty for latest)">
+                            <TextBox x:Name="LinuxDistroVersionNumberTextBox" PlaceholderText="Version" Text="{x:Bind ViewModel.LinuxDistroVersionNumber, Mode=TwoWay}" /> 
+                        </controls:SettingsCard>
+                    </controls:SettingsExpander.Items>
+                </controls:SettingsExpander>
+
+                <controls:SettingsCard Header="Game engine"
+                                       HeaderIcon="{ui:FontIcon Glyph=&#xE8AC;}"
+                                       Description="Select the game engine to be used for the container">
+                    <ComboBox ItemsSource="{x:Bind GameEngines}"  x:Name="GameEngineComboBox" PlaceholderText="Select a game engine">
+                        
+                    </ComboBox>
+                </controls:SettingsCard>
+
+                <!-- TODO: Additional software to be installed -->
+                <!--<StackPanel Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="Additional software to be installed" />
+                    <Button Content="Add" Style="{StaticResource AccentButtonStyle}" Margin="10,0,0,0"/>
+                </StackPanel>
+
+                <controls:SettingsExpander Header="Add additional software"
+                                           Description="Add additional software to be installed in the container">
+                    <ToggleSwitch  />
+
+                    <controls:SettingsExpander.Items>
+                        <controls:SettingsCard Header="Software name"
+                                               Description="Set the name of the software to be installed">
+                            <TextBox PlaceholderText="Software name" />
+                        </controls:SettingsCard>
+                        <controls:SettingsCard Header="Software version"
+                                               Description="Set the version of the software to be installed">
+                            <TextBox PlaceholderText="Software version" />
+                        </controls:SettingsCard>
+                    </controls:SettingsExpander.Items>
+
+                </controls:SettingsExpander>-->
+
+                <!-- Additional information for configuration -->
+                <!--<TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="Additional configuration" />
+
+                <controls:SettingsExpander Header="Port forwarding" Description="Add port forwarding to the container">
+                    <ToggleSwitch  />
+                    <controls:SettingsExpander.Items>
+                        <controls:SettingsCard Header="Port"
+                                               Description="Set the port to be forwarded">
+                            <TextBox PlaceholderText="Port" />
+                        </controls:SettingsCard>
+                    </controls:SettingsExpander.Items>
+                </controls:SettingsExpander>
+
+                <controls:SettingsExpander Header="Shared folders" Description="Add shared folders to the container">
+                    <ToggleSwitch  />
+                    <controls:SettingsExpander.Items>
+                        <controls:SettingsCard Header="Folder"
+                                               Description="Set the folder to be shared">
+                            <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
+                                <Button x:Name="PickSharedFolderButton" Content="Open a folder" Margin="0,0,0,10"/>
+                                <TextBlock x:Name="PickSharedFolderOutputTextBlock" TextWrapping="Wrap" Padding="20,5,0,0" />
+                            </StackPanel>
+                        </controls:SettingsCard>
+                    </controls:SettingsExpander.Items>
+                </controls:SettingsExpander>-->
+
+                <!--  Example 'About' section  -->
+                <!--<TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
+                           Text="About" />
+
+                <controls:SettingsExpander Description="© 2023. All rights reserved."
+                                           Header="Community Toolkit Gallery"
+                                           HeaderIcon="{ui:BitmapIcon Source=ms-appx:///Assets/AppTitleBar.scale-200.png}">
+                    <TextBlock win:IsTextSelectionEnabled="True"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                               Text="Version 8.0.0" />
+                    <controls:SettingsExpander.Items>
+                        <controls:SettingsCard HorizontalContentAlignment="Left"
+                                               ContentAlignment="Left">
+                            <StackPanel Margin="-12,0,0,0"
+                                        Orientation="Vertical">
+                                <HyperlinkButton Content="Link 1" />
+                                <HyperlinkButton Content="Link 2" />
+                                <HyperlinkButton Content="Link 3" />
+                            </StackPanel>
+                        </controls:SettingsCard>
+                    </controls:SettingsExpander.Items>
+                </controls:SettingsExpander>
+                <HyperlinkButton Margin="0,8,0,0"
+                                 Content="Send feedback" />-->
+
+                <!-- Discard button and create container button -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                    <Button Content="Discard" x:Name="DiscardButton" Click="DiscardButton_Click" Style="{StaticResource DefaultButtonStyle}" Margin="10,0,0,0"/>
+                    <Button Content="Create container" x:Name="CreateContainerButton" Click="CreateContainerButton_Click" Style="{StaticResource AccentButtonStyle}" Margin="10,0,0,0"/>
+                </StackPanel>
+
             </StackPanel>
-            <!--Place the create button at the margin right of the screen-->
-            <Button x:Name="CreateButton" Content="CREATE" Margin="0,0,0,0"  />
-        </StackPanel>
-        
-        <!-- Display the list of the created container with GamePod -->
-        <!-- In each line display the name of the project, the location, start/stop/delete/menu buttons-->
-
-
-
-    </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </Page>
