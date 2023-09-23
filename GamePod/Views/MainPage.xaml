@@ -23,12 +23,10 @@
                 <TextBlock Text="To start, click on the CREATE button on the left." />
             </StackPanel>
             <!--Place the create button at the margin right of the screen-->
-            <Button  Click="CreateButton_Click" HorizontalAlignment="Right">
+            <Button  Click="CreateButton_Click" HorizontalAlignment="Right" Style="{StaticResource AccentButtonStyle}" >
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <SymbolIcon Symbol="Add" />
-                    <!-- Icona "+" -->
                     <TextBlock Text="Create" Margin="5,0,0,0" />
-                    <!-- Testo "Create" -->
                 </StackPanel>
             </Button>
         </Grid>

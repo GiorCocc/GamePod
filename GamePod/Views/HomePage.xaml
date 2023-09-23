@@ -5,7 +5,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:ui="using:CommunityToolkit.WinUI"
-      xmlns:win="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:local="using:GamePod.ViewModels"
+      xmlns:win="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+      xmlns:local="using:GamePod.ViewModels"
       mc:Ignorable="d">
     <Page.Resources>
         <!--  These styles can be referenced to create a consistent SettingsPage layout  -->
@@ -133,7 +134,7 @@
                 </controls:SettingsExpander>-->
 
                 <!--  Example 'About' section  -->
-                <!--<TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
+                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
                            Text="About" />
 
                 <controls:SettingsExpander Description="© 2023. All rights reserved."
@@ -155,12 +156,17 @@
                     </controls:SettingsExpander.Items>
                 </controls:SettingsExpander>
                 <HyperlinkButton Margin="0,8,0,0"
-                                 Content="Send feedback" />-->
+                                 Content="Send feedback" />
 
                 <!-- Discard button and create container button -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
                     <Button Content="Discard" x:Name="DiscardButton" Click="DiscardButton_Click" Style="{StaticResource DefaultButtonStyle}" Margin="10,0,0,0"/>
-                    <Button Content="Create container" x:Name="CreateContainerButton" Click="CreateContainerButton_Click" Style="{StaticResource AccentButtonStyle}" Margin="10,0,0,0"/>
+                    <Button x:Name="CreateContainerButton" Click="CreateContainerButton_Click" Style="{StaticResource AccentButtonStyle}" Margin="10,0,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon Glyph="&#xE81E;"/>
+                            <TextBlock Text="Create container" Margin="0,0,10,0"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
 
             </StackPanel>
