@@ -44,6 +44,7 @@
 
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
+using GamePod.Services;
 using Microsoft.UI.Xaml.Controls;
 
 namespace GamePod.ViewModels;
@@ -53,7 +54,9 @@ public partial class HomeViewModel : ObservableRecipient
     [ObservableProperty]
     private string _projectName;
     [ObservableProperty]
-    private string _linuxDistroVersionNumber;
+    private string _gameEngineVersion;
+    [ObservableProperty]
+    private string _Port;
 
     public HomeViewModel()
     {
@@ -69,8 +72,10 @@ public partial class HomeViewModel : ObservableRecipient
      */
     public void CreateContainer(string command)
     {
-        // print the project name in the console
-        Debug.WriteLine("Container command: " + command);
+        // execute the command
+        ContainerService containerService = new ContainerService(command);
+        Debug.WriteLine("Command: " + command);
+        containerService.RunCommand();
     }
 
 
