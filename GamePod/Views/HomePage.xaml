@@ -7,6 +7,7 @@
       xmlns:ui="using:CommunityToolkit.WinUI"
       xmlns:win="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
       xmlns:local="using:GamePod.ViewModels"
+      xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
       mc:Ignorable="d">
     <Page.Resources>
         <!--  These styles can be referenced to create a consistent SettingsPage layout  -->
@@ -37,6 +38,22 @@
                     <win:EntranceThemeTransition FromVerticalOffset="50" />
                     <win:RepositionThemeTransition IsStaggeringEnabled="False" />
                 </win:StackPanel.ChildrenTransitions>
+                
+                <!-- TODO: inserire un messaggio di spiegazione per la creazione del container -->
+                
+                <!-- TODO: Cose da inserire nella pagina di creazione del container -->
+                <TextBlock Text="Cose da inserire nella schermata"></TextBlock>
+                <TextBlock Text="- Nome del progetto (che sarà anche il nome del container)"></TextBlock>
+                <TextBlock Text="- Cartella del progetto (che sarà inclusa nel container in modo da accedere al progetto)"></TextBlock>
+                <TextBlock Text="- Selezione del game engine"></TextBlock>
+                <TextBlock Text="- Selezione di altre cartelle da includere nel container"></TextBlock>
+                <TextBlock Text="- Selezione di altre librerie da includere nel container"></TextBlock>
+                <TextBlock Text="- Selezione di altri programmi da includere (verranno creati container separati)"></TextBlock>
+                <TextBlock Text="- Selezione di porte da aprire nel container"></TextBlock>
+                <TextBlock Text="- Selezione di cartelle da condividere con l'host"></TextBlock>
+                <TextBlock Text="- Selezione di cartelle da condividere con altri container"></TextBlock>
+                <TextBlock Text="- Selezione di parametri per la creazione del container (rimozione dopo l'uso...)"></TextBlock>
+                
 
                 <!-- Information section -->
                 <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
@@ -45,107 +62,173 @@
                 <controls:SettingsCard Header="Project name"
                                        HeaderIcon="{ui:FontIcon Glyph=&#xE8AC;}"
                                        Description="Set the project name (this will be the container name)">
-                    <TextBox x:Name="ProjectNameTextBox" PlaceholderText="Project name" Text="{x:Bind ViewModel.ProjectName, Mode=TwoWay}" />
+                    
+                    <TextBox x:Name="ProjectNameTextBox" 
+                             PlaceholderText="Project name" 
+                             Text="{x:Bind ViewModel.ProjectName, Mode=TwoWay}" />
+                
                 </controls:SettingsCard>
 
-                <controls:SettingsCard Header="Project folder"
-                                       HeaderIcon="{ui:FontIcon Glyph=&#xE8AC;}"
-                                       Description="Set the project folder (this will be the container configuration folder)">
-                    <StackPanel VerticalAlignment="Top" 
-                                Orientation="Horizontal">
-                        <Button x:Name="PickFolderButton" 
-                                Content="Open a folder"
-                                Click="PickFolderButton_Click"
-                                Margin="0,0,0,10"/>
-                        <TextBlock x:Name="PickFolderOutputTextBlock" 
-                                   TextWrapping="Wrap" 
-                                   Padding="20,5,0,0"/>
-                    </StackPanel>
-                </controls:SettingsCard>
-
-                <controls:SettingsExpander Header="Linux distribution"
-                                           HeaderIcon="{ui:FontIcon Glyph=&#xE8AC;}"
-                                           Description="Select the linux distribution to be used for the container">
-                    <ComboBox ItemsSource="{x:Bind LinuxDistros}" x:Name="DistributionComboBox" PlaceholderText="Select a distro" />
-
+                <controls:SettingsExpander Header="Project folder"
+                                           HeaderIcon="{ui:FontIcon Glyph=&#xEC25;}"
+                                           Description="Set the project folder (this will be the container configuration folder)">
+                    <Button x:Name="PickFolderButton" 
+                            Content="Open a folder"
+                            Click="PickFolderButton_Click"
+                            Margin="0,0,0,10"/>
                     <controls:SettingsExpander.Items>
-                        <controls:SettingsCard Header="Version" 
-                                               Description="Select the version of the linux distribution (keep empty for latest)">
-                            <TextBox x:Name="LinuxDistroVersionNumberTextBox" PlaceholderText="Version" Text="{x:Bind ViewModel.LinuxDistroVersionNumber, Mode=TwoWay}" /> 
+                        <controls:SettingsCard Header="Project forlder">
+                            <TextBlock x:Name="PickFolderOutputTextBlock" 
+                                       TextWrapping="Wrap" 
+                                       Padding="20,5,0,0"/>
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
                 </controls:SettingsExpander>
 
-                <controls:SettingsCard Header="Game engine"
-                                       HeaderIcon="{ui:FontIcon Glyph=&#xE8AC;}"
-                                       Description="Select the game engine to be used for the container">
-                    <ComboBox ItemsSource="{x:Bind GameEngines}"  x:Name="GameEngineComboBox" PlaceholderText="Select a game engine">
-                        
-                    </ComboBox>
-                </controls:SettingsCard>
+                <!-- Game engine selection -->
+                <controls:SettingsExpander Header="Game engine" 
+                                           HeaderIcon="{ui:FontIcon Glyph=&#xEF58;}" 
+                                           Description="Select the game engine to be used for the container">
+                    
+                    <ComboBox ItemsSource="{x:Bind GameEngines}"  
+                              x:Name="GameEngineComboBox" 
+                              PlaceholderText="Select a game engine" />
 
-                <!-- TODO: Additional software to be installed -->
-                <!--<StackPanel Orientation="Horizontal">
-                    <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="Additional software to be installed" />
-                    <Button Content="Add" Style="{StaticResource AccentButtonStyle}" Margin="10,0,0,0"/>
-                </StackPanel>
+                    <controls:SettingsExpander.ItemsHeader>
+                        <muxc:InfoBar Title="Insert the complete version code of your game engine (e.g. for Unity type 2022.3.10f1)"
+                                      BorderThickness="0"
+                                      CornerRadius="0"
+                                      IsIconVisible="False"
+                                      IsOpen="True"
+                                      Severity="Success">
+                            <!--<muxc:InfoBar.ActionButton>
+                                <HyperlinkButton Content="It can host custom content" />
+                            </muxc:InfoBar.ActionButton>-->
+                        </muxc:InfoBar>
+                    </controls:SettingsExpander.ItemsHeader>
 
-                <controls:SettingsExpander Header="Add additional software"
-                                           Description="Add additional software to be installed in the container">
-                    <ToggleSwitch  />
 
                     <controls:SettingsExpander.Items>
-                        <controls:SettingsCard Header="Software name"
-                                               Description="Set the name of the software to be installed">
-                            <TextBox PlaceholderText="Software name" />
-                        </controls:SettingsCard>
-                        <controls:SettingsCard Header="Software version"
-                                               Description="Set the version of the software to be installed">
-                            <TextBox PlaceholderText="Software version" />
+                        
+                        
+                        <controls:SettingsCard Header="Version">
+                            <TextBox x:Name="GameEngineVersionTextBox" 
+                                     PlaceholderText="Version" 
+                                     Text="{x:Bind ViewModel.GameEngineVersion, Mode=TwoWay}">
+                            
+                            </TextBox>
+                        
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
+                </controls:SettingsExpander>
 
-                </controls:SettingsExpander>-->
+                
 
                 <!-- Additional information for configuration -->
-                <!--<TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="Additional configuration" />
-
-                <controls:SettingsExpander Header="Port forwarding" Description="Add port forwarding to the container">
-                    <ToggleSwitch  />
+                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" 
+                           Text="Other settings" />
+                
+                <!-- TODO: disattiva card sottostanti se il toggle è su OFF-->
+                <controls:SettingsExpander Header="Ports" 
+                                           Description="Add port forwarding to the container">
+                    <ToggleSwitch x:Name="AddPortToggleSwitch" />
                     <controls:SettingsExpander.Items>
                         <controls:SettingsCard Header="Port"
-                                               Description="Set the port to be forwarded">
-                            <TextBox PlaceholderText="Port" />
+                                               Description="Set the port to be forwarded" >
+                            <TextBox x:Name="PortTextBox" 
+                                     PlaceholderText="Port" 
+                                     Text="{x:Bind ViewModel.Port, Mode=TwoWay}"/>
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
                 </controls:SettingsExpander>
 
-                <controls:SettingsExpander Header="Shared folders" Description="Add shared folders to the container">
-                    <ToggleSwitch  />
+                <controls:SettingsExpander Header="Other folder"
+                                           Description="Other forlders to be included in the container">        
+                    <Button x:Name="PickFolderButton2"
+                            Content="Open a folder"
+                            Click="PickFolderButton_Click"
+                            Margin="0,0,0,10"/>
                     <controls:SettingsExpander.Items>
-                        <controls:SettingsCard Header="Folder"
-                                               Description="Set the folder to be shared">
-                            <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
-                                <Button x:Name="PickSharedFolderButton" Content="Open a folder" Margin="0,0,0,10"/>
-                                <TextBlock x:Name="PickSharedFolderOutputTextBlock" TextWrapping="Wrap" Padding="20,5,0,0" />
-                            </StackPanel>
+                        <controls:SettingsCard Header="Selected folder">
+                            <TextBlock  x:Name="PickFolderOutputTextBlock2"
+                                        TextWrapping="Wrap" 
+                                        Padding="20,5,0,0"/>
+                        </controls:SettingsCard>
+                        <controls:SettingsCard Header="Destination folder">
+                            <TextBox    PlaceholderText="Path"
+                                        TextWrapping="Wrap" 
+                                        Padding="20,5,0,0"/>
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
-                </controls:SettingsExpander>-->
+                </controls:SettingsExpander>
 
-        
+                <controls:SettingsCard Header="Destroy after use" 
+                                       Description="Destroy the container after using it?">
+                    <ToggleSwitch x:Name="DestroyAfterUseToggleSwitch" 
+                                  IsOn="True" />
+                </controls:SettingsCard>
+
+                <controls:SettingsExpander Header="Performance" 
+                                           Description="Add the parameters for the container performance">
+                    <ToggleSwitch x:Name="PerformanceToggleSwitch" />
+                    <controls:SettingsExpander.Items>
+                        <controls:SettingsCard Header="CPU cores"
+                                               Description="Set the number of CPU cores to be used">
+                            <ComboBox PlaceholderText="CPU cores" IsEditable="True">
+                                <ComboBoxItem Content="1" />
+                                <ComboBoxItem Content="2" />
+                                <ComboBoxItem Content="4" />
+                                <ComboBoxItem Content="8" />
+                            </ComboBox>
+                        </controls:SettingsCard>
+                        <controls:SettingsCard Header="RAM"
+                                               Description="Set the amount of RAM to be used">
+                            <ComboBox PlaceholderText="Ram" IsEditable="True">
+                                <ComboBoxItem Content="1 GB" />
+                                <ComboBoxItem Content="2 GB" />
+                                <ComboBoxItem Content="4 GB" />
+                                <ComboBoxItem Content="8 GB" />
+                            </ComboBox>
+                        </controls:SettingsCard>
+                        <controls:SettingsCard Header="GPU"
+                                               Description="Set the GPU to be used">
+                            <TextBox PlaceholderText="GPU" />
+                        </controls:SettingsCard>
+                    </controls:SettingsExpander.Items>
+                </controls:SettingsExpander>
+
+                <controls:SettingsCard ActionIcon="{ui:FontIcon Glyph=&#xE713;}"
+                                       ActionIconToolTip="Open in new window"
+                                       Description="Add advanced option inside the command"
+                                       Header="Advanced options"
+                                       HeaderIcon="{ui:FontIcon Glyph=&#xE774;}"
+                                       IsClickEnabled="True" />
+                <!--IsEnabled="{x:Bind IsCardEnabled, Mode=OneWay}"--> 
+                               
+
 
                 <!-- Discard button and create container button -->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
-                    <Button Content="Discard" x:Name="DiscardButton" Click="DiscardButton_Click" Style="{StaticResource DefaultButtonStyle}" Margin="10,0,0,0"/>
-                    <Button x:Name="CreateContainerButton" Click="CreateContainerButton_Click" Style="{StaticResource AccentButtonStyle}" Margin="10,0,0,0">
+                <StackPanel Orientation="Horizontal" 
+                            HorizontalAlignment="Right" 
+                            Margin="0,20,0,0">
+
+                    <Button Content="Discard" 
+                            x:Name="DiscardButton" 
+                            Click="DiscardButton_Click" 
+                            Style="{StaticResource DefaultButtonStyle}" 
+                            Margin="10,0,0,0"/>
+
+                    <Button x:Name="CreateContainerButton" 
+                            Click="CreateContainerButton_Click" 
+                            Style="{StaticResource AccentButtonStyle}" Margin="10,0,0,0">
                         <StackPanel Orientation="Horizontal">
                             <FontIcon Glyph="&#xE81E;"/>
-                            <TextBlock Text="Create container" Margin="5,0,0,0"/>
+                            <TextBlock Text="Create container" 
+                                       Margin="5,0,0,0"/>
                         </StackPanel>
+
                     </Button>
                 </StackPanel>
-
             </StackPanel>
         </Grid>
     </ScrollViewer>
