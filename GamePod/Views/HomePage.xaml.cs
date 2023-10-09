@@ -6,30 +6,22 @@ using Windows.Storage.Pickers;
 using Windows.Storage;
 using AppUIBasics.Helper;
 using System.Diagnostics;
+using GamePod.Models;
 
 namespace GamePod.Views;
 
 public sealed partial class MainPage : Page
 {
     // linux distributions for the ComboBox
-    public List<string> LinuxDistros
-    {
-        get;
-    } = new List<string> { "Ubuntu", "Fedora", "Debian", "Arch Linux" };
-
-    public List<string> GameEngines
-    {
-        get;
-    } = new List<string> { "Unity", "Godot", "Unreal Engine" };
-
-    public HomeViewModel ViewModel
-    {
-        get;
-    }
+    public List<string> LinuxDistros { get; }
+    public List<string> GameEngines { get; }
+    public HomeViewModel ViewModel { get; }
 
     public MainPage()
     {
         ViewModel = App.GetService<HomeViewModel>();
+        LinuxDistros = LinuxDistribution.GetLinuxDistroNamesList();
+        GameEngines = GameEngine.GetGameEngineNamesList();
         InitializeComponent();
     }
 
@@ -55,7 +47,18 @@ public sealed partial class MainPage : Page
         if (folder != null)
         {
             StorageApplicationPermissions.FutureAccessList.AddOrReplace("PickedFolderToken", folder);
+        }
+
+        // print the forlder path to the correct TextBox
+        if (sender == PickFolderButton)
+        {
+
             PickFolderOutputTextBlock.Text = folder.Path;
+        }
+        else if (sender == PickFolderButton2)
+        {
+
+            PickFolderOutputTextBlock2.Text = folder.Path;
         }
         
     }
@@ -71,15 +74,13 @@ public sealed partial class MainPage : Page
         // get the properties of the project
         var projectName = ProjectNameTextBox.Text;
         var projectForlderPath = PickFolderOutputTextBlock.Text;
-        var distributionIndex = DistributionComboBox.SelectedIndex;
         var gameEngineIndex = GameEngineComboBox.SelectedIndex;
 
         // check if one of the fields is empty; if so, show an error message
-        if (projectName == "" || projectForlderPath == "" || distributionIndex < 0 || gameEngineIndex < 0)
+        if (projectName == "" || projectForlderPath == "" || gameEngineIndex < 0)
         {
             var errorDialog = new ContentDialog
             {
-
                 XamlRoot = XamlRoot,
                 Title = "Error",
                 Content = "Please fill all the fields",
@@ -91,24 +92,23 @@ public sealed partial class MainPage : Page
             return;
         }
 
-        var distributionVersion = LinuxDistroVersionNumberTextBox.Text;
-        if (distributionVersion == "")
-        {
-            distributionVersion = "latest";
-        }
-
-        var distribution = LinuxDistros[distributionIndex];
         var gameEngine = GameEngines[gameEngineIndex];
+        var gameEngineVersion = GameEngineVersionTextBox.Text;
+        var destroyAfterUse = Convert.ToBoolean(DestroyAfterUseToggleSwitch.GetValue(ToggleSwitch.IsOnProperty));
+        var port = PortTextBox.Text;  // TODO: add the option to Container.cs
+        var performanceToggle = PerformanceToggleSwitch.GetValue(ToggleSwitch.IsOnProperty);  // TODO: add the option to Container.cs
 
-        // command to create the container
-        var command = "Test command for " + projectName + " (" + projectForlderPath + ") with " + distribution + " " + distributionVersion + " and " + gameEngine + " game engine";
+
+        // create a container object
+        var container = new Container(projectName, projectForlderPath, gameEngine, gameEngineVersion, destroyAfterUse);
+        var command = container.RunCommand;
 
         // create the dialog with a title, a message, the command that will be executed in the terminal
         var dialog = new ContentDialog
         {
             XamlRoot = XamlRoot,
             Title = "Create Container",
-            Content = "Do you want to create the container?\nCommand: " + command,
+            Content = "Do you want to create the container?",
             PrimaryButtonText = "Create",
             CloseButtonText = "Cancel",
             DefaultButton = ContentDialogButton.Primary,
@@ -116,14 +116,15 @@ public sealed partial class MainPage : Page
 
         // show 
         var result = await dialog.ShowAsync();
+        Debug.WriteLine("Command: " + command);
 
         // if the developer clicks on the "Create" button
         if (result == ContentDialogResult.Primary)
         {
             ViewModel.CreateContainer(command);
 
-            // go to the homepage
-            Frame.Navigate(typeof(HomePage));
+            // TODO: go to the homepage
+            // Frame.Navigate(typeof(HomePage));
         }
 
     }
