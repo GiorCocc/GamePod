@@ -15,6 +15,14 @@
     mc:Ignorable="d">
 
     <StackPanel x:Name="ContentArea">
+        
+        <!-- TODO: Cose da inserire in questa pagina -->
+        <TextBlock Text="Cose da inserire in questa pagina"></TextBlock>
+        <TextBlock Text="- Messaggio di benvenuto"></TextBlock>
+        <TextBlock Text="- Bottone per la creazione di un nuovo Pod (apre la pagina apposita)"></TextBlock>
+        <TextBlock Text="- Tabella in cui sono presenti tutti i Pod creati con il programma"></TextBlock>
+        <TextBlock Text="- Ogni riga della lista deve contenere un pulsante per l'avvio del pod, uno per lo stop, uno per la pagina di dettaglio del pod e un menu con le altre voci (tipo elimina...)"></TextBlock>
+        
 
         <Grid>
             <StackPanel Orientation="Vertical">
