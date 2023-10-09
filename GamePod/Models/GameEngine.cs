@@ -18,41 +18,38 @@ namespace GamePod.Models;
 internal class GameEngine
 {
     // Game engines
-    public static readonly GameEngine Unity        = new("Unity", "unity-hub");
-    public static readonly GameEngine Godot        = new("Godot", "godot");
-    public static readonly GameEngine UnrealEngine = new("Unreal Engine", "unreal-engine");
+    public static readonly GameEngine UnityHubCLI       = new("Unity Hub (command line)", "unityci/editor:2022.3.10f1-linux-il2cpp-2.0", "0", "unity-hub");
+    public static readonly GameEngine UnityEditorCLI    = new("Unity Editor (command line)", "unityci/editor:2022.3.10f1-linux-il2cpp-2.0", "0", "unity-editor");
+    public static readonly GameEngine Unity             = new("Unity GUI","", "0", "UnityHub.AppImage");
+    public static readonly GameEngine Godot             = new("Godot", "", "0", "godot");
 
     // Properties
-    public string Name
-    {
-        get; private set;
-    }
-    public string DownloadCommand
-    {
-        get; private set;
-    }
+    public string Name { get; private set; }
+    public string DockerImage { get; private set; }
+    public string Version { get; set; }
+    public string StartCommand { get; private set; }
+    
 
     // Constructor
-    private GameEngine(string name, string downloadCommand)
+    private GameEngine(string name, string dockerImage, string version, string startCommand)
     {
         Name = name;
-        DownloadCommand = downloadCommand;
+        DockerImage = dockerImage;
+        Version = version;
+        StartCommand = startCommand;
     }
 
     // Get the GameEngine object from the name
     public static GameEngine GetGameEngine(string name)
     {
-        switch (name)
+        return name switch
         {
-            case "Unity":
-                return Unity;
-            case "Godot":
-                return Godot;
-            case "Unreal Engine":
-                return UnrealEngine;
-            default:
-                throw new ArgumentException("The game engine " + name + " is not supported");
-        }
+            "Unity Hub (command line)" => UnityHubCLI,
+            "Unity Editor (command line)" => UnityEditorCLI,
+            "Unity GUI" => Unity,
+            "Godot" => Godot,
+            _ => throw new ArgumentException("The game engine " + name + " is not supported"),
+        };
     }
 
     // Get the list of the names of the game engines
@@ -60,9 +57,10 @@ internal class GameEngine
     {
         List<string> names = new List<string>();
 
+        names.Add(UnityHubCLI.Name);
+        names.Add(UnityEditorCLI.Name);
         names.Add(Unity.Name);
         names.Add(Godot.Name);
-        names.Add(UnrealEngine.Name);
 
         return names;
 
