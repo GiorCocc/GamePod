@@ -47,20 +47,16 @@ public sealed partial class MainPage : Page
         if (folder != null)
         {
             StorageApplicationPermissions.FutureAccessList.AddOrReplace("PickedFolderToken", folder);
+            // print the forlder path to the correct TextBox
+            if (sender == PickFolderButton)
+            {
+                PickFolderOutputTextBlock.Text = folder.Path;
+            }
+            else if (sender == PickFolderButton2)
+            {
+                PickFolderOutputTextBlock2.Text = folder.Path;
+            }
         }
-
-        // print the forlder path to the correct TextBox
-        if (sender == PickFolderButton)
-        {
-
-            PickFolderOutputTextBlock.Text = folder.Path;
-        }
-        else if (sender == PickFolderButton2)
-        {
-
-            PickFolderOutputTextBlock2.Text = folder.Path;
-        }
-        
     }
 
     /*
@@ -95,12 +91,28 @@ public sealed partial class MainPage : Page
         var gameEngine = GameEngines[gameEngineIndex];
         var gameEngineVersion = GameEngineVersionTextBox.Text;
         var destroyAfterUse = Convert.ToBoolean(DestroyAfterUseToggleSwitch.GetValue(ToggleSwitch.IsOnProperty));
-        var port = PortTextBox.Text;  // TODO: add the option to Container.cs
-        var performanceToggle = PerformanceToggleSwitch.GetValue(ToggleSwitch.IsOnProperty);  // TODO: add the option to Container.cs
+        var port = "";
+        var cpuCores = "";
+        var ram = "";
+        var gpu = "";
+        var otherFolder = PickFolderOutputTextBlock2.Text;
+        var destinationPath = DestinationPathTextBox.Text;
+
+        if (Convert.ToBoolean(PerformanceToggleSwitch.GetValue(ToggleSwitch.IsOnProperty)))
+        {
+            port = PortTextBox.Text;
+        }
+
+        if (Convert.ToBoolean(PerformanceToggleSwitch.GetValue(ToggleSwitch.IsOnProperty)))
+        {
+            cpuCores = CPUComboBox.SelectionBoxItem.ToString();
+            ram = RAMComboBox.SelectionBoxItem.ToString().Substring(0, RAMComboBox.SelectionBoxItem.ToString().Length - 3);
+            gpu = GPUTextBox.Text;
+        }
 
 
         // create a container object
-        var container = new Container(projectName, projectForlderPath, gameEngine, gameEngineVersion, destroyAfterUse);
+        var container = new Container(projectName, projectForlderPath, gameEngine, gameEngineVersion, destroyAfterUse, port, cpuCores, ram, gpu, otherFolder, destinationPath);
         var command = container.RunCommand;
 
         // create the dialog with a title, a message, the command that will be executed in the terminal

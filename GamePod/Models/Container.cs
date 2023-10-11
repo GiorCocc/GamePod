@@ -30,6 +30,13 @@ internal class Container
     public string ProjectPath { get; private set; } = string.Empty;
     public GameEngine ProjectGameEngine { get; private set; }
     public bool DestroyAfterUse { get; private set; } = false;
+    public string Port { get; private set; } = string.Empty;
+    public string CPUCores { get; private set; } = string.Empty;
+    public string RAM { get; private set; } = string.Empty;
+    public string GPU { get; private set; } = string.Empty;
+    public string OtherFolderPath { get; private set; } = string.Empty;
+    public string DestinationPath { get; private set; } = string.Empty;
+
 
     public string RunCommand { get; private set; } = string.Empty;
     public DirectoryInfo ContainerFolderPath { get; private set; }
@@ -43,6 +50,7 @@ internal class Container
             volumeOptions.Add("-v /run/desktop/mnt/host/wslg/.X11-unix:/tmp/.X11-unix ");
             volumeOptions.Add("-v /run/desktop/mnt/host/wslg:/mnt/wslg ");
             volumeOptions.Add("-v " + ProjectPath + ":/project ");
+            volumeOptions.Add("-v " + OtherFolderPath + ":" + DestinationPath + " ");
             return volumeOptions;
         }
     }
@@ -51,7 +59,6 @@ internal class Container
     {
         get
         {
-
             List<string> environmentOptions = new List<string>();
             environmentOptions.Add("-e DISPLAY=:0 ");
             environmentOptions.Add("-e WAYLAND_DISPLAY=wayland-0 ");
@@ -62,13 +69,20 @@ internal class Container
     }
 
     // Constructor
-    public Container(string projectName, string projectPath, string gameEngineName, string gameEngineVersion, bool destroyAfetrUse)
+    public Container(string projectName, string projectPath, string gameEngineName, string gameEngineVersion, bool destroyAfetrUse, string ports, string cpuCores, string ram, string gpu, string otherFolder, string destinationPath)
     {
         ProjectName = projectName;
         ProjectPath = projectPath;
         ProjectGameEngine = GameEngine.GetGameEngine(gameEngineName);
         ProjectGameEngine.Version = gameEngineVersion;
         DestroyAfterUse = destroyAfetrUse;
+        Port = ports;
+        CPUCores = cpuCores;
+        RAM = ram;
+        GPU = gpu;
+        OtherFolderPath = otherFolder;
+        DestinationPath = destinationPath;
+
 
         RunCommand = CreateCommand();
 
@@ -90,10 +104,7 @@ internal class Container
         // --gpus all
         // --name <ProjectName> unityci/editor:2022.3.10f1-linux-il2cpp-2.0 bash
         var runCommand = "docker run --privileged -it ";
-        if (DestroyAfterUse)
-        {
-            runCommand += "--rm ";
-        }
+        if (DestroyAfterUse) { runCommand += "--rm "; }
 
         foreach (var volumeOption in VolumeOptions)
         {
@@ -104,13 +115,18 @@ internal class Container
         {
             runCommand += environmentOption;
         }
+
+        if (Port != "") { runCommand += "-p " + Port + " "; }
+
+        if (CPUCores != "") { runCommand += "--cpus " + CPUCores + " "; }
+
+        if (RAM != "") { runCommand += "--memory " + RAM + " "; }
+
+        if (GPU != "") { runCommand += "--gpus all "; } 
         
-        runCommand += "--gpus all ";
+        
         runCommand += "--name " + ProjectName + " ";
         runCommand += ProjectGameEngine.DockerImage + " bash";
-
-
-
 
         return runCommand;
     }

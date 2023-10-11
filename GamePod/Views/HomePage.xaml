@@ -155,9 +155,10 @@
                                         Padding="20,5,0,0"/>
                         </controls:SettingsCard>
                         <controls:SettingsCard Header="Destination folder">
-                            <TextBox    PlaceholderText="Path"
-                                        TextWrapping="Wrap" 
-                                        Padding="20,5,0,0"/>
+                            <TextBox x:Name="DestinationPathTextBox"
+                                     PlaceholderText="Path"
+                                     TextWrapping="Wrap" 
+                                     Padding="20,5,0,0"/>
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
                 </controls:SettingsExpander>
@@ -174,7 +175,7 @@
                     <controls:SettingsExpander.Items>
                         <controls:SettingsCard Header="CPU cores"
                                                Description="Set the number of CPU cores to be used">
-                            <ComboBox PlaceholderText="CPU cores" IsEditable="True">
+                            <ComboBox x:Name="CPUComboBox" PlaceholderText="CPU cores" IsEditable="True">
                                 <ComboBoxItem Content="1" />
                                 <ComboBoxItem Content="2" />
                                 <ComboBoxItem Content="4" />
@@ -183,7 +184,7 @@
                         </controls:SettingsCard>
                         <controls:SettingsCard Header="RAM"
                                                Description="Set the amount of RAM to be used">
-                            <ComboBox PlaceholderText="Ram" IsEditable="True">
+                            <ComboBox x:Name="RAMComboBox" PlaceholderText="Ram" IsEditable="True">
                                 <ComboBoxItem Content="1 GB" />
                                 <ComboBoxItem Content="2 GB" />
                                 <ComboBoxItem Content="4 GB" />
@@ -192,16 +193,16 @@
                         </controls:SettingsCard>
                         <controls:SettingsCard Header="GPU"
                                                Description="Set the GPU to be used">
-                            <TextBox PlaceholderText="GPU" />
+                            <TextBox x:Name="GPUTextBox" PlaceholderText="GPU" />
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
                 </controls:SettingsExpander>
 
-                <controls:SettingsCard ActionIcon="{ui:FontIcon Glyph=&#xE713;}"
+                <controls:SettingsCard ActionIcon="{ui:FontIcon Glyph=&#xE8A7;}"
                                        ActionIconToolTip="Open in new window"
                                        Description="Add advanced option inside the command"
                                        Header="Advanced options"
-                                       HeaderIcon="{ui:FontIcon Glyph=&#xE774;}"
+                                       HeaderIcon="{ui:FontIcon Glyph=&#xE713;}"
                                        IsClickEnabled="True" />
                 <!--IsEnabled="{x:Bind IsCardEnabled, Mode=OneWay}"--> 
                                
