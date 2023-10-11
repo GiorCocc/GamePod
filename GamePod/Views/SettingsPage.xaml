@@ -34,6 +34,7 @@
 
                 <!-- TODO: cose da inserire in questa schermata -->
                 <TextBlock Text="Cose da inserire in questa schermata"></TextBlock>
+                <TextBlock Text="- Controllo dell'installazione di winget"></TextBlock>
                 <TextBlock Text="- Controllo dell'installazione di docker e dello stato del demone"></TextBlock>
                 <TextBlock Text="- Controllo dell'installazione di WSL2"></TextBlock>
 
@@ -80,26 +81,34 @@
                 <!--General section-->
                 <TextBlock Text="General" Style="{ThemeResource SubtitleTextBlockStyle}"></TextBlock>
 
+                <controls:SettingsExpander x:Name="WingetExpander" Header="Winget">
+                    <controls:SettingsExpander.Items>
+                        <controls:SettingsCard Header="Version installed">
+                            <TextBlock Text="{x:Bind ViewModel.WingetVersionNumber, Mode=TwoWay}" 
+                                       HorizontalAlignment="Right"></TextBlock>
+                        </controls:SettingsCard>
+                        <controls:SettingsCard Header="Update">
+                            <Button Content="Update" Click="Update_Click" HorizontalAlignment="Right"></Button>
+                        </controls:SettingsCard>
+                    </controls:SettingsExpander.Items>
+                </controls:SettingsExpander>
                 <controls:SettingsExpander Header="Docker">
                     <controls:SettingsExpander.Items>
                         <controls:SettingsCard Header="Version installed">
-                            <TextBlock Text="(Version)" HorizontalAlignment="Right"></TextBlock>
+                            <TextBlock Text="{x:Bind ViewModel.DockerVersionNumber, Mode=TwoWay}" HorizontalAlignment="Right"></TextBlock>
                         </controls:SettingsCard>
                         <controls:SettingsCard Header="Update">
-                            <Button Content="Update" HorizontalAlignment="Right"></Button>
+                            <Button Content="Update" Click="Update_Click" HorizontalAlignment="Right"></Button>
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
                 </controls:SettingsExpander>
                 <controls:SettingsExpander Header="Windows Subsystem for Linux (WSL2)">
                     <controls:SettingsExpander.Items>
                         <controls:SettingsCard Header="Version installed">
-                            <TextBlock Text="(Version)" HorizontalAlignment="Right"></TextBlock>
-                        </controls:SettingsCard>
-                        <controls:SettingsCard Header="Kernel version">
-                            <TextBlock Text="(Version)" HorizontalAlignment="Right"></TextBlock>
+                            <TextBlock Text="{x:Bind ViewModel.WslVersionNumber, Mode=TwoWay}" HorizontalAlignment="Right"></TextBlock>
                         </controls:SettingsCard>
                         <controls:SettingsCard Header="Update">
-                            <Button Content="Update" HorizontalAlignment="Right"></Button>
+                            <Button Content="Update" Click="Update_Click" HorizontalAlignment="Right"></Button>
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
                 </controls:SettingsExpander>

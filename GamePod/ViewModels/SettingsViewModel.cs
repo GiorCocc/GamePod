@@ -14,6 +14,7 @@
 
 using System.Reflection;
 using System.Windows.Input;
+using System.Diagnostics;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -37,6 +38,13 @@ public partial class SettingsViewModel : ObservableRecipient
     [ObservableProperty]
     private string _versionDescription;
 
+    [ObservableProperty]
+    private string _wingetVersionNumber;
+    [ObservableProperty]
+    private string _dockerVersionNumber;
+    [ObservableProperty]
+    private string _wslVersionNumber;
+
     public ICommand SwitchThemeCommand
     {
         get;
@@ -47,6 +55,9 @@ public partial class SettingsViewModel : ObservableRecipient
         _themeSelectorService = themeSelectorService;
         _elementTheme = _themeSelectorService.Theme;
         _versionDescription = GetVersionDescription();
+        _wingetVersionNumber = GetVersionNumber("winget");
+        _dockerVersionNumber = GetVersionNumber("docker");
+        _wslVersionNumber = GetVersionNumber("wsl");
 
         SwitchThemeCommand = new RelayCommand<ElementTheme>(
             async (param) =>
@@ -57,6 +68,23 @@ public partial class SettingsViewModel : ObservableRecipient
                     await _themeSelectorService.SetThemeAsync(param);
                 }
             });
+    }
+
+    // FIXME: this is a workaround to get the version number of the software
+    //        it should be replaced with a better solution that doesn't open a terminal window every time the user opens the settings page
+    //       (maybe a background task that runs at startup and saves the version number in a file?)
+    private string GetVersionNumber(string software)
+    {
+        Process process = new Process();
+        ProcessStartInfo startInfo = new ProcessStartInfo(software, "--version");
+        startInfo.RedirectStandardOutput = true;
+        startInfo.UseShellExecute = false; // this changes the parent window to a background window
+        process.StartInfo = startInfo;
+        process.Start();
+
+        var output = process.StandardOutput.ReadToEnd();
+
+        return output;
     }
 
     private static string GetVersionDescription()
@@ -75,5 +103,17 @@ public partial class SettingsViewModel : ObservableRecipient
         }
 
         return $"{"AppDisplayName".GetLocalized()} - {version.Major}.{version.Minor}.{version.Build} ({version.Revision})";
+    }
+
+    public void UpdateSoftware(string software)
+    {
+        Process process = new Process();
+        ProcessStartInfo startInfo = new ProcessStartInfo(software, "upgrade");
+
+        // display the terminal window to show the progress of the update
+        startInfo.UseShellExecute = true;
+
+        process.StartInfo = startInfo;
+        process.Start();
     }
 }
