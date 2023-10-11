@@ -30,7 +30,7 @@
     </Page.DataContext>
 
     <ScrollViewer>
-        <Grid>
+        <Grid Padding="0,0,0,10">
             <StackPanel MaxWidth="1000"
                         HorizontalAlignment="Stretch"
                         Spacing="{StaticResource SettingsCardSpacing}">
@@ -203,7 +203,8 @@
                                        Description="Add advanced option inside the command"
                                        Header="Advanced options"
                                        HeaderIcon="{ui:FontIcon Glyph=&#xE713;}"
-                                       IsClickEnabled="True" />
+                                       IsClickEnabled="True"
+                                       Click="AdvancedContainerSettingsButton_Click"/>
                 <!--IsEnabled="{x:Bind IsCardEnabled, Mode=OneWay}"--> 
                                
 
