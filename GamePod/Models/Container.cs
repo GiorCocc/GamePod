@@ -50,7 +50,11 @@ internal class Container
             volumeOptions.Add("-v /run/desktop/mnt/host/wslg/.X11-unix:/tmp/.X11-unix ");
             volumeOptions.Add("-v /run/desktop/mnt/host/wslg:/mnt/wslg ");
             volumeOptions.Add("-v " + ProjectPath + ":/project ");
-            volumeOptions.Add("-v " + OtherFolderPath + ":" + DestinationPath + " ");
+            if (OtherFolderPath != "" && DestinationPath != "")
+            {
+                volumeOptions.Add("-v " + OtherFolderPath + ":" + DestinationPath + " ");
+            }
+            
             return volumeOptions;
         }
     }
