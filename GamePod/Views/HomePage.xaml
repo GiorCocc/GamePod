@@ -26,7 +26,7 @@
     </Page.Resources>
 
     <Page.DataContext>
-        <local:MainViewModel />
+        <local:HomeViewModel />
     </Page.DataContext>
 
     <ScrollViewer>
@@ -43,16 +43,16 @@
                 
                 <!-- TODO: Cose da inserire nella pagina di creazione del container -->
                 <TextBlock Text="Cose da inserire nella schermata"></TextBlock>
-                <TextBlock Text="- Nome del progetto (che sarà anche il nome del container)"></TextBlock>
+                <!--<TextBlock Text="- Nome del progetto (che sarà anche il nome del container)"></TextBlock>
                 <TextBlock Text="- Cartella del progetto (che sarà inclusa nel container in modo da accedere al progetto)"></TextBlock>
                 <TextBlock Text="- Selezione del game engine"></TextBlock>
-                <TextBlock Text="- Selezione di altre cartelle da includere nel container"></TextBlock>
+                <TextBlock Text="- Selezione di altre cartelle da includere nel container"></TextBlock>-->
                 <TextBlock Text="- Selezione di altre librerie da includere nel container"></TextBlock>
                 <TextBlock Text="- Selezione di altri programmi da includere (verranno creati container separati)"></TextBlock>
-                <TextBlock Text="- Selezione di porte da aprire nel container"></TextBlock>
+                <!--<TextBlock Text="- Selezione di porte da aprire nel container"></TextBlock>
                 <TextBlock Text="- Selezione di cartelle da condividere con l'host"></TextBlock>
                 <TextBlock Text="- Selezione di cartelle da condividere con altri container"></TextBlock>
-                <TextBlock Text="- Selezione di parametri per la creazione del container (rimozione dopo l'uso...)"></TextBlock>
+                <TextBlock Text="- Selezione di parametri per la creazione del container (rimozione dopo l'uso...)"></TextBlock>-->
                 
 
                 <!-- Information section -->
@@ -131,10 +131,12 @@
                 <!-- TODO: disattiva card sottostanti se il toggle è su OFF-->
                 <controls:SettingsExpander Header="Ports" 
                                            Description="Add port forwarding to the container">
-                    <ToggleSwitch x:Name="AddPortToggleSwitch" />
+                    <ToggleSwitch x:Name="AddPortToggleSwitch" Toggled="ToggleSwitch_Toggled" />
                     <controls:SettingsExpander.Items>
-                        <controls:SettingsCard Header="Port"
-                                               Description="Set the port to be forwarded" >
+                        <controls:SettingsCard x:Name="PortNumberSettingsCard" 
+                                               Header="Port"
+                                               Description="Set the port to be forwarded" 
+                                               IsEnabled="False">
                             <TextBox x:Name="PortTextBox" 
                                      PlaceholderText="Port" 
                                      Text="{x:Bind ViewModel.Port, Mode=TwoWay}"/>
@@ -171,10 +173,12 @@
 
                 <controls:SettingsExpander Header="Performance" 
                                            Description="Add the parameters for the container performance">
-                    <ToggleSwitch x:Name="PerformanceToggleSwitch" />
+                    <ToggleSwitch x:Name="PerformanceToggleSwitch" Toggled="ToggleSwitch_Toggled" />
                     <controls:SettingsExpander.Items>
-                        <controls:SettingsCard Header="CPU cores"
-                                               Description="Set the number of CPU cores to be used">
+                        <controls:SettingsCard x:Name="CPUSettingsCard" 
+                                               Header="CPU cores"
+                                               Description="Set the number of CPU cores to be used"
+                                               IsEnabled="False">
                             <ComboBox x:Name="CPUComboBox" PlaceholderText="CPU cores" IsEditable="True">
                                 <ComboBoxItem Content="1" />
                                 <ComboBoxItem Content="2" />
@@ -182,8 +186,10 @@
                                 <ComboBoxItem Content="8" />
                             </ComboBox>
                         </controls:SettingsCard>
-                        <controls:SettingsCard Header="RAM"
-                                               Description="Set the amount of RAM to be used">
+                        <controls:SettingsCard x:Name="RAMSettingsCard"
+                                               Header="RAM"
+                                               Description="Set the amount of RAM to be used"
+                                               IsEnabled="False">
                             <ComboBox x:Name="RAMComboBox" PlaceholderText="Ram" IsEditable="True">
                                 <ComboBoxItem Content="1 GB" />
                                 <ComboBoxItem Content="2 GB" />
@@ -191,8 +197,10 @@
                                 <ComboBoxItem Content="8 GB" />
                             </ComboBox>
                         </controls:SettingsCard>
-                        <controls:SettingsCard Header="GPU"
-                                               Description="Set the GPU to be used">
+                        <controls:SettingsCard x:Name="GPUSettingsCard"
+                                               Header="GPU"
+                                               Description="Set the GPU to be used"
+                                               IsEnabled="False">
                             <TextBox x:Name="GPUTextBox" PlaceholderText="GPU" />
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>

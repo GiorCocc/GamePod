@@ -22,6 +22,7 @@ public sealed partial class MainPage : Page
         ViewModel = App.GetService<HomeViewModel>();
         LinuxDistros = LinuxDistribution.GetLinuxDistroNamesList();
         GameEngines = GameEngine.GetGameEngineNamesList();
+        
         InitializeComponent();
     }
 
@@ -136,7 +137,7 @@ public sealed partial class MainPage : Page
             ViewModel.CreateContainer(command);
 
             // TODO: go to the homepage
-            // Frame.Navigate(typeof(HomePage));
+            Frame.Navigate(typeof(HomePage));
         }
 
     }
@@ -145,5 +146,91 @@ public sealed partial class MainPage : Page
     {
         // go to the homepage
         Frame.Navigate(typeof(HomePage));
+    }
+
+    private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
+    {
+        if (sender == AddPortToggleSwitch)
+        {
+            if (Convert.ToBoolean(AddPortToggleSwitch.GetValue(ToggleSwitch.IsOnProperty)))
+            {
+                PortNumberSettingsCard.IsEnabled = true;
+
+            }
+            else
+            {
+
+                PortNumberSettingsCard.IsEnabled = false;
+            }
+        }
+        else if (sender == PerformanceToggleSwitch)
+        {
+            if (Convert.ToBoolean(PerformanceToggleSwitch.GetValue(ToggleSwitch.IsOnProperty)))
+            {
+                CPUSettingsCard.IsEnabled = true;
+                RAMSettingsCard.IsEnabled = true;
+                GPUSettingsCard.IsEnabled = true;
+            }
+            else
+            {
+                CPUSettingsCard.IsEnabled = false;
+                RAMSettingsCard.IsEnabled = false;
+                GPUSettingsCard.IsEnabled = false;
+            }
+        }
+    }
+
+    private async void AdvancedContainerSettingsButton_Click(object sender, RoutedEventArgs e)
+    {
+        // get the properties of the project
+        var projectName = ProjectNameTextBox.Text;
+        var projectForlderPath = PickFolderOutputTextBlock.Text;
+        var gameEngineIndex = GameEngineComboBox.SelectedIndex;
+
+        // check if one of the fields is empty; if so, show an error message
+        if (projectName == "" || projectForlderPath == "" || gameEngineIndex < 0)
+        {
+            var errorDialog = new ContentDialog
+            {
+                XamlRoot = XamlRoot,
+                Title = "Error",
+                Content = "Please fill all the fields",
+                CloseButtonText = "Ok",
+                DefaultButton = ContentDialogButton.Close,
+            };
+
+            await errorDialog.ShowAsync();
+            return;
+        }
+
+        var gameEngine = GameEngines[gameEngineIndex];
+        var gameEngineVersion = GameEngineVersionTextBox.Text;
+        var destroyAfterUse = Convert.ToBoolean(DestroyAfterUseToggleSwitch.GetValue(ToggleSwitch.IsOnProperty));
+        var port = "";
+        var cpuCores = "";
+        var ram = "";
+        var gpu = "";
+        var otherFolder = PickFolderOutputTextBlock2.Text;
+        var destinationPath = DestinationPathTextBox.Text;
+
+        if (Convert.ToBoolean(PerformanceToggleSwitch.GetValue(ToggleSwitch.IsOnProperty)))
+        {
+            port = PortTextBox.Text;
+        }
+
+        if (Convert.ToBoolean(PerformanceToggleSwitch.GetValue(ToggleSwitch.IsOnProperty)))
+        {
+            cpuCores = CPUComboBox.SelectionBoxItem.ToString();
+            ram = RAMComboBox.SelectionBoxItem.ToString().Substring(0, RAMComboBox.SelectionBoxItem.ToString().Length - 3);
+            gpu = GPUTextBox.Text;
+        }
+
+
+        // create a container object
+        var container = new Container(projectName, projectForlderPath, gameEngine, gameEngineVersion, destroyAfterUse, port, cpuCores, ram, gpu, otherFolder, destinationPath);
+        var command = container.RunCommand;
+
+        // Go to AdvancedContainerCreationPage
+        Frame.Navigate(typeof(AdvancedContainerCreationPage), command);
     }
 }
