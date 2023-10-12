@@ -170,4 +170,7 @@
   <data name="Shell_Home.Content" xml:space="preserve">
     <value>Home</value>
   </data>
+  <data name="Shell_AdvancedContainerCreation.Content" xml:space="preserve">
+    <value>Advanced Container Creation</value>
+  </data>
 </root>

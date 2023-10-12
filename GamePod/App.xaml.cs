@@ -72,6 +72,8 @@ public partial class App : Application
             services.AddSingleton<IFileService, FileService>();
 
             // Views and ViewModels
+            services.AddTransient<AdvancedContainerCreationViewModel>();
+            services.AddTransient<AdvancedContainerCreationPage>();
             services.AddTransient<MainViewModel>();
             services.AddTransient<HomePage>();
             services.AddTransient<SettingsViewModel>();
