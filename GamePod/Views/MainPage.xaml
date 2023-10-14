@@ -14,35 +14,50 @@
     d:DataContext="{d:DesignInstance Type=viewmodels:HomeViewModel}"
     mc:Ignorable="d">
 
-    <StackPanel x:Name="ContentArea">
-        
-        <!-- TODO: Cose da inserire in questa pagina -->
-        <TextBlock Text="Cose da inserire in questa pagina"></TextBlock>
-        <TextBlock Text="- Messaggio di benvenuto"></TextBlock>
-        <TextBlock Text="- Bottone per la creazione di un nuovo Pod (apre la pagina apposita)"></TextBlock>
-        <TextBlock Text="- Tabella in cui sono presenti tutti i Pod creati con il programma"></TextBlock>
-        <TextBlock Text="- Ogni riga della lista deve contenere un pulsante per l'avvio del pod, uno per lo stop, uno per la pagina di dettaglio del pod e un menu con le altre voci (tipo elimina...)"></TextBlock>
-        
 
-        <Grid>
-            <StackPanel Orientation="Vertical">
-                <TextBlock Text="Welcome to GamePod!" />
-                <TextBlock Text="This app will help you to create a container for your game, so you can build it and run it on any platform you want. " />
-                <TextBlock Text="To start, click on the CREATE button on the left." />
-            </StackPanel>
-            <!--Place the create button at the margin right of the screen-->
-            <Button  Click="CreateButton_Click" HorizontalAlignment="Right" Style="{StaticResource AccentButtonStyle}" >
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <SymbolIcon Symbol="Add" />
-                    <TextBlock Text="Create" Margin="5,0,0,0" />
-                </StackPanel>
-            </Button>
-        </Grid>
+    <ScrollViewer>
+        <StackPanel x:Name="ContentArea">
         
-        <!-- Display the list of the created container with GamePod -->
+            <!-- TODO: Cose da inserire in questa pagina -->
+            <TextBlock Text="Cose da inserire in questa pagina"></TextBlock>
+            <TextBlock Text="- Messaggio di benvenuto"></TextBlock>
+            <TextBlock Text="- Bottone per la creazione di un nuovo Pod (apre la pagina apposita)"></TextBlock>
+            <TextBlock Text="- Tabella in cui sono presenti tutti i Pod creati con il programma"></TextBlock>
+            <TextBlock Text="- Ogni riga della lista deve contenere un pulsante per l'avvio del pod, uno per lo stop, uno per la pagina di dettaglio del pod e un menu con le altre voci (tipo elimina...)"></TextBlock>
+
+
+            <Grid>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Welcome to GamePod!" />
+                    <TextBlock Text="This app will help you to create a container for your game, so you can build it and run it on any platform you want. " />
+                    <TextBlock Text="To start, click on the CREATE button on the left." />
+                </StackPanel>
+                <!--Place the create button at the margin right of the screen-->
+                <Button  Click="CreateButton_Click" HorizontalAlignment="Right" Style="{StaticResource AccentButtonStyle}" >
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <SymbolIcon Symbol="Add" />
+                        <TextBlock Text="Create" Margin="5,0,0,0" />
+                    </StackPanel>
+                </Button>
+            </Grid>
+
+            <CommandBar >
+                <CommandBar.PrimaryCommands>
+                    <AppBarButton Icon="Play" Label="Run container"/>
+                    <AppBarSeparator />
+                    <AppBarButton Icon="Stop" Label="Stop container"/>
+                    <AppBarButton Icon="RepeatAll" Label="Restart container"/>
+                    <AppBarSeparator />
+                    <AppBarButton Icon="Delete" Label="Delete"/>
+                </CommandBar.PrimaryCommands>
+            </CommandBar>
+
+            <!-- Display the list of the created container with GamePod -->
         <!-- In each line display the name of the project, the location, start/stop/delete/menu buttons-->
 
 
 
-    </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+    
 </Page>
