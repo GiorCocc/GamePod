@@ -25,7 +25,7 @@
     </Page.Resources>
 
     <ScrollViewer>
-        <Grid>
+        <Grid Padding="0,0,0,10">
             <StackPanel x:Name="ContentArea" HorizontalAlignment="Stretch" Spacing="{StaticResource SettingsCardSpacing}">
                 <win:StackPanel.ChildrenTransitions>
                     <win:EntranceThemeTransition FromVerticalOffset="50" />
@@ -82,20 +82,19 @@
                 <TextBlock Text="General" Style="{ThemeResource SubtitleTextBlockStyle}"></TextBlock>
 
                 <controls:SettingsExpander x:Name="WingetExpander" Header="Winget">
+                    <TextBlock Text="{x:Bind ViewModel.WingetVersionNumber, Mode=TwoWay}" HorizontalAlignment="Right"></TextBlock>
                     <controls:SettingsExpander.Items>
-                        <controls:SettingsCard Header="Version installed">
-                            <TextBlock Text="{x:Bind ViewModel.WingetVersionNumber, Mode=TwoWay}" 
-                                       HorizontalAlignment="Right"></TextBlock>
-                        </controls:SettingsCard>
+                        
                         <controls:SettingsCard Header="Update">
                             <Button Content="Update" Click="Update_Click" HorizontalAlignment="Right"></Button>
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
                 </controls:SettingsExpander>
                 <controls:SettingsExpander Header="Docker">
+                    <TextBlock Text="{x:Bind ViewModel.DockerVersionNumber, Mode=TwoWay}" HorizontalAlignment="Right"></TextBlock>
                     <controls:SettingsExpander.Items>
-                        <controls:SettingsCard Header="Version installed">
-                            <TextBlock Text="{x:Bind ViewModel.DockerVersionNumber, Mode=TwoWay}" HorizontalAlignment="Right"></TextBlock>
+                        <controls:SettingsCard Header="Status">
+                            <TextBlock Text="(status)"></TextBlock>
                         </controls:SettingsCard>
                         <controls:SettingsCard Header="Update">
                             <Button Content="Update" Click="Update_Click" HorizontalAlignment="Right"></Button>
@@ -124,18 +123,17 @@
                         <controls:SettingsCard Header="Contacts">
                             <StackPanel Margin="-12,0,0,0"
                                         Orientation="Horizontal">
-                                <HyperlinkButton Content="Email" />
-                                <HyperlinkButton Content="Twitter" />
-                                <HyperlinkButton Content="GitHub" />
+                                <HyperlinkButton Content="Email" NavigateUri="mailto:giorcocc@gmail.com?subject=GamePods%20request" />
+                                <HyperlinkButton Content="GitHub" NavigateUri="https://github.com/GiorCocc" />
                             </StackPanel>
                         </controls:SettingsCard>
                         <controls:SettingsCard HorizontalContentAlignment="Left"
                                                ContentAlignment="Left">
                             <StackPanel Margin="-12,0,0,0"
                                         Orientation="Vertical">
-                                <HyperlinkButton Content="Documentazione" />    <!--Diretto verso github-->
-                                <HyperlinkButton Content="WinUI gallery" />
-                                <HyperlinkButton Content="WinUI community toolbox" />
+                                <HyperlinkButton Content="Documentazione" NavigateUri="https://github.com/GiorCocc/GamePod/blob/master/README.md" />    <!--Diretto verso github-->
+                                <HyperlinkButton Content="WinUI gallery" NavigateUri="https://github.com/microsoft/WinUI-Gallery" />
+                                <HyperlinkButton Content="WinUI community toolbox" NavigateUri="https://github.com/CommunityToolkit/Windows" />
                             </StackPanel>
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
