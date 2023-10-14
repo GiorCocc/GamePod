@@ -10,64 +10,81 @@
       xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
       mc:Ignorable="d">
 
-    <StackPanel x:Name="ContentArea">
+    <ScrollViewer>
+        <StackPanel x:Name="ContentArea">
 
-        <Grid>
-            <StackPanel Orientation="Vertical">
-                <TextBlock>Qui ci metti un bel messaggio di spiegazione</TextBlock>
-            </StackPanel>
-            
-            <HyperlinkButton Content="Docker documentation" NavigateUri="https://docs.docker.com/engine/reference/commandline/run/" HorizontalAlignment="Right"/>
-        </Grid>
-
-        <Grid>
-            <StackPanel Orientation="Vertical">
-                <TextBlock>Qui ci metto i comandi che possono essere inseriti e alla pressione vengono copiati nel blocco</TextBlock>
-            </StackPanel>
-
-            <DropDownButton Content="Email" HorizontalAlignment="Right">
-                <DropDownButton.Flyout>
-                    <MenuFlyout Placement="Bottom">
-                        <MenuFlyoutItem Text="Send"/>
-                        <MenuFlyoutItem Text="Reply"/>
-                        <MenuFlyoutItem Text="Reply All"/>
-                    </MenuFlyout>
-                </DropDownButton.Flyout>
-            </DropDownButton>
-        </Grid>
-
-        <StackPanel>
-            <RichEditBox x:Name="editor"
-                     AutomationProperties.Name="simple text editor"
-                     PlaceholderText="Docker run command"
-                     TextWrapping="Wrap"
-                     Height="400"
-                     />
-        </StackPanel>
-
-        <StackPanel Orientation="Horizontal" 
-            HorizontalAlignment="Right" 
-            Margin="0,20,0,0">
-
-            <Button Content="Copy" 
-                    x:Name="CopyButton" 
-                    Style="{StaticResource DefaultButtonStyle}"
-                    Margin="10,0,0,0"/>
-
-            <Button Content="Discard" 
-                    x:Name="DiscardButton" 
-                    Style="{StaticResource DefaultButtonStyle}"
-                    Margin="10,0,0,0"/>
-
-            <Button x:Name="CreateContainerButton"
-                    Style="{StaticResource AccentButtonStyle}" Margin="10,0,0,0">
-                <StackPanel Orientation="Horizontal">
-                    <FontIcon Glyph="&#xE81E;"/>
-                    <TextBlock Text="Create container" 
-                               Margin="5,0,0,0"/>
+            <Grid>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock>Qui ci metti un bel messaggio di spiegazione</TextBlock>
                 </StackPanel>
-            </Button>
-        </StackPanel>
 
-    </StackPanel>
+                <HyperlinkButton Content="Docker documentation" NavigateUri="https://docs.docker.com/engine/reference/commandline/run/" HorizontalAlignment="Right"/>
+            </Grid>
+
+            <Grid>
+                <!--<StackPanel Orientation="Vertical">
+                    <TextBlock>Qui ci metto i comandi che possono essere inseriti e alla pressione vengono copiati nel blocco</TextBlock>
+                </StackPanel>-->
+
+                <!--<MenuBar>
+                    <MenuBarItem Title="Volumes">
+                        <MenuFlyoutItem Text="New"/>
+                        <MenuFlyoutItem Text="Open..."/>
+                        <MenuFlyoutItem Text="Save"/>
+                        <MenuFlyoutItem Text="Exit"/>
+                    </MenuBarItem>
+
+                    <MenuBarItem Title="Edit">
+                        <MenuFlyoutItem Text="Undo"/>
+                        <MenuFlyoutItem Text="Cut"/>
+                        <MenuFlyoutItem Text="Copy"/>
+                        <MenuFlyoutItem Text="Paste"/>
+                    </MenuBarItem>
+
+                    <MenuBarItem Title="Help">
+                        <MenuFlyoutItem Text="About"/>
+                    </MenuBarItem>
+                </MenuBar>-->
+            </Grid>
+
+            <StackPanel>
+                <RichEditBox x:Name="editor"
+                 AutomationProperties.Name="simple text editor"
+                 PlaceholderText="Docker run command"
+                 TextWrapping="Wrap"
+                 Height="400"
+                 />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" 
+        HorizontalAlignment="Right" 
+        Margin="0,20,0,0">
+
+                <Button Content="Copy" 
+                        x:Name="CopyButton" 
+                        Click="CopyButton_Click"
+                        Style="{StaticResource DefaultButtonStyle}"
+                        Margin="10,0,0,0"/>
+
+                <Button Content="Discard" 
+                x:Name="DiscardButton" 
+                Click="DiscardButton_Click"
+                Style="{StaticResource DefaultButtonStyle}"
+                Margin="10,0,0,0"/>
+
+                <Button x:Name="CreateContainerButton"
+                Click="CreateContainerButton_Click"
+                Style="{StaticResource AccentButtonStyle}" Margin="10,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Glyph="&#xE81E;"/>
+                        <TextBlock Text="Create container" 
+                           Margin="5,0,0,0"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+
+        </StackPanel>
+    </ScrollViewer>
+
+    
 </Page>
