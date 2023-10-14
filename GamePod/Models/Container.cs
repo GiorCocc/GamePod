@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Services.Maps;
 
 namespace GamePod.Models;
 
@@ -47,12 +48,12 @@ internal class Container
         get
         {
             List<string> volumeOptions = new List<string>();
-            volumeOptions.Add("-v /run/desktop/mnt/host/wslg/.X11-unix:/tmp/.X11-unix ");
-            volumeOptions.Add("-v /run/desktop/mnt/host/wslg:/mnt/wslg ");
-            volumeOptions.Add("-v " + ProjectPath + ":/project ");
+            volumeOptions.Add("--volume /run/desktop/mnt/host/wslg/.X11-unix:/tmp/.X11-unix ");
+            volumeOptions.Add("--volume /run/desktop/mnt/host/wslg:/mnt/wslg ");
+            volumeOptions.Add("--volume " + ProjectPath + ":/project ");
             if (OtherFolderPath != "" && DestinationPath != "")
             {
-                volumeOptions.Add("-v " + OtherFolderPath + ":" + DestinationPath + " ");
+                volumeOptions.Add("--volume " + OtherFolderPath + ":" + DestinationPath + " ");
             }
             
             return volumeOptions;
@@ -64,11 +65,29 @@ internal class Container
         get
         {
             List<string> environmentOptions = new List<string>();
-            environmentOptions.Add("-e DISPLAY=:0 ");
-            environmentOptions.Add("-e WAYLAND_DISPLAY=wayland-0 ");
-            environmentOptions.Add("-e XDG_RUNTIME_DIR=/mnt/wslg/runtime-dir ");
-            environmentOptions.Add("-e PULSE_SERVER=/mnt/wslg/PulseServer ");
+            environmentOptions.Add("--environment DISPLAY=:0 ");
+            environmentOptions.Add("--environment WAYLAND_DISPLAY=wayland-0 ");
+            environmentOptions.Add("--environment XDG_RUNTIME_DIR=/mnt/wslg/runtime-dir ");
+            environmentOptions.Add("--environment PULSE_SERVER=/mnt/wslg/PulseServer ");
             return environmentOptions;
+        }
+    }
+
+    // List of all docker run parameters with theri name and the command to use them (eg. "Delete the container after use" and "--rm")
+    public List<(string, string)> DockerRunParameters
+    {
+        get
+        {
+            List<(string, string)> dockerRunParameters = new List<(string, string)>();
+            dockerRunParameters.Add(("Volume", "--volume"));
+            dockerRunParameters.Add(("Environment", "--environment"));
+            dockerRunParameters.Add(("Port", "--port"));
+            dockerRunParameters.Add(("CPU Cores", "--cpus"));
+            dockerRunParameters.Add(("RAM", "--memory"));
+            dockerRunParameters.Add(("GPU", "--gpus"));
+            dockerRunParameters.Add(("Destroy after use", "--rm"));
+
+            return dockerRunParameters;
         }
     }
 
@@ -107,7 +126,7 @@ internal class Container
         // -e PULSE_SERVER=/mnt/wslg/PulseServer
         // --gpus all
         // --name <ProjectName> unityci/editor:2022.3.10f1-linux-il2cpp-2.0 bash
-        var runCommand = "docker run --privileged -it ";
+        var runCommand = "docker run --privileged --interactive --tty ";
         if (DestroyAfterUse) { runCommand += "--rm "; }
 
         foreach (var volumeOption in VolumeOptions)
@@ -120,7 +139,7 @@ internal class Container
             runCommand += environmentOption;
         }
 
-        if (Port != "") { runCommand += "-p " + Port + " "; }
+        if (Port != "") { runCommand += "--ports " + Port + " "; }
 
         if (CPUCores != "") { runCommand += "--cpus " + CPUCores + " "; }
 
