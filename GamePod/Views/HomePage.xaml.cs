@@ -190,47 +190,42 @@ public sealed partial class MainPage : Page
         // check if one of the fields is empty; if so, show an error message
         if (projectName == "" || projectForlderPath == "" || gameEngineIndex < 0)
         {
-            var errorDialog = new ContentDialog
+            var defaultRunCommand = "docker run -it --rm ";
+            Frame.Navigate(typeof(AdvancedContainerCreationPage), defaultRunCommand);
+        }
+        else
+        {
+            var gameEngine = GameEngines[gameEngineIndex];
+            var gameEngineVersion = GameEngineVersionTextBox.Text;
+            var destroyAfterUse = Convert.ToBoolean(DestroyAfterUseToggleSwitch.GetValue(ToggleSwitch.IsOnProperty));
+            var port = "";
+            var cpuCores = "";
+            var ram = "";
+            var gpu = "";
+            var otherFolder = PickFolderOutputTextBlock2.Text;
+            var destinationPath = DestinationPathTextBox.Text;
+
+            if (Convert.ToBoolean(PerformanceToggleSwitch.GetValue(ToggleSwitch.IsOnProperty)))
             {
-                XamlRoot = XamlRoot,
-                Title = "Error",
-                Content = "Please fill all the fields",
-                CloseButtonText = "Ok",
-                DefaultButton = ContentDialogButton.Close,
-            };
+                port = PortTextBox.Text;
+            }
 
-            await errorDialog.ShowAsync();
-            return;
+            if (Convert.ToBoolean(PerformanceToggleSwitch.GetValue(ToggleSwitch.IsOnProperty)))
+            {
+                cpuCores = CPUComboBox.SelectionBoxItem.ToString();
+                ram = RAMComboBox.SelectionBoxItem.ToString().Substring(0, RAMComboBox.SelectionBoxItem.ToString().Length - 3);
+                gpu = GPUTextBox.Text;
+            }
+
+
+            // create a container object
+            var container = new Container(projectName, projectForlderPath, gameEngine, gameEngineVersion, destroyAfterUse, port, cpuCores, ram, gpu, otherFolder, destinationPath);
+            var command = container.RunCommand;
+
+            // Go to AdvancedContainerCreationPage
+            Frame.Navigate(typeof(AdvancedContainerCreationPage), command);
         }
 
-        var gameEngine = GameEngines[gameEngineIndex];
-        var gameEngineVersion = GameEngineVersionTextBox.Text;
-        var destroyAfterUse = Convert.ToBoolean(DestroyAfterUseToggleSwitch.GetValue(ToggleSwitch.IsOnProperty));
-        var port = "";
-        var cpuCores = "";
-        var ram = "";
-        var gpu = "";
-        var otherFolder = PickFolderOutputTextBlock2.Text;
-        var destinationPath = DestinationPathTextBox.Text;
-
-        if (Convert.ToBoolean(PerformanceToggleSwitch.GetValue(ToggleSwitch.IsOnProperty)))
-        {
-            port = PortTextBox.Text;
-        }
-
-        if (Convert.ToBoolean(PerformanceToggleSwitch.GetValue(ToggleSwitch.IsOnProperty)))
-        {
-            cpuCores = CPUComboBox.SelectionBoxItem.ToString();
-            ram = RAMComboBox.SelectionBoxItem.ToString().Substring(0, RAMComboBox.SelectionBoxItem.ToString().Length - 3);
-            gpu = GPUTextBox.Text;
-        }
-
-
-        // create a container object
-        var container = new Container(projectName, projectForlderPath, gameEngine, gameEngineVersion, destroyAfterUse, port, cpuCores, ram, gpu, otherFolder, destinationPath);
-        var command = container.RunCommand;
-
-        // Go to AdvancedContainerCreationPage
-        Frame.Navigate(typeof(AdvancedContainerCreationPage), command);
+        
     }
 }

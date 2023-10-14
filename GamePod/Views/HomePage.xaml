@@ -41,20 +41,6 @@
                 
                 <!-- TODO: inserire un messaggio di spiegazione per la creazione del container -->
                 
-                <!-- TODO: Cose da inserire nella pagina di creazione del container -->
-                <TextBlock Text="Cose da inserire nella schermata"></TextBlock>
-                <!--<TextBlock Text="- Nome del progetto (che sarà anche il nome del container)"></TextBlock>
-                <TextBlock Text="- Cartella del progetto (che sarà inclusa nel container in modo da accedere al progetto)"></TextBlock>
-                <TextBlock Text="- Selezione del game engine"></TextBlock>
-                <TextBlock Text="- Selezione di altre cartelle da includere nel container"></TextBlock>-->
-                <TextBlock Text="- Selezione di altre librerie da includere nel container"></TextBlock>
-                <TextBlock Text="- Selezione di altri programmi da includere (verranno creati container separati)"></TextBlock>
-                <!--<TextBlock Text="- Selezione di porte da aprire nel container"></TextBlock>
-                <TextBlock Text="- Selezione di cartelle da condividere con l'host"></TextBlock>
-                <TextBlock Text="- Selezione di cartelle da condividere con altri container"></TextBlock>
-                <TextBlock Text="- Selezione di parametri per la creazione del container (rimozione dopo l'uso...)"></TextBlock>-->
-                
-
                 <!-- Information section -->
                 <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
                            Text="Project informations" />
@@ -69,6 +55,7 @@
                 
                 </controls:SettingsCard>
 
+                <!-- Project folder selection -->
                 <controls:SettingsExpander Header="Project folder"
                                            HeaderIcon="{ui:FontIcon Glyph=&#xEC25;}"
                                            Description="Set the project folder (this will be the container configuration folder)">
@@ -81,6 +68,13 @@
                             <TextBlock x:Name="PickFolderOutputTextBlock" 
                                        TextWrapping="Wrap" 
                                        Padding="20,5,0,0"/>
+                        </controls:SettingsCard>
+                        <controls:SettingsCard Header="Destination folder">
+                            <TextBox x:Name="ProjectDestinationPathTextBox"
+                                     PlaceholderText="Path"
+                                     Text=":/project"
+                                     TextWrapping="Wrap" 
+                                     Padding="20,5,0,0"/>       
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
                 </controls:SettingsExpander>
@@ -128,7 +122,6 @@
                 <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" 
                            Text="Other settings" />
                 
-                <!-- TODO: disattiva card sottostanti se il toggle è su OFF-->
                 <controls:SettingsExpander Header="Ports" 
                                            Description="Add port forwarding to the container">
                     <ToggleSwitch x:Name="AddPortToggleSwitch" Toggled="ToggleSwitch_Toggled" />
@@ -138,7 +131,7 @@
                                                Description="Set the port to be forwarded" 
                                                IsEnabled="False">
                             <TextBox x:Name="PortTextBox" 
-                                     PlaceholderText="Port" 
+                                     PlaceholderText="Port:Container Port" 
                                      Text="{x:Bind ViewModel.Port, Mode=TwoWay}"/>
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
