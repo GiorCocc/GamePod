@@ -84,6 +84,8 @@ public partial class SettingsViewModel : ObservableRecipient
 
         var output = process.StandardOutput.ReadToEnd();
 
+        output = output.Replace("\n", "");
+
         return output;
     }
 
