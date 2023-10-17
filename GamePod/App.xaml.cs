@@ -105,6 +105,8 @@ public partial class App : Application
 
         App.GetService<IAppNotificationService>().Show(string.Format("AppNotificationSamplePayload".GetLocalized(), AppContext.BaseDirectory));
 
+        DockerService dockerService = new DockerService();
+
         await App.GetService<IActivationService>().ActivateAsync(args);
     }
 }
