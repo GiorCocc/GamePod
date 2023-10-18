@@ -68,6 +68,8 @@ public partial class App : Application
             services.AddSingleton<IPageService, PageService>();
             services.AddSingleton<INavigationService, NavigationService>();
 
+            services.AddSingleton<IDockerService, DockerService>();
+
             // Core Services
             services.AddSingleton<IFileService, FileService>();
 
@@ -89,6 +91,7 @@ public partial class App : Application
         Build();
 
         App.GetService<IAppNotificationService>().Initialize();
+        App.GetService<IDockerService>().GetSystemInfo();
 
         UnhandledException += App_UnhandledException;
     }
@@ -105,7 +108,8 @@ public partial class App : Application
 
         App.GetService<IAppNotificationService>().Show(string.Format("AppNotificationSamplePayload".GetLocalized(), AppContext.BaseDirectory));
 
-        DockerService dockerService = new DockerService();
+        // TODO: Remove this once 
+        //DockerService dockerService = new DockerService();
 
         await App.GetService<IActivationService>().ActivateAsync(args);
     }
