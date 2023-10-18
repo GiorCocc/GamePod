@@ -10,7 +10,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:viewmodels="using:GamePod.ViewModels" 
+    xmlns:viewmodels="using:GamePod.ViewModels" xmlns:local1="using:ABI.Windows.ApplicationModel.Contacts"
     d:DataContext="{d:DesignInstance Type=viewmodels:HomeViewModel}"
     mc:Ignorable="d">
 
@@ -18,14 +18,6 @@
     <ScrollViewer>
         <StackPanel x:Name="ContentArea">
         
-            <!-- TODO: Cose da inserire in questa pagina -->
-            <TextBlock Text="Cose da inserire in questa pagina"></TextBlock>
-            <TextBlock Text="- Messaggio di benvenuto"></TextBlock>
-            <TextBlock Text="- Bottone per la creazione di un nuovo Pod (apre la pagina apposita)"></TextBlock>
-            <TextBlock Text="- Tabella in cui sono presenti tutti i Pod creati con il programma"></TextBlock>
-            <TextBlock Text="- Ogni riga della lista deve contenere un pulsante per l'avvio del pod, uno per lo stop, uno per la pagina di dettaglio del pod e un menu con le altre voci (tipo elimina...)"></TextBlock>
-
-
             <Grid>
                 <StackPanel Orientation="Vertical">
                     <TextBlock Text="Welcome to GamePod!" />
@@ -43,17 +35,21 @@
 
             <CommandBar >
                 <CommandBar.PrimaryCommands>
-                    <AppBarButton Icon="Play" Label="Run container"/>
+                    <AppBarButton Icon="Play" Label="Run container" ToolTipService.ToolTip="Run" Click="PlayAppBarButton_Click"/>
                     <AppBarSeparator />
-                    <AppBarButton Icon="Stop" Label="Stop container"/>
-                    <AppBarButton Icon="RepeatAll" Label="Restart container"/>
+                    <AppBarButton Icon="Stop" Label="Stop container" ToolTipService.ToolTip="Stop"/>
+                    <AppBarButton Icon="RepeatAll" Label="Restart container" ToolTipService.ToolTip="Restart"/>
                     <AppBarSeparator />
-                    <AppBarButton Icon="Delete" Label="Delete"/>
+                    <AppBarButton Icon="Delete" Label="Delete" ToolTipService.ToolTip="Delete"/>
                 </CommandBar.PrimaryCommands>
             </CommandBar>
 
             <!-- Display the list of the created container with GamePod -->
-        <!-- In each line display the name of the project, the location, start/stop/delete/menu buttons-->
+            <!-- In each line display the name of the project, the location, start/stop/delete/menu buttons-->
+
+            <ListView x:Name="ConstainerListView" ItemsSource="{x:Bind Containers}" />
+
+
 
 
 
