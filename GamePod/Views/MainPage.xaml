@@ -35,12 +35,13 @@
 
             <CommandBar >
                 <CommandBar.PrimaryCommands>
-                    <AppBarButton Icon="Play" Label="Run container" ToolTipService.ToolTip="Run" Click="PlayAppBarButton_Click"/>
+                    <AppBarButton Icon="Play" Label="Run container" ToolTipService.ToolTip="Run" Click="PlayAppBarButton_Click" />
                     <AppBarSeparator />
-                    <AppBarButton Icon="Stop" Label="Stop container" ToolTipService.ToolTip="Stop"/>
-                    <AppBarButton Icon="RepeatAll" Label="Restart container" ToolTipService.ToolTip="Restart"/>
+                    <AppBarButton Icon="Pause" Label="Pause container" ToolTipService.ToolTip="Pause" Click="PauseAppBarButton_Click"/>
+                    <AppBarButton Icon="Stop" Label="Stop container" ToolTipService.ToolTip="Stop" Click="StopAppBarButton_Click"/>
+                    <AppBarButton Icon="RepeatAll" Label="Restart container" ToolTipService.ToolTip="Restart" Click="RestartAppBarButton_Click"/>
                     <AppBarSeparator />
-                    <AppBarButton Icon="Delete" Label="Delete" ToolTipService.ToolTip="Delete"/>
+                    <AppBarButton Icon="Delete" Label="Delete" ToolTipService.ToolTip="Delete" Click="DeleteAppBarButton_Click"/>
                 </CommandBar.PrimaryCommands>
             </CommandBar>
 

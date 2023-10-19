@@ -39,20 +39,10 @@ public sealed partial class HomePage : Page
 
     private async void PlayAppBarButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        // TODO: get the selected item from the ListView
         var selectedContainer = ConstainerListView.SelectedItem;
         Debug.WriteLine("Selected container: " + selectedContainer);
         
-
-        var dialog = new ContentDialog
-        {
-            XamlRoot = this.XamlRoot,
-            Title = "Run " + selectedContainer,
-            Content = "Run docker container using Docker API service",
-            CloseButtonText = "Ok"
-        };
-
-        await dialog.ShowAsync();
+        ViewModel.StartContainer(selectedContainer);
 
     }
 
@@ -66,7 +56,7 @@ public sealed partial class HomePage : Page
 
         //Debug.WriteLine("Docker service is: " + App.GetService<IDockerService>().GetVersion());
         var service = App.GetService<IDockerService>();
-        Debug.WriteLine("Docker service is: " + service);
+        //Debug.WriteLine("Docker service is: " + service);
 
         // wait for the service to complete the container list
         var containers = await service.ListContainers();
@@ -77,25 +67,38 @@ public sealed partial class HomePage : Page
             Containers.Add(container.Names[0]);
         }
 
-
-        // get the list of all the containers created using the Docker API service
-        //DockerService service = (DockerService)App.GetService<IDockerService>();
-
-        //// quando il servizio è creato, ottieni la lista di tutti i container creati
-        //if (service != null)
-        //{
-        //       var containers = service.ListContainers().Result;
-        //    foreach (var container in containers)
-        //    {
-
-        //        Containers.Add(container.Names[0]);
-        //               }
-        //} else
-        //{
         
-        //           Debug.WriteLine("Docker service is null");
-        //       }
+    }
 
-        
+    private void StopAppBarButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        var selectedContainer = ConstainerListView.SelectedItem;
+        Debug.WriteLine("Selected container: " + selectedContainer);
+        ViewModel.StopContainer(selectedContainer);
+
+    }
+
+    private void RestartAppBarButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        var selectedContainer = ConstainerListView.SelectedItem;
+        Debug.WriteLine("Selected container: " + selectedContainer);
+        ViewModel.RestartContainer(selectedContainer);
+
+    }
+
+    private void DeleteAppBarButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        var selectedContainer = ConstainerListView.SelectedItem;
+        Debug.WriteLine("Selected container: " + selectedContainer);
+        ViewModel.DeleteContainer(selectedContainer);
+
+    }
+
+    private void PauseAppBarButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        var selectedContainer = ConstainerListView.SelectedItem;
+        Debug.WriteLine("Selected container: " + selectedContainer);
+        ViewModel.PauseContainer(selectedContainer);
+
     }
 }
