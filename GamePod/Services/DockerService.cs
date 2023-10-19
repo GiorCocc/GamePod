@@ -103,6 +103,98 @@ public class DockerService : IDockerService
         return systemInfo;
     }
 
-    // This method will start a contaiiner with the given name
+    // This method will start a container with the given name
+    public async Task StartContainer(string containerName)
+    {
+
+        if (client == null)
+        {
+
+            CreateClient();
+        }
+
+        var containerStatus = await client.Containers.InspectContainerAsync(containerName);
+        if (containerStatus.State.Running && !containerStatus.State.Paused)
+        {
+
+            Debug.WriteLine("Container " + containerName + " is already running");
+            return;
+        }
+        else if (containerStatus.State.Paused)
+        {
+
+            Debug.WriteLine("Container " + containerName + " is paused. Try to unpause it");
+            await client.Containers.UnpauseContainerAsync(containerName);
+            return;
+        }
+        else
+        {
+            await client.Containers.StartContainerAsync(containerName, new ContainerStartParameters());
+            Debug.WriteLine("Container " + containerName + " started");
+        }
+
+        
+
+        
+    }
+
+    // This method will stop a container with the given name
+    public async Task StopContainer(string containerName)
+    {
+
+
+        if (client == null)
+        {
+
+
+            CreateClient();
+        }
+
+        await client.Containers.StopContainerAsync(containerName, new ContainerStopParameters());
+
+        Debug.WriteLine("Container " + containerName + " stopped");
+    }
+
+    // This method will restart a container with the given name
+    public async Task RestartContainer(string containerName)
+    {
+        if (client == null)
+        {
+            CreateClient();
+        }
+
+        await client.Containers.RestartContainerAsync(containerName, new ContainerRestartParameters());
+        Debug.WriteLine("Container " + containerName + " restarted");
+    }
+
+    // This method will delete a container with the given name
+    public async Task DeleteContainer(string containerName)
+    {
+
+        if (client == null)
+        {
+
+            CreateClient();
+        }
+
+        await client.Containers.RemoveContainerAsync(containerName, new ContainerRemoveParameters());
+        Debug.WriteLine("Container " + containerName + " deleted");
+    }
+
+    // This method will pause a container with the given name
+    public async Task PauseContainer(string containerName)
+    {
+
+
+        if (client == null)
+        {
+
+
+            CreateClient();
+        }
+
+        await client.Containers.PauseContainerAsync(containerName);
+        Debug.WriteLine("Container " + containerName + " paused");
+    }
 }
 
