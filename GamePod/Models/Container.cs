@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using Docker.DotNet.Models;
 using Windows.Services.Maps;
 
 namespace GamePod.Models;
@@ -42,18 +43,20 @@ internal class Container
     public string RunCommand { get; private set; } = string.Empty;
     public DirectoryInfo ContainerFolderPath { get; private set; }
 
+    public CreateContainerParameters ContainerParameters { get; private set; }
+
     // create a list of string filled with the -v options
     public List<string> VolumeOptions
     {
         get
         {
             List<string> volumeOptions = new List<string>();
-            volumeOptions.Add("--volume /run/desktop/mnt/host/wslg/.X11-unix:/tmp/.X11-unix ");
-            volumeOptions.Add("--volume /run/desktop/mnt/host/wslg:/mnt/wslg ");
-            volumeOptions.Add("--volume " + ProjectPath + ":/project ");
+            volumeOptions.Add("/run/desktop/mnt/host/wslg/.X11-unix:/tmp/.X11-unix");
+            volumeOptions.Add("/run/desktop/mnt/host/wslg:/mnt/wslg");
+            volumeOptions.Add(ProjectPath + ":/project");
             if (OtherFolderPath != "" && DestinationPath != "")
             {
-                volumeOptions.Add("--volume " + OtherFolderPath + ":" + DestinationPath + " ");
+                volumeOptions.Add(OtherFolderPath + ":" + DestinationPath);
             }
             
             return volumeOptions;
@@ -65,11 +68,29 @@ internal class Container
         get
         {
             List<string> environmentOptions = new List<string>();
-            environmentOptions.Add("--environment DISPLAY=:0 ");
-            environmentOptions.Add("--environment WAYLAND_DISPLAY=wayland-0 ");
-            environmentOptions.Add("--environment XDG_RUNTIME_DIR=/mnt/wslg/runtime-dir ");
-            environmentOptions.Add("--environment PULSE_SERVER=/mnt/wslg/PulseServer ");
+            environmentOptions.Add("DISPLAY=:0 ");
+            environmentOptions.Add("WAYLAND_DISPLAY=wayland-0 ");
+            environmentOptions.Add("XDG_RUNTIME_DIR=/mnt/wslg/runtime-dir ");
+            environmentOptions.Add("PULSE_SERVER=/mnt/wslg/PulseServer ");
             return environmentOptions;
+        }
+    }
+
+    public Dictionary<string, IList<PortBinding>> PortBinding {
+        get
+        {
+            if (Port != "")
+            {
+                var hostPort = Port.Split(":")[0];
+                var portNumber = Port.Split(":")[1];
+                Dictionary<string, IList<PortBinding>> portBindings = new Dictionary<string, IList<PortBinding>>();
+                portBindings.Add(portNumber + "/tcp", new List<PortBinding> { new PortBinding { HostPort = hostPort } });
+                return portBindings;
+            } else
+            {
+                Dictionary<string , IList<PortBinding>> portBindings = new Dictionary<string, IList<PortBinding>>();
+                return portBindings;
+            }
         }
     }
 
@@ -107,14 +128,39 @@ internal class Container
         DestinationPath = destinationPath;
 
 
-        RunCommand = CreateCommand();
+        //RunCommand = CreateCommand();
+
+        CreateContainerParametersObject();
 
         // crea una cartella .docker nella cartella del progetto
-        ContainerFolderPath = System.IO.Directory.CreateDirectory(ProjectPath + "\\docker");
-        Debug.WriteLine("ContainerFolderPath: " + ContainerFolderPath);
+        //ContainerFolderPath = System.IO.Directory.CreateDirectory(ProjectPath + "\\docker");
+        //Debug.WriteLine("ContainerFolderPath: " + ContainerFolderPath);
     }
 
-    private string CreateCommand()
+    // TODO: creare tutti i parametri del container per la sua creazione
+    private void CreateContainerParametersObject()
+    {
+        ContainerParameters = new CreateContainerParameters
+        {
+            Name = ProjectName,                                            
+            Image = ProjectGameEngine.DockerImage,                           
+            Tty = true,
+            OpenStdin = true,
+            StdinOnce = true,
+            HostConfig = new HostConfig
+            {
+                Privileged = true,
+                AutoRemove = DestroyAfterUse,
+                PortBindings = PortBinding,
+                Binds = VolumeOptions,
+            },
+            Env = EnvironmentOptions,
+            Cmd = new List<string> { "bash" },
+            
+        };
+    }
+
+    /*private string CreateCommand()
     {
         // create the command to create the container
         // docker run --privileged
@@ -131,12 +177,12 @@ internal class Container
 
         foreach (var volumeOption in VolumeOptions)
         {
-            runCommand += volumeOption;
+            runCommand += "--volume " + volumeOption + " ";
         }
 
         foreach (var environmentOption in EnvironmentOptions)
         {
-            runCommand += environmentOption;
+            runCommand += "--environment " + environmentOption + " ";
         }
 
         if (Port != "") { runCommand += "--ports " + Port + " "; }
@@ -152,6 +198,6 @@ internal class Container
         runCommand += ProjectGameEngine.DockerImage + " bash";
 
         return runCommand;
-    }
+    }*/
 
 }

@@ -44,6 +44,8 @@
 
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Docker.DotNet.Models;
+using GamePod.Contracts.Services;
 using GamePod.Services;
 using Microsoft.UI.Xaml.Controls;
 
@@ -58,10 +60,12 @@ public partial class HomeViewModel : ObservableRecipient
     [ObservableProperty]
     private string _Port;
 
+    private IDockerService dockerService;
+
     public HomeViewModel()
     {
         // TODO: Add your initialization logic here
-
+        dockerService = App.GetService<IDockerService>();
     }
 
     /*
@@ -76,6 +80,12 @@ public partial class HomeViewModel : ObservableRecipient
         ContainerService containerService = new ContainerService(command);
         Debug.WriteLine("Command: " + command);
         containerService.RunCommand();
+    }
+
+    public void CreateContainer(CreateContainerParameters containerParameters)
+    {
+        dockerService.CreateContainer(containerParameters);
+
     }
 
 

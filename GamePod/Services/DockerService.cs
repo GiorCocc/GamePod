@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Docker.DotNet;
 using Docker.DotNet.Models;
 using GamePod.Contracts.Services;
+using GamePod.Models;
 
 /*
  *  DockerService.cs
@@ -195,6 +196,15 @@ public class DockerService : IDockerService
 
         await client.Containers.PauseContainerAsync(containerName);
         Debug.WriteLine("Container " + containerName + " paused");
+    }
+
+    // This method will create a container with the given container object 
+    public async Task CreateContainer(CreateContainerParameters parameters)
+    {
+        if (client == null) CreateClient();
+
+        await client.Containers.CreateContainerAsync(parameters);
+        Debug.WriteLine("Container created");
     }
 }
 

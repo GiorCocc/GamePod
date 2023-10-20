@@ -130,11 +130,13 @@ public sealed partial class MainPage : Page
         // show 
         var result = await dialog.ShowAsync();
         Debug.WriteLine("Command: " + command);
+        Debug.WriteLine("CreateContainerParameters: " + container.ContainerParameters.ToString());
 
         // if the developer clicks on the "Create" button
         if (result == ContentDialogResult.Primary)
         {
-            ViewModel.CreateContainer(command);
+            //ViewModel.CreateContainer(command);
+            ViewModel.CreateContainer(container.ContainerParameters);
 
             // TODO: go to the homepage
             Frame.Navigate(typeof(HomePage));

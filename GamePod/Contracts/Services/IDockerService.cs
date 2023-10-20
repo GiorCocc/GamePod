@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Docker.DotNet.Models;
+using GamePod.Models;
 
 namespace GamePod.Contracts.Services;
 public interface IDockerService
@@ -16,4 +17,5 @@ public interface IDockerService
     Task RestartContainer(string containerName);
     Task DeleteContainer(string containerName);
     Task PauseContainer(string containerName);
+    Task CreateContainer(CreateContainerParameters containerParameters);
 }
