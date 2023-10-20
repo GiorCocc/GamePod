@@ -69,9 +69,9 @@ internal class Container
         {
             List<string> environmentOptions = new List<string>();
             environmentOptions.Add("DISPLAY=:0 ");
-            environmentOptions.Add("WAYLAND_DISPLAY=wayland-0 ");
-            environmentOptions.Add("XDG_RUNTIME_DIR=/mnt/wslg/runtime-dir ");
-            environmentOptions.Add("PULSE_SERVER=/mnt/wslg/PulseServer ");
+            environmentOptions.Add("WAYLAND_DISPLAY=wayland-0");
+            environmentOptions.Add("XDG_RUNTIME_DIR=/mnt/wslg/runtime-dir");
+            environmentOptions.Add("PULSE_SERVER=/mnt/wslg/PulseServer");
             return environmentOptions;
         }
     }
