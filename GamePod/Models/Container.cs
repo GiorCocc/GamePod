@@ -56,7 +56,7 @@ internal class Container
             volumeOptions.Add(ProjectPath + ":/project");
             if (OtherFolderPath != "" && DestinationPath != "")
             {
-                volumeOptions.Add(OtherFolderPath + ":" + DestinationPath);
+                volumeOptions.Add(OtherFolderPath + ":/" + DestinationPath);
             }
             
             return volumeOptions;
