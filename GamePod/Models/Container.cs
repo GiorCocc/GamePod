@@ -33,8 +33,8 @@ internal class Container
     public GameEngine ProjectGameEngine { get; private set; }
     public bool DestroyAfterUse { get; private set; } = false;
     public string Port { get; private set; } = string.Empty;
-    public string CPUCores { get; private set; } = string.Empty;
-    public string RAM { get; private set; } = string.Empty;
+    public long CPUCores { get; private set; } = 0;
+    public long RAM { get; private set; } = 0;
     public string GPU { get; private set; } = string.Empty;
     public string OtherFolderPath { get; private set; } = string.Empty;
     public string DestinationPath { get; private set; } = string.Empty;
@@ -133,7 +133,7 @@ internal class Container
     }
 
     // Constructor
-    public Container(string projectName, string projectPath, string gameEngineName, string gameEngineVersion, bool destroyAfetrUse, string ports, string cpuCores, string ram, string gpu, string otherFolder, string destinationPath)
+    public Container(string projectName, string projectPath, string gameEngineName, string gameEngineVersion, bool destroyAfetrUse, string ports, long cpuCores, string ram, string gpu, string otherFolder, string destinationPath)
     {
         ProjectName = projectName;
         ProjectPath = projectPath;
@@ -141,9 +141,9 @@ internal class Container
         ProjectGameEngine.Version = gameEngineVersion;
         DestroyAfterUse = destroyAfetrUse;
         Port = ports;
-        // convert the cpu cores from string to int and then to nanoCPUs
         CPUCores = cpuCores;
-        RAM = ram;
+        // the ram must be in the format <number>g (eg. 2g) and it will be converted to bytes (eg. 2g -> 2147483648)
+        RAM = Convert.ToInt64(ram.Substring(0, ram.Length - 1)) * 1073741824;
         GPU = gpu;
         OtherFolderPath = otherFolder;
         DestinationPath = destinationPath;
@@ -176,8 +176,9 @@ internal class Container
                 PortBindings = PortBindingConfig,
                 // TODO:
                 // CpuQuota = CPU passata in fase di creazione
-                NanoCPUs = long.Parse(CPUCores),
+                NanoCPUs = CPUCores,
                 // Memory = RAM passata in fase di creazione
+                Memory = RAM,
                 // Gpu = GPU passata in fase di creazione
 
             },
