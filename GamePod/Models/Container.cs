@@ -132,6 +132,21 @@ internal class Container
         }
     }
 
+    public IList<DeviceRequest> DeviceRequestConfig
+    {
+        get
+        {
+            IList<DeviceRequest> deviceRequestConfig = new List<DeviceRequest>();
+
+            if (GPU != "")
+            {
+                deviceRequestConfig.Add(new DeviceRequest { Driver = "nvidia", Count = 1, DeviceIDs = null, Capabilities = new List<IList<string>> { new List<string> { "gpu" } } });
+            }
+
+            return deviceRequestConfig;
+        }
+    }
+
     // Constructor
     public Container(string projectName, string projectPath, string gameEngineName, string gameEngineVersion, bool destroyAfetrUse, string ports, long cpuCores, string ram, string gpu, string otherFolder, string destinationPath)
     {
@@ -143,7 +158,7 @@ internal class Container
         Port = ports;
         CPUCores = cpuCores;
         // the ram must be in the format <number>g (eg. 2g) and it will be converted to bytes (eg. 2g -> 2147483648)
-        RAM = Convert.ToInt64(ram.Substring(0, ram.Length - 1)) * 1073741824;
+        RAM = ram == "" ? 0 : Convert.ToInt64(ram.Substring(0, ram.Length - 1)) * 1073741824;
         GPU = gpu;
         OtherFolderPath = otherFolder;
         DestinationPath = destinationPath;
@@ -180,6 +195,7 @@ internal class Container
                 // Memory = RAM passata in fase di creazione
                 Memory = RAM,
                 // Gpu = GPU passata in fase di creazione
+                DeviceRequests = DeviceRequestConfig,
 
             },
             Env = EnvironmentOptions,
