@@ -1,28 +1,37 @@
-﻿using GamePod.ViewModels;
+﻿using System.Diagnostics;
+using AppUIBasics.Helper;
+using GamePod.Models;
+using GamePod.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Windows.Storage;
 using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
-using Windows.Storage;
-using AppUIBasics.Helper;
-using System.Diagnostics;
-using GamePod.Models;
 
 namespace GamePod.Views;
 
 public sealed partial class MainPage : Page
 {
     // linux distributions for the ComboBox
-    public List<string> LinuxDistros { get; }
-    public List<string> GameEngines { get; }
-    public HomeViewModel ViewModel { get; }
+    public List<string> LinuxDistros
+    {
+        get;
+    }
+    public List<string> GameEngines
+    {
+        get;
+    }
+    public HomeViewModel ViewModel
+    {
+        get;
+    }
 
     public MainPage()
     {
         ViewModel = App.GetService<HomeViewModel>();
         LinuxDistros = LinuxDistribution.GetLinuxDistroNamesList();
         GameEngines = GameEngine.GetGameEngineNamesList();
-        
+
         InitializeComponent();
     }
 
@@ -93,22 +102,24 @@ public sealed partial class MainPage : Page
         var gameEngineVersion = GameEngineVersionTextBox.Text;
         var destroyAfterUse = Convert.ToBoolean(DestroyAfterUseToggleSwitch.GetValue(ToggleSwitch.IsOnProperty));
         var port = "";
-        var cpuCores = "";
+        var cpuCores = 0;
         var ram = "";
         var gpu = "";
         var otherFolder = PickFolderOutputTextBlock2.Text;
         var destinationPath = DestinationPathTextBox.Text;
 
-        if (Convert.ToBoolean(PerformanceToggleSwitch.GetValue(ToggleSwitch.IsOnProperty)))
+        // get the value inside the textbox only if the toggle switch is on
+        if (Convert.ToBoolean(AddPortToggleSwitch.GetValue(ToggleSwitch.IsOnProperty)))
         {
+            Debug.WriteLine("PortToggleSwitch is on");
             port = PortTextBox.Text;
         }
 
         if (Convert.ToBoolean(PerformanceToggleSwitch.GetValue(ToggleSwitch.IsOnProperty)))
         {
-            cpuCores = CPUComboBox.SelectionBoxItem.ToString();
-            ram = RAMComboBox.SelectionBoxItem.ToString().Substring(0, RAMComboBox.SelectionBoxItem.ToString().Length - 3);
-            gpu = GPUTextBox.Text;
+            cpuCores = CPUComboBox.SelectionBoxItem == null ? 0 : (Convert.ToInt32(CPUComboBox.SelectionBoxItem.ToString()) * 1000000000);
+            ram = RAMComboBox.SelectionBoxItem == null ? "" : RAMComboBox.SelectionBoxItem.ToString().Substring(0, RAMComboBox.SelectionBoxItem.ToString().Length - 3) + "g";
+            gpu = GPUToggleSwitch.IsOn ? "all" : "";
         }
 
 
@@ -182,6 +193,7 @@ public sealed partial class MainPage : Page
         }
     }
 
+    // FIXME
     private async void AdvancedContainerSettingsButton_Click(object sender, RoutedEventArgs e)
     {
         // get the properties of the project
@@ -201,7 +213,7 @@ public sealed partial class MainPage : Page
             var gameEngineVersion = GameEngineVersionTextBox.Text;
             var destroyAfterUse = Convert.ToBoolean(DestroyAfterUseToggleSwitch.GetValue(ToggleSwitch.IsOnProperty));
             var port = "";
-            var cpuCores = "";
+            var cpuCores = 0;
             var ram = "";
             var gpu = "";
             var otherFolder = PickFolderOutputTextBlock2.Text;
@@ -214,9 +226,9 @@ public sealed partial class MainPage : Page
 
             if (Convert.ToBoolean(PerformanceToggleSwitch.GetValue(ToggleSwitch.IsOnProperty)))
             {
-                cpuCores = CPUComboBox.SelectionBoxItem.ToString();
+                cpuCores = 0;
                 ram = RAMComboBox.SelectionBoxItem.ToString().Substring(0, RAMComboBox.SelectionBoxItem.ToString().Length - 3);
-                gpu = GPUTextBox.Text;
+                gpu = GPUToggleSwitch.IsOn ? "all" : "";
             }
 
 
@@ -228,6 +240,6 @@ public sealed partial class MainPage : Page
             Frame.Navigate(typeof(AdvancedContainerCreationPage), command);
         }
 
-        
+
     }
 }
