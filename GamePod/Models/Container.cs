@@ -76,24 +76,6 @@ internal class Container
         }
     }
 
-    public Dictionary<string, IList<PortBinding>> PortBinding {
-        get
-        {
-            if (Port != "")
-            {
-                var hostPort = Port.Split(":")[0];
-                var portNumber = Port.Split(":")[1];
-                Dictionary<string, IList<PortBinding>> portBindings = new Dictionary<string, IList<PortBinding>>();
-                portBindings.Add(portNumber + "/tcp", new List<PortBinding> { new PortBinding { HostPort = hostPort } });
-                return portBindings;
-            } else
-            {
-                Dictionary<string , IList<PortBinding>> portBindings = new Dictionary<string, IList<PortBinding>>();
-                return portBindings;
-            }
-        }
-    }
-
     // List of all docker run parameters with theri name and the command to use them (eg. "Delete the container after use" and "--rm")
     public List<(string, string)> DockerRunParameters
     {
@@ -109,6 +91,44 @@ internal class Container
             dockerRunParameters.Add(("Destroy after use", "--rm"));
 
             return dockerRunParameters;
+        }
+    }
+
+    public IDictionary<string, EmptyStruct> PortExposeConfig
+    {
+        get
+        {
+            IDictionary<string, EmptyStruct> portExposeConfig = new Dictionary<string, EmptyStruct>();
+
+            if (Port != "")
+            {
+                var port = Port.Split(':')[1];
+
+                portExposeConfig.Add(port + "/tcp", new EmptyStruct());
+
+                Debug.WriteLine("PortExposeConfig: " + portExposeConfig);
+            }
+
+            return portExposeConfig;
+        }
+    }
+
+    public IDictionary<string, IList<PortBinding>> PortBindingConfig
+    {
+        get
+        {
+            IDictionary<string, IList<PortBinding>> portBindingConfig = new Dictionary<string, IList<PortBinding>>();
+
+            if (Port != "")
+            {
+                var hostPort = Port.Split(':')[0];
+                var containerPort = Port.Split(':')[1];
+
+                portBindingConfig.Add(containerPort + "/tcp", new List<PortBinding> { new PortBinding { HostPort = hostPort, HostIP = "0.0.0.0" } });
+
+            }
+
+            return portBindingConfig;
         }
     }
 
@@ -142,8 +162,8 @@ internal class Container
     {
         ContainerParameters = new CreateContainerParameters
         {
-            Name = ProjectName,                                            
-            Image = ProjectGameEngine.DockerImage,                           
+            Name = ProjectName,
+            Image = ProjectGameEngine.DockerImage,
             Tty = true,
             OpenStdin = true,
             StdinOnce = true,
@@ -151,14 +171,23 @@ internal class Container
             {
                 Privileged = true,
                 AutoRemove = DestroyAfterUse,
-                PortBindings = PortBinding,
                 Binds = VolumeOptions,
+                PortBindings = PortBindingConfig,
+                // TODO:
+                // CpuQuota = CPU passata in fase di creazione
+                // Memory = RAM passata in fase di creazione
+                // Gpu = GPU passata in fase di creazione
+
             },
             Env = EnvironmentOptions,
             Cmd = new List<string> { "bash" },
+
+            // network: imposta le porte da aprire per il container (come nel comando docker run --port 8080:80)
+            ExposedPorts = PortExposeConfig,
+            
             
         };
-    }
+}
 
     /*private string CreateCommand()
     {
