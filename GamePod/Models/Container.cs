@@ -141,6 +141,7 @@ internal class Container
         ProjectGameEngine.Version = gameEngineVersion;
         DestroyAfterUse = destroyAfetrUse;
         Port = ports;
+        // convert the cpu cores from string to int and then to nanoCPUs
         CPUCores = cpuCores;
         RAM = ram;
         GPU = gpu;
@@ -175,6 +176,7 @@ internal class Container
                 PortBindings = PortBindingConfig,
                 // TODO:
                 // CpuQuota = CPU passata in fase di creazione
+                NanoCPUs = long.Parse(CPUCores),
                 // Memory = RAM passata in fase di creazione
                 // Gpu = GPU passata in fase di creazione
 
