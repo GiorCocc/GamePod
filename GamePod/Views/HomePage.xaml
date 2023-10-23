@@ -194,7 +194,7 @@
                                                Header="GPU"
                                                Description="Set the GPU to be used"
                                                IsEnabled="False">
-                            <TextBox x:Name="GPUTextBox" PlaceholderText="GPU" />
+                            <ToggleSwitch x:Name="GPUToggleSwitch" />
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
                 </controls:SettingsExpander>
