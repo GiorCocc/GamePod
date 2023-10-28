@@ -144,15 +144,37 @@ public sealed partial class MainPage : Page
         Debug.WriteLine("CreateContainerParameters: " + container.ContainerParameters.ToString());
 
         // if the developer clicks on the "Create" button
-        if (result == ContentDialogResult.Primary)
+        if (result != ContentDialogResult.Primary)
         {
-            //ViewModel.CreateContainer(command);
-            ViewModel.CreateContainer(container.ContainerParameters);
-
-            // TODO: go to the homepage
-            Frame.Navigate(typeof(HomePage));
+            return;
         }
 
+        ProgressDialog progressDialog = new ProgressDialog();
+        progressDialog.XamlRoot = this.Content.XamlRoot;
+        var progress = progressDialog.ShowAsync();
+
+        try
+        {
+            await ViewModel.CreateContainer(container.ContainerParameters);
+            progressDialog.Hide();
+            Frame.Navigate(typeof(HomePage));
+        }
+        catch (Exception ex)
+        {
+
+            Debug.WriteLine(ex.Message);
+            progressDialog.Hide();
+            var errorDialog = new ContentDialog
+            {
+                XamlRoot = XamlRoot,
+                Title = "Error",
+                Content = ex.Message,
+                CloseButtonText = "Ok",
+                DefaultButton = ContentDialogButton.Close,
+            };
+
+            await errorDialog.ShowAsync();
+        }
     }
 
     private void DiscardButton_Click(object sender, RoutedEventArgs e)

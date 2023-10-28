@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Docker.DotNet;
 using Docker.DotNet.Models;
 using GamePod.Contracts.Services;
-using GamePod.Models;
 
 /*
  *  DockerService.cs
@@ -62,7 +56,8 @@ public class DockerService : IDockerService
         IList<ContainerListResponse> containers = await client.Containers.ListContainersAsync(
                        new ContainersListParameters()
                        {
-                           Limit = 10, All = true 
+                           Limit = 10,
+                           All = true
                        });
 
         Debug.WriteLine("Container list: " + containers);
@@ -135,9 +130,9 @@ public class DockerService : IDockerService
             return;
         }
 
-        
 
-        
+
+
     }
 
     // This method will stop a container with the given name

@@ -82,9 +82,9 @@ public partial class HomeViewModel : ObservableRecipient
         containerService.RunCommand();
     }
 
-    public void CreateContainer(CreateContainerParameters containerParameters)
+    public async Task CreateContainer(CreateContainerParameters containerParameters)
     {
-        dockerService.CreateContainer(containerParameters);
+        await dockerService.CreateContainer(containerParameters);
 
     }
 
