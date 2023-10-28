@@ -350,6 +350,8 @@ public sealed partial class HomePage : Page
     private void AddInfoBarItem(string message, InfoBarSeverity severity)
     {
 
+        InfoBarContainer.Children.Clear();
+
         InfoBar infoBar = new InfoBar
         {
 

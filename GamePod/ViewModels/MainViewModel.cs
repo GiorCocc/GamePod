@@ -107,10 +107,10 @@ public partial class MainViewModel : ObservableRecipient
         }
 
         // open a terminal to the container
-        //Process process = new Process();
-        //process.StartInfo.FileName = "wt.exe";
-        //process.StartInfo.Arguments = "docker exec -it " + selectedContainer + " bash";
-        //process.Start();
+        Process process = new Process();
+        process.StartInfo.FileName = "wt.exe";
+        process.StartInfo.Arguments = "docker exec -it " + selectedContainer + " bash";
+        process.Start();
 
     }
 
