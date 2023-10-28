@@ -11,6 +11,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:viewmodels="using:GamePod.ViewModels" xmlns:local1="using:ABI.Windows.ApplicationModel.Contacts"
+    xmlns:local="using:GamePod.Models"
     d:DataContext="{d:DesignInstance Type=viewmodels:HomeViewModel}"
     mc:Ignorable="d">
 
@@ -23,32 +24,97 @@
                     <TextBlock Text="Welcome to GamePod!" />
                     <TextBlock Text="This app will help you to create a container for your game, so you can build it and run it on any platform you want. " />
                     <TextBlock Text="To start, click on the CREATE button on the left." />
+                    <HyperlinkButton Content="Docker Desktop" Click="DockerDesktopButton_Click"></HyperlinkButton>
                 </StackPanel>
                 <!--Place the create button at the margin right of the screen-->
-                <Button  Click="CreateButton_Click" HorizontalAlignment="Right" Style="{StaticResource AccentButtonStyle}" >
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <SymbolIcon Symbol="Add" />
-                        <TextBlock Text="Create" Margin="5,0,0,0" />
-                    </StackPanel>
-                </Button>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="5">
+                    <Button Click="TerminalButton_Click" HorizontalAlignment="Right" >
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <FontIcon Glyph="&#xE756;"></FontIcon>
+                            <TextBlock Text="Terminal" Margin="5,0,0,0" />
+                        </StackPanel>
+                    </Button>
+                    <Button Click="CreateButton_Click" HorizontalAlignment="Right" Style="{StaticResource AccentButtonStyle}" >
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <SymbolIcon Symbol="Add" />
+                            <TextBlock Text="Create" Margin="5,0,0,0" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                
+                
             </Grid>
 
             <CommandBar >
                 <CommandBar.PrimaryCommands>
-                    <AppBarButton Icon="Play" Label="Run container" ToolTipService.ToolTip="Run" Click="PlayAppBarButton_Click" />
+                    <AppBarButton Icon="Play" Label="Run container" ToolTipService.ToolTip="Run" Click="PlayButton_Click" />
                     <AppBarSeparator />
-                    <AppBarButton Icon="Pause" Label="Pause container" ToolTipService.ToolTip="Pause" Click="PauseAppBarButton_Click"/>
-                    <AppBarButton Icon="Stop" Label="Stop container" ToolTipService.ToolTip="Stop" Click="StopAppBarButton_Click"/>
-                    <AppBarButton Icon="RepeatAll" Label="Restart container" ToolTipService.ToolTip="Restart" Click="RestartAppBarButton_Click"/>
+                    <AppBarButton Icon="Pause" Label="Pause container" ToolTipService.ToolTip="Pause" Click="PauseButton_Click"/>
+                    <AppBarButton Icon="Stop" Label="Stop container" ToolTipService.ToolTip="Stop" Click="StopButton_Click"/>
+                    <AppBarButton Icon="RepeatAll" Label="Restart container" ToolTipService.ToolTip="Restart" Click="RestartButton_Click"/>
                     <AppBarSeparator />
-                    <AppBarButton Icon="Delete" Label="Delete" ToolTipService.ToolTip="Delete" Click="DeleteAppBarButton_Click"/>
+                    <AppBarButton Icon="Delete" Label="Delete" ToolTipService.ToolTip="Delete" Click="DeleteButton_Click"/>
                 </CommandBar.PrimaryCommands>
             </CommandBar>
 
             <!-- Display the list of the created container with GamePod -->
             <!-- In each line display the name of the project, the location, start/stop/delete/menu buttons-->
 
-            <ListView x:Name="ConstainerListView" ItemsSource="{x:Bind Containers}" />
+            <ListView x:Name="ConstainerListView" ItemsSource="{x:Bind Containers}" Margin="24" SelectionMode="Single">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="local:ContainerObject">
+
+                        <Grid>
+                            <StackPanel Orientation="Vertical" Spacing="8" Margin="5">
+                                <TextBlock x:Name="ContainerNameTextBlockListView" Text="{x:Bind Name}" FontSize="18" />
+                                <TextBlock x:Name="ContainerStatusTextBlockListView" Text="{x:Bind Status}" FontSize="12" Foreground="LightGray" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button Style="{StaticResource CommandBarFlyoutEllipsisButtonStyle}" Click="PlayButton_Click">
+                                    <SymbolIcon Symbol="Play" />
+                                </Button>
+                                <Button Style="{StaticResource CommandBarFlyoutEllipsisButtonStyle}" Click="StopButton_Click">
+                                    <SymbolIcon Symbol="Stop" />
+                                </Button>
+                                <Button Style="{StaticResource CommandBarFlyoutEllipsisButtonStyle}" >
+                                    <FontIcon Glyph="&#xE712;" />
+                                    <Button.Flyout>
+                                        <MenuFlyout>
+                                            <MenuFlyoutItem Text="Run" Click="PlayButton_Click">
+                                                <MenuFlyoutItem.Icon>
+                                                    <SymbolIcon Symbol="Play" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+                                            <MenuFlyoutItem Text="Pause">
+                                                <MenuFlyoutItem.Icon>
+                                                    <SymbolIcon Symbol="Pause" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+                                            <MenuFlyoutItem Text="Stop" Click="StopButton_Click">
+                                                <MenuFlyoutItem.Icon>
+                                                    <SymbolIcon Symbol="Stop" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+                                            <MenuFlyoutItem Text="Restart">
+                                                <MenuFlyoutItem.Icon>
+                                                    <SymbolIcon Symbol="RepeatAll" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+                                            <MenuFlyoutItem Text="Delete">
+                                                <MenuFlyoutItem.Icon>
+                                                    <SymbolIcon Symbol="Delete" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+                                        </MenuFlyout>
+                                    </Button.Flyout>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+
+
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
 
 
 

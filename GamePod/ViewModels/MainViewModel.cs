@@ -32,12 +32,10 @@ public partial class MainViewModel : ObservableRecipient
     {
         if (selectedContainer is string)
         {
-
             service.DeleteContainer(selectedContainer as string);
         }
         else
         {
-
             Debug.WriteLine("Selected container is not a string: " + selectedContainer);
         }
     }
@@ -46,12 +44,10 @@ public partial class MainViewModel : ObservableRecipient
     {
         if (selectedContainer is string)
         {
-
             service.PauseContainer(selectedContainer as string);
         }
         else
         {
-
             Debug.WriteLine("Selected container is not a string: " + selectedContainer);
         }
     }

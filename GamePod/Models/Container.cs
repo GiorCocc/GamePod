@@ -45,6 +45,11 @@ internal class Container
 
     public CreateContainerParameters ContainerParameters { get; private set; }
 
+    public string Name
+    {
+        get; set;
+    }
+
     // create a list of string filled with the -v options
     public List<string> VolumeOptions
     {
