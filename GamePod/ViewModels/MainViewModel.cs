@@ -14,7 +14,6 @@
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using GamePod.Contracts.Services;
-using GamePod.Services;
 
 namespace GamePod.ViewModels;
 
@@ -23,74 +22,114 @@ public partial class MainViewModel : ObservableRecipient
 
     private IDockerService service;
 
+
+
     public MainViewModel()
     {
         service = App.GetService<IDockerService>();
     }
 
-    internal void DeleteContainer(object selectedContainer)
+    internal async Task DeleteContainer(object selectedContainer)
     {
-        if (selectedContainer is string)
-        {
-            service.DeleteContainer(selectedContainer as string);
-        }
-        else
+        if (selectedContainer is not string)
         {
             Debug.WriteLine("Selected container is not a string: " + selectedContainer);
+            return;
+        }
+
+
+        try
+        {
+            await service.DeleteContainer(selectedContainer as string);
+        }
+        catch (Exception e)
+        {
+
+            Debug.WriteLine("Exception: " + e.Message);
         }
     }
 
-    internal void PauseContainer(object selectedContainer)
+    internal async Task PauseContainer(object selectedContainer)
     {
-        if (selectedContainer is string)
-        {
-            service.PauseContainer(selectedContainer as string);
-        }
-        else
+        if (selectedContainer is not string)
         {
             Debug.WriteLine("Selected container is not a string: " + selectedContainer);
+            return;
+        }
+
+        try
+        {
+
+            await service.PauseContainer(selectedContainer as string);
+        }
+        catch (Exception e)
+        {
+
+
+            Debug.WriteLine("Exception: " + e.Message);
         }
     }
 
-    internal void RestartContainer(object selectedContainer)
+    internal async Task RestartContainer(object selectedContainer)
     {
-        if (selectedContainer is string)
-        {
-            service.RestartContainer(selectedContainer as string);
-        }
-        else
+        if (selectedContainer is not string)
         {
             Debug.WriteLine("Selected container is not a string: " + selectedContainer);
+            return;
+        }
+
+        try
+        {
+
+
+            await service.RestartContainer(selectedContainer as string);
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine("Exception: " + e.Message);
         }
     }
 
-    internal async void StartContainer(object selectedContainer)
+    internal async Task StartContainer(object selectedContainer)
     {
-        if (selectedContainer is string)
+        if (selectedContainer is not string)
+        {
+            Debug.WriteLine("Selected container is not a string: " + selectedContainer);
+        }
+
+        try
         {
             await service.StartContainer(selectedContainer as string);
-            
-            // open a terminal to the container
-            Process process = new Process();
-            process.StartInfo.FileName = "wt.exe";
-            process.StartInfo.Arguments = "docker exec -it " + selectedContainer + " bash";
-            process.Start();
-            
         }
-        else
+        catch (Exception e)
         {
-            Debug.WriteLine("Selected container is not a string: " + selectedContainer);
+            Debug.WriteLine("Exception: " + e.Message);
         }
+
+        // open a terminal to the container
+        //Process process = new Process();
+        //process.StartInfo.FileName = "wt.exe";
+        //process.StartInfo.Arguments = "docker exec -it " + selectedContainer + " bash";
+        //process.Start();
+
     }
 
-    internal async void StopContainer(object selectedContainer)
+    internal async Task StopContainer(object selectedContainer)
     {
-        if (selectedContainer is string)
-        {
-            await service.StopContainer(selectedContainer as string);
-        } else
+        if (selectedContainer is not string)
         {
             Debug.WriteLine("Selected container is not a string: " + selectedContainer);
+            return;
+        }
+
+        try
+        {
+            await service.StopContainer(selectedContainer as string);
+        }
+        catch (Exception e)
+        {
+
+            Debug.WriteLine("Exception: " + e.Message);
         }
     }
 }

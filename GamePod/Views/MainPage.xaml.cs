@@ -5,7 +5,6 @@ using GamePod.Models;
 using GamePod.ViewModels;
 
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Navigation;
 
 namespace GamePod.Views;
@@ -33,29 +32,33 @@ public sealed partial class HomePage : Page
         // go to the CreatePage
         Frame.Navigate(typeof(MainPage));
     }
+
+    private void TerminalButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        Debug.WriteLine("Terminal button pressed");
+
+        Process process = new Process();
+        process.StartInfo.FileName = "wt.exe";
+
+        process.Start();
+    }
+
+    private void DockerDesktopButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        Debug.WriteLine("Docker Desktop button pressed");
+
+        Process process = new Process();
+        process.StartInfo.FileName = "C:\\Program Files\\Docker\\Docker\\Docker Desktop.exe";
+        process.Start();
+    }
+
     #endregion
 
 
-    protected async override void OnNavigatedTo(NavigationEventArgs e)
-    {
-        base.OnNavigatedTo(e);
-
-        //Debug.WriteLine("Docker service is: " + App.GetService<IDockerService>().GetVersion());
-        var service = App.GetService<IDockerService>();
-        //Debug.WriteLine("Docker service is: " + service);
-
-        // wait for the service to complete the container list
-        var containers = await service.ListContainers();
-        foreach (var container in containers)
-        {
-            Debug.WriteLine("Container: " + container.Names[0]);
-            Containers.Add(new ContainerObject(container.Names[0], container.State));
-        }
-
-    }
 
     #region Container management Buttons
-    private void PlayButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+
+    private async void PlayButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
         var selectedContainer = ConstainerListView.SelectedItem;
         Debug.WriteLine("Selected container: " + selectedContainer);
@@ -83,7 +86,24 @@ public sealed partial class HomePage : Page
         var containerName = selectedContainer.GetType().GetProperty("Name").GetValue(selectedContainer, null);
         Debug.WriteLine("Container name: " + containerName);
 
-        ViewModel.StartContainer(containerName);
+        ProgressDialog progressDialog = new ProgressDialog();
+        progressDialog.XamlRoot = this.Content.XamlRoot;
+        var progressResult = progressDialog.ShowAsync();
+
+        try
+        {
+            await ViewModel.StartContainer(containerName);
+            progressDialog.Hide();
+            var message = "Container " + containerName + " started successfully";
+            AddInfoBarItem(message, InfoBarSeverity.Success);
+            UpdateContainerList();
+        }
+        catch (Exception ex)
+        {
+
+            Debug.WriteLine("Exception: " + ex.Message);
+            AddInfoBarItem(ex.Message, InfoBarSeverity.Error);
+        }
 
     }
 
@@ -128,7 +148,23 @@ public sealed partial class HomePage : Page
             return;
         }
 
-        ViewModel.StopContainer(containerName);
+        ProgressDialog progressDialog = new ProgressDialog();
+        progressDialog.XamlRoot = this.Content.XamlRoot;
+        var progressResult = progressDialog.ShowAsync();
+
+        try
+        {
+            await ViewModel.StopContainer(containerName);
+            progressDialog.Hide();
+            var message = "Container " + containerName + " stopped successfully";
+            AddInfoBarItem(message, InfoBarSeverity.Success);
+            UpdateContainerList();
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("Exception: " + ex.Message);
+            AddInfoBarItem(ex.Message, InfoBarSeverity.Error);
+        }
 
         // TODO: implementare il metodo per aggiornare la lista dei container
     }
@@ -172,11 +208,25 @@ public sealed partial class HomePage : Page
 
         if (result != ContentDialogResult.Primary)
         {
-
             return;
         }
 
-        ViewModel.RestartContainer(containerName);
+        ProgressDialog progressDialog = new ProgressDialog();
+        progressDialog.XamlRoot = this.Content.XamlRoot;
+        var progressResult = progressDialog.ShowAsync();
+        try
+        {
+            await ViewModel.RestartContainer(containerName);
+            progressDialog.Hide();
+            var message = "Container " + containerName + " restarted successfully";
+            AddInfoBarItem(message, InfoBarSeverity.Success);
+            UpdateContainerList();
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("Exception: " + ex.Message);
+            AddInfoBarItem(ex.Message, InfoBarSeverity.Error);
+        }
     }
 
     private async void DeleteButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
@@ -220,12 +270,30 @@ public sealed partial class HomePage : Page
             return;
         }
 
-        ViewModel.DeleteContainer(containerName);
+        ProgressDialog progressDialog = new ProgressDialog();
+        progressDialog.XamlRoot = this.Content.XamlRoot;
+        var progressResult = progressDialog.ShowAsync();
+        try
+        {
+            await ViewModel.DeleteContainer(containerName);
 
-        // TODO: implementare il metodo per aggiornare la lista dei container 
+            progressDialog.Hide();
+
+            var message = "Container " + containerName + " deleted successfully";
+
+            AddInfoBarItem(message, InfoBarSeverity.Success);
+
+            UpdateContainerList();
+
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("Exception: " + ex.Message);
+            AddInfoBarItem(ex.Message, InfoBarSeverity.Error);
+        }
     }
 
-    private void PauseButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private async void PauseButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
         var selectedContainer = ConstainerListView.SelectedItem;
 
@@ -250,50 +318,68 @@ public sealed partial class HomePage : Page
 
         var containerName = selectedContainer.GetType().GetProperty("Name").GetValue(selectedContainer, null);
 
-        ViewModel.PauseContainer(containerName);
+        ProgressDialog progressDialog = new ProgressDialog();
+        progressDialog.XamlRoot = this.Content.XamlRoot;
+        var progressResult = progressDialog.ShowAsync();
+        try
+        {
+            await ViewModel.PauseContainer(containerName);
+            progressDialog.Hide();
+            var message = "Container " + containerName + " paused successfully";
+            AddInfoBarItem(message, InfoBarSeverity.Success);
+            UpdateContainerList();
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("Exception: " + ex.Message);
+            AddInfoBarItem(ex.Message, InfoBarSeverity.Error);
+        }
 
     }
 
     #endregion
 
-    private void TerminalButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    protected async override void OnNavigatedTo(NavigationEventArgs e)
     {
-        Debug.WriteLine("Terminal button pressed");
+        base.OnNavigatedTo(e);
 
-        Process process = new Process();
-        process.StartInfo.FileName = "wt.exe";
+        UpdateContainerList();
 
-        process.Start();
     }
 
-    private void DockerDesktopButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private void AddInfoBarItem(string message, InfoBarSeverity severity)
     {
-        Debug.WriteLine("Docker Desktop button pressed");
 
-        Process process = new Process();
-        process.StartInfo.FileName = "C:\\Program Files\\Docker\\Docker\\Docker Desktop.exe";
-        process.Start();
+        InfoBar infoBar = new InfoBar
+        {
+
+            XamlRoot = this.Content.XamlRoot,
+            Message = message,
+            Severity = severity,
+            IsOpen = true,
+            IsClosable = true
+        };
+
+
+        infoBar.CloseButtonClick += (sender, args) => infoBar.IsOpen = false;
+
+        InfoBarContainer.Children.Add(infoBar);
+
     }
 
-    private void ListRightTapped(object sender, Microsoft.UI.Xaml.Input.RightTappedRoutedEventArgs e)
+    private async void UpdateContainerList()
     {
-        FlyoutBase.ShowAttachedFlyout((Microsoft.UI.Xaml.FrameworkElement)sender);
+        // clear the list
+        Containers.Clear();
+
+        // update the list of containers
+        var service = App.GetService<IDockerService>();
+        var containers = await service.ListContainers();
+
+        foreach (var container in containers)
+        {
+            Debug.WriteLine("Container: " + container.Names[0]);
+            Containers.Add(new ContainerObject(container.Names[0], container.State));
+        }
     }
-
-    // TODO: implementare il metodo per aggiornare la lista dei container quando viene premuto uno qualsiasi dei bottoni (Stop, Delete)
-    //private void UpdateContainerList()
-    //{
-    //    // clear the list
-    //    Containers.Clear();
-
-    //    // update the list of containers
-    //    var service = App.GetService<IDockerService>();
-    //    var containers = service.ListContainers().Result;
-    //    foreach (var container in containers)
-    //    {
-
-    //        Debug.WriteLine("Container: " + container.Names[0]);
-    //        Containers.Add(container.Names[0]);
-    //    }
-    //}
 }

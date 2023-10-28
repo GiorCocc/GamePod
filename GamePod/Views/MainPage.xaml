@@ -18,7 +18,7 @@
 
     <ScrollViewer>
         <StackPanel x:Name="ContentArea">
-        
+            
             <Grid>
                 <StackPanel Orientation="Vertical">
                     <TextBlock Text="Welcome to GamePod!" />
@@ -41,8 +41,8 @@
                         </StackPanel>
                     </Button>
                 </StackPanel>
-                
-                
+
+
             </Grid>
 
             <CommandBar >
@@ -59,6 +59,8 @@
 
             <!-- Display the list of the created container with GamePod -->
             <!-- In each line display the name of the project, the location, start/stop/delete/menu buttons-->
+
+            <StackPanel x:Name="InfoBarContainer" Orientation="Vertical"></StackPanel>
 
             <ListView x:Name="ConstainerListView" ItemsSource="{x:Bind Containers}" Margin="24" SelectionMode="Single">
                 <ListView.ItemTemplate>
@@ -116,11 +118,12 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-
-
+            
 
 
         </StackPanel>
+
+
     </ScrollViewer>
-    
+
 </Page>
