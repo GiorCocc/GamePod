@@ -132,6 +132,7 @@ public class DockerService : IDockerService
         {
             await client.Containers.StartContainerAsync(containerName, new ContainerStartParameters());
             Debug.WriteLine("Container " + containerName + " started");
+            return;
         }
 
         
