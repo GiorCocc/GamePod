@@ -88,7 +88,6 @@ public class DockerService : IDockerService
 
         if (client == null)
         {
-
             CreateClient();
         }
 
