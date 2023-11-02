@@ -9,6 +9,15 @@ namespace GamePod.Models;
 public class ContainerObject
 {
     public string Name { get; set; }
+    public string ReadableName
+    {
+        get
+        {
+            // Togli il \prima del nome del container
+            var readableName = Name.Substring(1);
+            return readableName;
+        }
+    }
     public string Status { get;set; }
 
     public ContainerObject(string name, string status)
