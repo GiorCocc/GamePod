@@ -337,6 +337,39 @@ public sealed partial class HomePage : Page
 
     }
 
+    private void ExecButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        var selectedContainer = (sender as MenuFlyoutItem).DataContext;
+        var containerName = selectedContainer.GetType().GetProperty("Name").GetValue(selectedContainer, null);
+
+        // open the windows terminal
+        Process process = new Process();
+        process.StartInfo.FileName = "wt.exe";
+        process.StartInfo.Arguments = "docker exec -it " + containerName + " bash";
+        process.Start();
+
+    }
+
+    // TODO: creare una pagina dove mostrare i dati del container creato
+    private async void ContainerInfoButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        var selectedContainer = (sender as MenuFlyoutItem).DataContext;
+        var containerName = selectedContainer.GetType().GetProperty("Name").GetValue(selectedContainer, null);
+
+        // Go to Details page
+        Frame.Navigate(typeof(ContainerDetailsPage), containerName);
+
+        //var dialog = new ContentDialog
+        //{
+        //    XamlRoot = this.Content.XamlRoot,
+        //    Title = "Container info",
+        //    Content = "Container info for " + containerName + " to be displayed",
+        //    PrimaryButtonText = "OK",
+        //    CloseButtonText = "Cancel"
+        //};
+        //var result = await dialog.ShowAsync();
+    }
+
     #endregion
 
     protected async override void OnNavigatedTo(NavigationEventArgs e)
@@ -384,4 +417,11 @@ public sealed partial class HomePage : Page
             Containers.Add(new ContainerObject(container.Names[0], container.State));
         }
     }
+
+    private void ReloadContainerListButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        UpdateContainerList();
+    }
+
+    
 }

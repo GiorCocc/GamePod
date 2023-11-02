@@ -51,9 +51,10 @@
                     <AppBarSeparator />
                     <AppBarButton Icon="Pause" Label="Pause container" ToolTipService.ToolTip="Pause" Click="PauseButton_Click"/>
                     <AppBarButton Icon="Stop" Label="Stop container" ToolTipService.ToolTip="Stop" Click="StopButton_Click"/>
-                    <AppBarButton Icon="RepeatAll" Label="Restart container" ToolTipService.ToolTip="Restart" Click="RestartButton_Click"/>
                     <AppBarSeparator />
-                    <AppBarButton Icon="Delete" Label="Delete" ToolTipService.ToolTip="Delete" Click="DeleteButton_Click"/>
+                    <AppBarButton Icon="RepeatAll" Label="Reload container list" ToolTipService.ToolTip="Reload" Click="ReloadContainerListButton_Click"/>
+                    <!--<AppBarSeparator />
+                    <AppBarButton Icon="Delete" Label="Delete" ToolTipService.ToolTip="Delete" Click="DeleteButton_Click"/>-->
                 </CommandBar.PrimaryCommands>
             </CommandBar>
 
@@ -68,7 +69,7 @@
 
                         <Grid>
                             <StackPanel Orientation="Vertical" Spacing="8" Margin="5">
-                                <TextBlock x:Name="ContainerNameTextBlockListView" Text="{x:Bind Name}" FontSize="18" />
+                                <TextBlock x:Name="ContainerNameTextBlockListView" Text="{x:Bind ReadableName}" FontSize="18" />
                                 <TextBlock x:Name="ContainerStatusTextBlockListView" Text="{x:Bind Status}" FontSize="12" Foreground="LightGray" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
@@ -87,7 +88,7 @@
                                                     <SymbolIcon Symbol="Play" />
                                                 </MenuFlyoutItem.Icon>
                                             </MenuFlyoutItem>
-                                            <MenuFlyoutItem Text="Pause">
+                                            <MenuFlyoutItem Text="Pause" Click="PauseButton_Click">
                                                 <MenuFlyoutItem.Icon>
                                                     <SymbolIcon Symbol="Pause" />
                                                 </MenuFlyoutItem.Icon>
@@ -97,14 +98,25 @@
                                                     <SymbolIcon Symbol="Stop" />
                                                 </MenuFlyoutItem.Icon>
                                             </MenuFlyoutItem>
-                                            <MenuFlyoutItem Text="Restart">
+                                            <MenuFlyoutItem Text="Restart" Click="RestartButton_Click">
                                                 <MenuFlyoutItem.Icon>
                                                     <SymbolIcon Symbol="RepeatAll" />
                                                 </MenuFlyoutItem.Icon>
                                             </MenuFlyoutItem>
-                                            <MenuFlyoutItem Text="Delete">
+                                            <MenuFlyoutItem Text="Execute" Click="ExecButton_Click">
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xE756;" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+                                            <MenuFlyoutSeparator></MenuFlyoutSeparator>
+                                            <MenuFlyoutItem Text="Delete" Click="DeleteButton_Click">
                                                 <MenuFlyoutItem.Icon>
                                                     <SymbolIcon Symbol="Delete" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+                                            <MenuFlyoutItem Text="Info" Click="ContainerInfoButton_Click">
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xE946;" />
                                                 </MenuFlyoutItem.Icon>
                                             </MenuFlyoutItem>
                                         </MenuFlyout>
