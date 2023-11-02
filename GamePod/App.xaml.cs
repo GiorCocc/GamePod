@@ -74,6 +74,8 @@ public partial class App : Application
             services.AddSingleton<IFileService, FileService>();
 
             // Views and ViewModels
+            services.AddTransient<ContainerDetailsViewModel>();
+            services.AddTransient<ContainerDetailsPage>();
             services.AddTransient<AdvancedContainerCreationViewModel>();
             services.AddTransient<AdvancedContainerCreationPage>();
             services.AddTransient<MainViewModel>();
@@ -92,6 +94,7 @@ public partial class App : Application
 
         App.GetService<IAppNotificationService>().Initialize();
         App.GetService<IDockerService>().GetSystemInfo();
+        App.GetService<IDockerService>().GetVersion();
 
         UnhandledException += App_UnhandledException;
     }

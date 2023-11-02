@@ -173,4 +173,7 @@
   <data name="Shell_AdvancedContainerCreation.Content" xml:space="preserve">
     <value>Advanced Container Creation</value>
   </data>
+  <data name="Shell_ContainerDetails.Content" xml:space="preserve">
+    <value>ContainerDetails</value>
+  </data>
 </root>
