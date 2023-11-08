@@ -45,7 +45,7 @@
 
             </Grid>
 
-            <CommandBar >
+            <!--<CommandBar >
                 <CommandBar.PrimaryCommands>
                     <AppBarButton Icon="Play" Label="Run container" ToolTipService.ToolTip="Run" Click="PlayButton_Click" />
                     <AppBarSeparator />
@@ -53,10 +53,10 @@
                     <AppBarButton Icon="Stop" Label="Stop container" ToolTipService.ToolTip="Stop" Click="StopButton_Click"/>
                     <AppBarSeparator />
                     <AppBarButton Icon="RepeatAll" Label="Reload container list" ToolTipService.ToolTip="Reload" Click="ReloadContainerListButton_Click"/>
-                    <!--<AppBarSeparator />
-                    <AppBarButton Icon="Delete" Label="Delete" ToolTipService.ToolTip="Delete" Click="DeleteButton_Click"/>-->
+                    --><!--<AppBarSeparator />
+                    <AppBarButton Icon="Delete" Label="Delete" ToolTipService.ToolTip="Delete" Click="DeleteButton_Click"/>--><!--
                 </CommandBar.PrimaryCommands>
-            </CommandBar>
+            </CommandBar>-->
 
             <!-- Display the list of the created container with GamePod -->
             <!-- In each line display the name of the project, the location, start/stop/delete/menu buttons-->

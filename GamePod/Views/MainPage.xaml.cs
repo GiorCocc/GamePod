@@ -355,9 +355,11 @@ public sealed partial class HomePage : Page
     {
         var selectedContainer = (sender as MenuFlyoutItem).DataContext;
         var containerName = selectedContainer.GetType().GetProperty("Name").GetValue(selectedContainer, null);
+        Container container = new Container(containerName.ToString());
+        await container.GetInspectResponse(container);
 
         // Go to Details page
-        Frame.Navigate(typeof(ContainerDetailsPage), containerName);
+        Frame.Navigate(typeof(ContainerDetailsPage), container);
 
         //var dialog = new ContentDialog
         //{
