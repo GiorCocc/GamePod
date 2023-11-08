@@ -2,6 +2,7 @@
 using Docker.DotNet;
 using Docker.DotNet.Models;
 using GamePod.Contracts.Services;
+using GamePod.Models;
 
 /*
  *  DockerService.cs
@@ -201,5 +202,21 @@ public class DockerService : IDockerService
         await client.Containers.CreateContainerAsync(parameters);
         Debug.WriteLine("Container created");
     }
+
+    public async Task<ContainerInspectResponse> GetContainerInspect(string containerName)
+    {
+
+        if (client == null) CreateClient();
+
+        ContainerInspectResponse inspectResponse = await client.Containers.InspectContainerAsync(containerName);
+        Debug.WriteLine(inspectResponse.ToString());
+
+        ContainerInspectParameters containerInspectParameters = new ContainerInspectParameters();
+
+        Debug.WriteLine("-Container information: " + containerInspectParameters);
+
+        return inspectResponse;
+    }
+    
 }
 
