@@ -20,7 +20,7 @@ internal class GameEngine
     // Game engines
     public static readonly GameEngine UnityHubCLI       = new("Unity Hub (command line)", "unityci/editor:2022.3.10f1-linux-il2cpp-2.0", "0", "unity-hub");
     public static readonly GameEngine UnityEditorCLI    = new("Unity Editor (command line)", "unityci/editor:2022.3.10f1-linux-il2cpp-2.0", "0", "unity-editor");
-    public static readonly GameEngine Unity             = new("Unity GUI","", "0", "UnityHub.AppImage");
+    public static readonly GameEngine Unity             = new("Unity GUI (experimental)", "", "0", "UnityHub.AppImage");
     public static readonly GameEngine Godot             = new("Godot", "", "0", "godot");
 
     // Properties
