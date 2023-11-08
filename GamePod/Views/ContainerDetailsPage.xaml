@@ -6,8 +6,68 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid x:Name="ContentArea">
-      <TextBlock Text="Ciao" />
-        
-    </Grid>
+    <ScrollViewer  Margin="0,0,0,20">
+        <StackPanel x:Name="ContentArea">
+            <Grid Margin="0,0,0,20">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock x:Name="ContainerName" Text="{x:Bind ProjectName}" FontSize="20" />
+                    <TextBlock Text="{x:Bind ContainerImage}" FontSize="13" />
+                    <TextBlock Text="{x:Bind ContainerID}" FontSize="13" Foreground="LightGray" />
+                </StackPanel>
+                
+                <CommandBar Background="Transparent" IsOpen="False" >
+                    <CommandBar.PrimaryCommands>
+                        <AppBarButton Label="Open terminal inside container" ToolTipService.ToolTip="Execute">
+                            <FontIcon Glyph="&#xE756;" />
+                        </AppBarButton>
+                        <AppBarSeparator />
+                        <AppBarButton Icon="Stop" Label="Stop container" ToolTipService.ToolTip="Stop" />
+                        <AppBarButton Icon="Play" Label="Run container" ToolTipService.ToolTip="Run" />
+                        <AppBarButton Icon="RepeatAll" Label="Reload container" ToolTipService.ToolTip="Reload" />
+                    </CommandBar.PrimaryCommands>
+                    <CommandBar.SecondaryCommands>
+                        <AppBarButton Icon="Delete" Label="Delete" ToolTipService.ToolTip="Delete" Foreground="Red" />
+                        <AppBarButton Icon="Share" Label="Delete" ToolTipService.ToolTip="Delete" />
+                    </CommandBar.SecondaryCommands>
+                </CommandBar>
+            </Grid>
+            
+            <!-- Separation line -->
+            <Rectangle Height="1" Fill="LightGray" Margin="0,0,0,20" />
+
+            <Pivot>
+                <PivotItem Header="Inspect">
+                    <Grid Background="Black" Margin="10" CornerRadius="10" Padding="10">
+                        <ScrollViewer MaxHeight="300">
+                            <RichTextBlock x:Name="ContainerDetails" FontSize="15" LineHeight="20" >
+                                <Paragraph>
+                                    <Run Text="{x:Bind ContainerInspect}" />
+                                </Paragraph>
+                            </RichTextBlock>
+                        </ScrollViewer>
+                    </Grid>
+
+                </PivotItem>
+                <PivotItem Header="Logs">
+                    <TextBlock Text="unread emails go here." />
+                </PivotItem>
+                <PivotItem Header="Specs">
+                    <TextBlock Text="flagged emails go here." />
+                </PivotItem>
+                <PivotItem Header="Guide">
+                    <TextBlock Text="urgent emails go here." />
+                </PivotItem>
+            </Pivot>
+
+
+
+
+
+
+
+
+
+        </StackPanel>
+    </ScrollViewer>
+    
 </Page>
