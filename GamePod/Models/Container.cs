@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Docker.DotNet.Models;
-using Windows.Services.Maps;
+using GamePod.Contracts.Services;
 
 namespace GamePod.Models;
 
@@ -30,7 +24,10 @@ internal class Container
     // Properties
     public string ProjectName { get; private set; } = string.Empty;
     public string ProjectPath { get; private set; } = string.Empty;
-    public GameEngine ProjectGameEngine { get; private set; }
+    public GameEngine ProjectGameEngine
+    {
+        get; private set;
+    }
     public bool DestroyAfterUse { get; private set; } = false;
     public string Port { get; private set; } = string.Empty;
     public long CPUCores { get; private set; } = 0;
@@ -41,9 +38,15 @@ internal class Container
 
 
     public string RunCommand { get; private set; } = string.Empty;
-    public DirectoryInfo ContainerFolderPath { get; private set; }
+    public DirectoryInfo ContainerFolderPath
+    {
+        get; private set;
+    }
 
-    public CreateContainerParameters ContainerParameters { get; private set; }
+    public CreateContainerParameters ContainerParameters
+    {
+        get; private set;
+    }
 
     public string Name
     {
@@ -63,7 +66,7 @@ internal class Container
             {
                 volumeOptions.Add(OtherFolderPath + ":/" + DestinationPath);
             }
-            
+
             return volumeOptions;
         }
     }
@@ -152,7 +155,15 @@ internal class Container
         }
     }
 
+    private IDockerService service = App.GetService<IDockerService>();
+    public ContainerInspectResponse inspectResponse { get; private set; }
+
     // Constructor
+    public Container(string projectName)
+    {
+        ProjectName = projectName;
+    }
+
     public Container(string projectName, string projectPath, string gameEngineName, string gameEngineVersion, bool destroyAfetrUse, string ports, long cpuCores, string ram, string gpu, string otherFolder, string destinationPath)
     {
         ProjectName = projectName;
@@ -173,9 +184,18 @@ internal class Container
 
         CreateContainerParametersObject();
 
+        inspectResponse = service.GetContainerInspect(ProjectName).Result;
+
+
         // crea una cartella .docker nella cartella del progetto
         //ContainerFolderPath = System.IO.Directory.CreateDirectory(ProjectPath + "\\docker");
         //Debug.WriteLine("ContainerFolderPath: " + ContainerFolderPath);
+    }
+
+    public async Task GetInspectResponse(Container container)
+    {
+
+        inspectResponse = await service.GetContainerInspect(container.ProjectName);
     }
 
     // TODO: creare tutti i parametri del container per la sua creazione
@@ -208,10 +228,10 @@ internal class Container
 
             // network: imposta le porte da aprire per il container (come nel comando docker run --port 8080:80)
             ExposedPorts = PortExposeConfig,
-            
-            
+
+
         };
-}
+    }
 
     /*private string CreateCommand()
     {
