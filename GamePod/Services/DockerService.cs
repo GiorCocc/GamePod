@@ -217,6 +217,28 @@ public class DockerService : IDockerService
 
         return inspectResponse;
     }
+
+    // TODO: creare un metodo per mostrare sullo schermo i log del container
+    public async Task<Stream> GetContainerLogs(string containerID)
+    {
     
+        if (client == null) CreateClient();
+
+        // get the log stream from the container
+        var logs = await client.Containers.GetContainerLogsAsync(containerID, new ContainerLogsParameters()
+        {
+        
+                   ShowStderr = true,
+                   ShowStdout = true,
+                   Timestamps = true
+               });
+
+        Debug.WriteLine(logs.ToString());
+
+        return logs;
+    
+    }
+
+
 }
 

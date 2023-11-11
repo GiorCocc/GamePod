@@ -19,4 +19,5 @@ public interface IDockerService
     Task PauseContainer(string containerName);
     Task CreateContainer(CreateContainerParameters containerParameters);
     Task<ContainerInspectResponse> GetContainerInspect(string containerName);
+    Task<Stream> GetContainerLogs(string containerName);
 }
