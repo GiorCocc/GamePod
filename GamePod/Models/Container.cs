@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 using Docker.DotNet.Models;
 using GamePod.Contracts.Services;
 
@@ -24,10 +25,7 @@ internal class Container
     // Properties
     public string ProjectName { get; private set; } = string.Empty;
     public string ProjectPath { get; private set; } = string.Empty;
-    public GameEngine ProjectGameEngine
-    {
-        get; private set;
-    }
+    public GameEngine ProjectGameEngine { get; private set; }
     public bool DestroyAfterUse { get; private set; } = false;
     public string Port { get; private set; } = string.Empty;
     public long CPUCores { get; private set; } = 0;
@@ -35,6 +33,14 @@ internal class Container
     public string GPU { get; private set; } = string.Empty;
     public string OtherFolderPath { get; private set; } = string.Empty;
     public string DestinationPath { get; private set; } = string.Empty;
+    public string ContainerName { get; private set; } = string.Empty;
+    public string ContainerID { get; private set; } = string.Empty;
+    public string ContainerImage { get; private set; } = string.Empty;
+    public string ContainerStatus { get; private set; } = string.Empty;
+    public long ContainerExitCode { get; private set; } = 0;
+    public string ContainerPlatform { get; private set; } = string.Empty;
+    public string ContainerFinishedAt { get; private set; } = string.Empty;
+    public string ContainerCommand { get; private set; } = string.Empty;
 
 
     public string RunCommand { get; private set; } = string.Empty;
@@ -59,9 +65,10 @@ internal class Container
         get
         {
             List<string> volumeOptions = new List<string>();
+            volumeOptions.Add(ProjectPath + ":/project");
             volumeOptions.Add("/run/desktop/mnt/host/wslg/.X11-unix:/tmp/.X11-unix");
             volumeOptions.Add("/run/desktop/mnt/host/wslg:/mnt/wslg");
-            volumeOptions.Add(ProjectPath + ":/project");
+            
             if (OtherFolderPath != "" && DestinationPath != "")
             {
                 volumeOptions.Add(OtherFolderPath + ":/" + DestinationPath);
@@ -76,7 +83,7 @@ internal class Container
         get
         {
             List<string> environmentOptions = new List<string>();
-            environmentOptions.Add("DISPLAY=:0 ");
+            environmentOptions.Add("DISPLAY=:0");
             environmentOptions.Add("WAYLAND_DISPLAY=wayland-0");
             environmentOptions.Add("XDG_RUNTIME_DIR=/mnt/wslg/runtime-dir");
             environmentOptions.Add("PULSE_SERVER=/mnt/wslg/PulseServer");
@@ -156,7 +163,7 @@ internal class Container
     }
 
     private IDockerService service = App.GetService<IDockerService>();
-    public ContainerInspectResponse inspectResponse { get; private set; }
+    public ContainerInspectResponse InspectResponse { get; private set; }
 
     // Constructor
     public Container(string projectName)
@@ -173,7 +180,6 @@ internal class Container
         DestroyAfterUse = destroyAfetrUse;
         Port = ports;
         CPUCores = cpuCores;
-        // the ram must be in the format <number>g (eg. 2g) and it will be converted to bytes (eg. 2g -> 2147483648)
         RAM = ram == "" ? 0 : Convert.ToInt64(ram.Substring(0, ram.Length - 1)) * 1073741824;
         GPU = gpu;
         OtherFolderPath = otherFolder;
@@ -184,7 +190,10 @@ internal class Container
 
         CreateContainerParametersObject();
 
-        inspectResponse = service.GetContainerInspect(ProjectName).Result;
+        //InspectResponse = service.GetContainerInspect(ProjectName).Result;
+
+        //// TODO: creare un metodo che prende tutte le informazioni dal container e le mette in un oggetto Container
+        //CompleteInformationFromInspect(InspectResponse);
 
 
         // crea una cartella .docker nella cartella del progetto
@@ -195,10 +204,34 @@ internal class Container
     public async Task GetInspectResponse(Container container)
     {
 
-        inspectResponse = await service.GetContainerInspect(container.ProjectName);
+        InspectResponse = await service.GetContainerInspect(container.ProjectName);
     }
 
-    // TODO: creare tutti i parametri del container per la sua creazione
+    // TODO: creare un metodo che prende tutte le informazioni dal container e le mette in un oggetto Container
+    public void CompleteInformationFromInspect(ContainerInspectResponse inspectResponse)
+    {
+        if(inspectResponse == null) return;
+
+        ContainerName = inspectResponse.Name;
+        ContainerImage = inspectResponse.Config.Image;
+        ContainerID = inspectResponse.Config.Hostname;
+        ContainerStatus = inspectResponse.State.Status;
+        ContainerExitCode = inspectResponse.State.ExitCode;
+        ContainerPlatform = inspectResponse.Platform;
+        ContainerFinishedAt = FormatDate(InspectResponse.State.FinishedAt);
+        ContainerCommand = inspectResponse.Config.Cmd[0];
+    }
+
+    private string FormatDate(string date)
+    {
+        if (date == null) return "";
+
+        var dateTime = DateTime.Parse(date);
+        return dateTime.ToString("MM/dd/yyyy HH:mm:ss");
+    }
+
+    // TODO: creare un metodo che aggiorna stato e codice del container ad ogni modifica (es. quando viene avviato, quando viene fermato, ecc.)
+
     private void CreateContainerParametersObject()
     {
         ContainerParameters = new CreateContainerParameters
@@ -232,45 +265,5 @@ internal class Container
 
         };
     }
-
-    /*private string CreateCommand()
-    {
-        // create the command to create the container
-        // docker run --privileged
-        // --rm -it -v /run/desktop/mnt/host/wslg/.X11-unix:/tmp/.X11-unix
-        // -v /run/desktop/mnt/host/wslg:/mnt/wslg
-        // -v <ProjectFolder>:/project
-        // -e DISPLAY=:0 -e WAYLAND_DISPLAY=wayland-0
-        // -e XDG_RUNTIME_DIR=/mnt/wslg/runtime-dir
-        // -e PULSE_SERVER=/mnt/wslg/PulseServer
-        // --gpus all
-        // --name <ProjectName> unityci/editor:2022.3.10f1-linux-il2cpp-2.0 bash
-        var runCommand = "docker run --privileged --interactive --tty ";
-        if (DestroyAfterUse) { runCommand += "--rm "; }
-
-        foreach (var volumeOption in VolumeOptions)
-        {
-            runCommand += "--volume " + volumeOption + " ";
-        }
-
-        foreach (var environmentOption in EnvironmentOptions)
-        {
-            runCommand += "--environment " + environmentOption + " ";
-        }
-
-        if (Port != "") { runCommand += "--ports " + Port + " "; }
-
-        if (CPUCores != "") { runCommand += "--cpus " + CPUCores + " "; }
-
-        if (RAM != "") { runCommand += "--memory " + RAM + " "; }
-
-        if (GPU != "") { runCommand += "--gpus all "; } 
-        
-        
-        runCommand += "--name " + ProjectName + " ";
-        runCommand += ProjectGameEngine.DockerImage + " bash";
-
-        return runCommand;
-    }*/
 
 }
