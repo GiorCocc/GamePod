@@ -4,30 +4,53 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:ui="using:CommunityToolkit.WinUI"
     mc:Ignorable="d">
+
+    <Page.Resources>
+        <!--  These styles can be referenced to create a consistent SettingsPage layout  -->
+
+        <!--  Spacing between cards  -->
+        <x:Double x:Key="SettingsCardSpacing">4</x:Double>
+
+        <!--  Style (inc. the correct spacing) of a section header  -->
+        <Style x:Key="SettingsSectionHeaderTextBlockStyle"
+           BasedOn="{StaticResource BodyStrongTextBlockStyle}"
+           TargetType="TextBlock">
+            <Style.Setters>
+                <Setter Property="Margin" Value="1,30,0,6" />
+            </Style.Setters>
+        </Style>
+    </Page.Resources>
 
     <ScrollViewer  Margin="0,0,0,20">
         <StackPanel x:Name="ContentArea">
             <Grid Margin="0,0,0,20">
                 <StackPanel Orientation="Vertical">
-                    <TextBlock x:Name="ContainerName" Text="{x:Bind ProjectName}" FontSize="20" />
+                    <StackPanel Orientation="Horizontal" Spacing="5">
+                        <TextBlock x:Name="ContainerName" Text="{x:Bind ProjectName}" FontSize="20" />
+                        <TextBlock x:Name="ContainerStateTextBlock" Text="{x:Bind ContainerState}" FontSize="20" />
+                    </StackPanel>
                     <TextBlock Text="{x:Bind ContainerImage}" FontSize="13" />
                     <TextBlock Text="{x:Bind ContainerID}" FontSize="13" Foreground="LightGray" />
                 </StackPanel>
                 
                 <CommandBar Background="Transparent" IsOpen="False" >
                     <CommandBar.PrimaryCommands>
-                        <AppBarButton Label="Open terminal inside container" ToolTipService.ToolTip="Execute">
+                        <AppBarButton Label="Open terminal inside container" ToolTipService.ToolTip="Execute" Click="ExecButton_Click">
                             <FontIcon Glyph="&#xE756;" />
                         </AppBarButton>
                         <AppBarSeparator />
-                        <AppBarButton Icon="Stop" Label="Stop container" ToolTipService.ToolTip="Stop" />
-                        <AppBarButton Icon="Play" Label="Run container" ToolTipService.ToolTip="Run" />
-                        <AppBarButton Icon="RepeatAll" Label="Reload container" ToolTipService.ToolTip="Reload" />
+                        <AppBarButton Icon="Stop" Label="Stop container" ToolTipService.ToolTip="Stop" Click="StopButton_Click" />
+                        <AppBarButton Icon="Play" Label="Run container" ToolTipService.ToolTip="Run" Click="PlayButton_Click" />
+                        <AppBarButton Icon="RepeatAll" Label="Reload container" ToolTipService.ToolTip="Reload" Click="RestartButton_Click" />
                     </CommandBar.PrimaryCommands>
                     <CommandBar.SecondaryCommands>
-                        <AppBarButton Icon="Delete" Label="Delete" ToolTipService.ToolTip="Delete" Foreground="Red" />
-                        <AppBarButton Icon="Share" Label="Delete" ToolTipService.ToolTip="Delete" />
+                        <AppBarButton Icon="Pause" Label="Pause" ToolTipService.ToolTip="Pause" Click="PauseButton_Click" />
+                        <AppBarSeparator />
+                        <AppBarButton Icon="Delete" Label="Delete" ToolTipService.ToolTip="Delete" Foreground="Red" Click="DeleteButton_Click" />
+                        <AppBarButton Icon="Share" Label="Share" ToolTipService.ToolTip="Share" />
                     </CommandBar.SecondaryCommands>
                 </CommandBar>
             </Grid>
@@ -36,26 +59,124 @@
             <Rectangle Height="1" Fill="LightGray" Margin="0,0,0,20" />
 
             <Pivot>
+                
+                <PivotItem Header="Specs" >
+                    <StackPanel Orientation="Vertical" Margin="10">
+                        <!--<TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="Project informations" />-->
+
+                        <controls:SettingsExpander Header="Container Information" HeaderIcon="{ui:FontIcon Glyph=&#xE946;}" Description="Informations about the container">
+                            <TextBlock Text="{x:Bind ProjectName}"/>
+                            <controls:SettingsExpander.Items>
+                                <controls:SettingsCard Header="Container code" Description="Container ID for executing commands via command line">
+                                    <StackPanel Orientation="Horizontal" Spacing="5" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <TextBlock x:Name="ContainerIDTextBlock" Text="{x:Bind ContainerID}"  VerticalAlignment="Center"/>
+                                        <Button x:Name="CopyButton" Click="CopyButton_Click">
+                                            <SymbolIcon x:Name="Icon" Symbol="Copy" />
+                                        </Button>
+                                    </StackPanel>
+                                    
+                                </controls:SettingsCard>
+                                <controls:SettingsCard Header="Container Image">
+                                    <TextBlock Text="{x:Bind ContainerImage}"/>
+                                </controls:SettingsCard>
+                                <controls:SettingsCard Header="Platofrm">
+                                    <TextBlock Text="{x:Bind ContainerPlatform}"/>
+                                </controls:SettingsCard>
+                                <controls:SettingsCard Header="Status">
+                                    <TextBlock x:Name="StatusTextBlock" Text="{x:Bind ContainerState}"/>
+                                </controls:SettingsCard>
+                                <controls:SettingsCard Header="Last usage">
+                                    <TextBlock x:Name="LastUsageTextBlock" Text="{x:Bind LastUsage}"/>
+                                </controls:SettingsCard>
+                            </controls:SettingsExpander.Items>
+                            
+                        </controls:SettingsExpander>
+
+                        <controls:SettingsExpander Header="Binds" HeaderIcon="{ui:FontIcon Glyph=&#xE8B7;}" Description="Container folders binded to host folders">
+                            <controls:SettingsExpander.Items>
+                                <controls:SettingsCard Header="Project" Description="Where the project is located in the host machine and where it is located in the container">
+                                    <StackPanel Orientation="Horizontal" Spacing="15">
+                                        <TextBlock x:Name="ProjectFolderHostTextBlock" Text="{x:Bind ProjectFolderHost}" />
+                                    </StackPanel>
+                                </controls:SettingsCard>
+                                <controls:SettingsCard Header="Other" Description="Other binds necessary for the container to work">
+                                    <RichTextBlock x:Name="BindsRichTextBlock" MaxWidth="400"  >
+                                        <Paragraph>
+                                            <Run Text="{x:Bind Binds}" />
+                                        </Paragraph>
+                                    </RichTextBlock>
+                                </controls:SettingsCard>
+                                
+                            </controls:SettingsExpander.Items>
+
+                        </controls:SettingsExpander>
+                        <controls:SettingsExpander Header="Environmental Variables" HeaderIcon="{ui:FontIcon Glyph=&#xE8BE;}" Description="Environmental variables for the container">
+                            <controls:SettingsExpander.Items>
+                                <controls:SettingsCard Header="Envs">
+                                    <RichTextBlock x:Name="EnvironmentVariablesRichTextBlock" MaxWidth="400"  >
+                                        <Paragraph>
+                                            <Run x:Name="EnvironmentVariables" Text="{x:Bind Envs}" />
+                                        </Paragraph>
+                                    </RichTextBlock>
+                                </controls:SettingsCard>
+
+                            </controls:SettingsExpander.Items>
+
+                        </controls:SettingsExpander>
+
+                        <controls:SettingsCard Header="Startup bash command" HeaderIcon="{ui:FontIcon Glyph=&#xE756;}" Description="Startup bash command for the container">
+                            <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center" HorizontalAlignment="Center" >
+                                <TextBlock Text="{x:Bind ContainerCommand}" VerticalAlignment="Center"/>
+                                <Button Click="ExecButton_Click">
+                                    <FontIcon Glyph="&#xE756;" />
+                                </Button>
+                            </StackPanel>
+                        </controls:SettingsCard>
+
+                        <controls:SettingsExpander Header="Network" HeaderIcon="{ui:FontIcon Glyph=&#xEDA3;}" Description="Network settings for the container">
+                            <controls:SettingsExpander.Items>
+                                <controls:SettingsCard Header="Ports" Description="Binded ports for the container">
+                                    <TextBlock x:Name="PortsTextBlock" Text="{x:Bind Ports}" />
+                                </controls:SettingsCard>
+
+                            </controls:SettingsExpander.Items>
+
+                        </controls:SettingsExpander>
+
+
+                    </StackPanel>
+                </PivotItem>
+
                 <PivotItem Header="Inspect">
                     <Grid Background="Black" Margin="10" CornerRadius="10" Padding="10">
                         <ScrollViewer MaxHeight="300">
-                            <RichTextBlock x:Name="ContainerDetails" FontSize="15" LineHeight="20" >
+                            <RichTextBlock x:Name="ContainerDetailsRichTextBlock" FontSize="15" LineHeight="20" >
                                 <Paragraph>
-                                    <Run Text="{x:Bind ContainerInspect}" />
+                                    <Run x:Name="Inspect" Text="{x:Bind ContainerInspect}" />
                                 </Paragraph>
                             </RichTextBlock>
                         </ScrollViewer>
                     </Grid>
 
                 </PivotItem>
-                <PivotItem Header="Logs">
-                    <TextBlock Text="unread emails go here." />
-                </PivotItem>
-                <PivotItem Header="Specs">
-                    <TextBlock Text="flagged emails go here." />
-                </PivotItem>
+                <!--<PivotItem Header="Logs">
+                    <Grid Background="Black" Margin="10" CornerRadius="10" Padding="10">
+                        <ScrollViewer MaxHeight="300">
+                            <RichTextBlock FontSize="15" LineHeight="20" >
+                                <Paragraph>
+                                    <Run Text="{x:Bind ContainerInspect}" />
+                                </Paragraph>
+                            </RichTextBlock>
+                        </ScrollViewer>
+                    </Grid>
+                </PivotItem>-->
+                
                 <PivotItem Header="Guide">
-                    <TextBlock Text="urgent emails go here." />
+                    <RichTextBlock>
+                        <Paragraph>
+                            <Run Text="This is a sample text" />
+                        </Paragraph>
+                    </RichTextBlock>
                 </PivotItem>
             </Pivot>
 
