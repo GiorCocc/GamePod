@@ -45,18 +45,18 @@
 
             </Grid>
 
-            <!--<CommandBar >
+            <CommandBar >
                 <CommandBar.PrimaryCommands>
-                    <AppBarButton Icon="Play" Label="Run container" ToolTipService.ToolTip="Run" Click="PlayButton_Click" />
+                    <!--<AppBarButton Icon="Play" Label="Run container" ToolTipService.ToolTip="Run" Click="PlayButton_Click" />
                     <AppBarSeparator />
                     <AppBarButton Icon="Pause" Label="Pause container" ToolTipService.ToolTip="Pause" Click="PauseButton_Click"/>
                     <AppBarButton Icon="Stop" Label="Stop container" ToolTipService.ToolTip="Stop" Click="StopButton_Click"/>
-                    <AppBarSeparator />
+                    <AppBarSeparator />-->
                     <AppBarButton Icon="RepeatAll" Label="Reload container list" ToolTipService.ToolTip="Reload" Click="ReloadContainerListButton_Click"/>
-                    --><!--<AppBarSeparator />
-                    <AppBarButton Icon="Delete" Label="Delete" ToolTipService.ToolTip="Delete" Click="DeleteButton_Click"/>--><!--
+                    <!--<AppBarSeparator />
+                    <AppBarButton Icon="Delete" Label="Delete" ToolTipService.ToolTip="Delete" Click="DeleteButton_Click"/>-->
                 </CommandBar.PrimaryCommands>
-            </CommandBar>-->
+            </CommandBar>
 
             <!-- Display the list of the created container with GamePod -->
             <!-- In each line display the name of the project, the location, start/stop/delete/menu buttons-->
@@ -78,6 +78,9 @@
                                 </Button>
                                 <Button Style="{StaticResource CommandBarFlyoutEllipsisButtonStyle}" Click="StopButton_Click">
                                     <SymbolIcon Symbol="Stop" />
+                                </Button>
+                                <Button Style="{StaticResource CommandBarFlyoutEllipsisButtonStyle}" Click="ContainerInfoButton_Click">
+                                    <FontIcon Glyph="&#xE946;" />
                                 </Button>
                                 <Button Style="{StaticResource CommandBarFlyoutEllipsisButtonStyle}" >
                                     <FontIcon Glyph="&#xE712;" />
@@ -109,9 +112,9 @@
                                                 </MenuFlyoutItem.Icon>
                                             </MenuFlyoutItem>
                                             <MenuFlyoutSeparator></MenuFlyoutSeparator>
-                                            <MenuFlyoutItem Text="Delete" Click="DeleteButton_Click">
+                                            <MenuFlyoutItem Text="Delete" Click="DeleteButton_Click" Foreground="Red">
                                                 <MenuFlyoutItem.Icon>
-                                                    <SymbolIcon Symbol="Delete" />
+                                                    <SymbolIcon Symbol="Delete" Foreground="Red" />
                                                 </MenuFlyoutItem.Icon>
                                             </MenuFlyoutItem>
                                             <MenuFlyoutItem Text="Info" Click="ContainerInfoButton_Click">

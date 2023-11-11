@@ -350,13 +350,34 @@ public sealed partial class HomePage : Page
 
     }
 
-    // TODO: creare una pagina dove mostrare i dati del container creato
     private async void ContainerInfoButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        var selectedContainer = (sender as MenuFlyoutItem).DataContext;
+        var selectedContainer = ConstainerListView.SelectedItem;
+        Debug.WriteLine("Selected container: " + selectedContainer);
+
+        // get the container object
+        if (sender is AppBarButton)
+        {
+            selectedContainer = ConstainerListView.SelectedItem;
+        }
+        else if (sender is Button)
+        {
+            selectedContainer = (sender as Button).DataContext;
+        }
+        else if (sender is MenuFlyoutItem)
+        {
+            selectedContainer = (sender as MenuFlyoutItem).DataContext;
+        }
+        else
+        {
+            Debug.WriteLine("Sender: " + sender.GetType());
+            return;
+        }
+
         var containerName = selectedContainer.GetType().GetProperty("Name").GetValue(selectedContainer, null);
         Container container = new Container(containerName.ToString());
         await container.GetInspectResponse(container);
+        container.CompleteInformationFromInspect(container.InspectResponse);
 
         // Go to Details page
         Frame.Navigate(typeof(ContainerDetailsPage), container);
@@ -424,6 +445,4 @@ public sealed partial class HomePage : Page
     {
         UpdateContainerList();
     }
-
-    
 }
