@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:wui="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:ui="using:CommunityToolkit.WinUI"
     mc:Ignorable="d">
 
@@ -170,15 +171,13 @@
                         </ScrollViewer>
                     </Grid>
                 </PivotItem>-->
-                
+
                 <PivotItem Header="Guide">
-                    <RichTextBlock>
-                        <Paragraph>
-                            <Run Text="This is a sample text" />
-                        </Paragraph>
-                    </RichTextBlock>
+                    <wui:MarkdownTextBlock Margin="10" x:Name="GuideMarkdownTextBlock" Background="Transparent" WrapCodeBlock="True" UseSyntaxHighlighting="True"  />
                 </PivotItem>
             </Pivot>
+
+            
 
 
 

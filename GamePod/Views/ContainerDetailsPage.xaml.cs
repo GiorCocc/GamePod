@@ -7,6 +7,7 @@ using Microsoft.UI.Xaml.Documents;
 using Microsoft.UI.Xaml.Navigation;
 using Newtonsoft.Json;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Storage;
 
 namespace GamePod.Views;
 
@@ -84,6 +85,7 @@ public sealed partial class ContainerDetailsPage : Page
             Ports += port.Key + " -> " + port.Value[0].HostPort + "\n";
         }
 
+        LoadMarkdownTextBlock();
 
     }
 
@@ -92,6 +94,25 @@ public sealed partial class ContainerDetailsPage : Page
     private async void GetContainerLogs()
     {
         await service.GetContainerLogs(container.InspectResponse.ID);
+    }
+
+    private async void LoadMarkdownTextBlock()
+    {
+        // controlla se non è presente il file Markdown nella definizione del game engine
+        if (container.ContainerGuidePath == "")
+        {
+            GuideMarkdownTextBlock.Text = "> Pod " + container.ProjectName + " was not created with GamePod. No guide available.";
+            return;
+        }
+
+        // Sostituisci "NomeFileMarkdown.md" con il percorso del tuo file Markdown
+        StorageFile file = await StorageFile.GetFileFromPathAsync(container.ContainerGuidePath);
+
+        // Leggi il contenuto del file
+        string markdownContent = await FileIO.ReadTextAsync(file);
+
+        // Assegna il contenuto al controllo MarkdownTextBlock
+        GuideMarkdownTextBlock.Text = markdownContent;
     }
 
     #region Container management Buttons
