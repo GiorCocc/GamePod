@@ -106,7 +106,7 @@ public sealed partial class ContainerDetailsPage : Page
         }
 
         // Sostituisci "NomeFileMarkdown.md" con il percorso del tuo file Markdown
-        StorageFile file = await StorageFile.GetFileFromPathAsync(container.ContainerGuidePath);
+        StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(container.ContainerGuidePath));
 
         // Leggi il contenuto del file
         string markdownContent = await FileIO.ReadTextAsync(file);
