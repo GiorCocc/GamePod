@@ -41,6 +41,7 @@ internal class Container
     public string ContainerPlatform { get; private set; } = string.Empty;
     public string ContainerFinishedAt { get; private set; } = string.Empty;
     public string ContainerCommand { get; private set; } = string.Empty;
+    public string ContainerGuidePath { get; private set; } = string.Empty;
 
 
     public string RunCommand { get; private set; } = string.Empty;
@@ -87,6 +88,8 @@ internal class Container
             environmentOptions.Add("WAYLAND_DISPLAY=wayland-0");
             environmentOptions.Add("XDG_RUNTIME_DIR=/mnt/wslg/runtime-dir");
             environmentOptions.Add("PULSE_SERVER=/mnt/wslg/PulseServer");
+            environmentOptions.Add("NVIDIA_DRIVER_CAPABILITIES=all");
+            environmentOptions.Add("NVIDIA_VISIBLE_DEVICES=all");
             return environmentOptions;
         }
     }
@@ -169,6 +172,7 @@ internal class Container
     public Container(string projectName)
     {
         ProjectName = projectName;
+        
     }
 
     public Container(string projectName, string projectPath, string gameEngineName, string gameEngineVersion, bool destroyAfetrUse, string ports, long cpuCores, string ram, string gpu, string otherFolder, string destinationPath)
@@ -220,6 +224,7 @@ internal class Container
         ContainerPlatform = inspectResponse.Platform;
         ContainerFinishedAt = FormatDate(InspectResponse.State.FinishedAt);
         ContainerCommand = inspectResponse.Config.Cmd[0];
+        ContainerGuidePath = GameEngine.GetGuidePathFromImage(ContainerImage);
     }
 
     private string FormatDate(string date)

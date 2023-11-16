@@ -18,25 +18,27 @@ namespace GamePod.Models;
 internal class GameEngine
 {
     // Game engines
-    public static readonly GameEngine UnityHubCLI       = new("Unity Hub (command line)", "unityci/editor:2022.3.10f1-linux-il2cpp-2.0", "0", "unity-hub");
-    public static readonly GameEngine UnityEditorCLI    = new("Unity Editor (command line)", "unityci/editor:2022.3.10f1-linux-il2cpp-2.0", "0", "unity-editor");
-    public static readonly GameEngine Unity             = new("Unity GUI (experimental)", "", "0", "UnityHub.AppImage");
-    public static readonly GameEngine Godot             = new("Godot", "", "0", "godot");
+    public static readonly GameEngine UnityHubCLI       = new("Unity Hub (command line)", "unityci/hub:latest", "0", "unity-hub", "D:\\ProgettoTesi\\GamePod\\GamePod\\GamePod\\Assets\\GuidaUnity.md");
+    public static readonly GameEngine UnityEditorCLI    = new("Unity Editor (command line)", "unityci/editor:2022.3.10f1-linux-il2cpp-2.0", "0", "unity-editor", "D:\\ProgettoTesi\\GamePod\\GamePod\\GamePod\\Assets\\GuidaUnity.md");
+    public static readonly GameEngine Unity             = new("Unity GUI (experimental)", "", "0", "UnityHub.AppImage", "D:\\ProgettoTesi\\GamePod\\GamePod\\GamePod\\Assets\\GuidaUnity.md");
+    public static readonly GameEngine Godot             = new("Godot", "giorcocc/godot_fedora:1.0", "0", "godot", "D:\\ProgettoTesi\\GamePod\\GamePod\\GamePod\\Assets\\GuidaUnity.md");
 
     // Properties
     public string Name { get; private set; }
     public string DockerImage { get; private set; }
     public string Version { get; set; }
     public string StartCommand { get; private set; }
+    public string GuidePath { get; set; }
     
 
     // Constructor
-    private GameEngine(string name, string dockerImage, string version, string startCommand)
+    private GameEngine(string name, string dockerImage, string version, string startCommand, string guide)
     {
         Name = name;
         DockerImage = dockerImage;
         Version = version;
         StartCommand = startCommand;
+        GuidePath = guide;
     }
 
     // Get the GameEngine object from the name
@@ -49,6 +51,18 @@ internal class GameEngine
             "Unity GUI" => Unity,
             "Godot" => Godot,
             _ => throw new ArgumentException("The game engine " + name + " is not supported"),
+        };
+    }
+
+    public static string GetGuidePathFromImage(string image)
+    {
+        return image switch
+        {
+            "unityci/hub:latest" => UnityHubCLI.GuidePath,
+            "unityci/editor:2022.3.10f1-linux-il2cpp-2.0" => UnityEditorCLI.GuidePath,
+            "UnityHub.AppImage" => Unity.GuidePath,
+            "godot" => Godot.GuidePath,
+            _ => ""
         };
     }
 
