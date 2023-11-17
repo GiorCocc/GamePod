@@ -18,10 +18,10 @@ namespace GamePod.Models;
 internal class GameEngine
 {
     // Game engines
-    public static readonly GameEngine UnityHubCLI       = new("Unity Hub (command line)", "unityci/hub:latest", "0", "unity-hub", "ms-appx:///Assets/GuidaUnity.md");
-    public static readonly GameEngine UnityEditorCLI    = new("Unity Editor (command line)", "unityci/editor:2022.3.10f1-linux-il2cpp-2.0", "0", "unity-editor", "ms-appx:///Assets/GuidaUnity.md");
+    public static readonly GameEngine UnityHubCLI       = new("Unity Hub (command line)", "unityci/hub:latest", "0", "unity-hub", "ms-appx:///Assets/GuidaUnityHub.md");
+    public static readonly GameEngine UnityEditorCLI    = new("Unity Editor (command line)", "unityci/editor:2022.3.10f1-linux-il2cpp-2.0", "0", "unity-editor", "ms-appx:///Assets/GuidaUnityEditor.md");
     public static readonly GameEngine Unity             = new("Unity GUI (experimental)", "", "0", "UnityHub.AppImage", "ms-appx:///Assets/GuidaUnity.md");
-    public static readonly GameEngine Godot             = new("Godot", "giorcocc/godot_fedora:1.0", "0", "godot", "ms-appx:///Assets/GuidaUnity.md");
+    public static readonly GameEngine Godot             = new("Godot", "giorcocc/godot_fedora:2.0", "0", "godot", "ms-appx:///Assets/GuidaGodot.md");
 
     // Properties
     public string Name { get; private set; }
