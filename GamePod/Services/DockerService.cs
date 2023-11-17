@@ -2,7 +2,6 @@
 using Docker.DotNet;
 using Docker.DotNet.Models;
 using GamePod.Contracts.Services;
-using GamePod.Models;
 
 /*
  *  DockerService.cs
@@ -199,6 +198,22 @@ public class DockerService : IDockerService
     {
         if (client == null) CreateClient();
 
+        // check if the image is already downloaded
+        var image = await client.Images.SearchImagesAsync(new ImagesSearchParameters()
+        {
+
+            Term = parameters.Image
+        });
+
+        Debug.WriteLine(image);
+
+        if (image.Count == 0)
+        {
+            Debug.WriteLine("Image not found. Pulling image...");
+
+            await PullImage(parameters);
+        }
+
         await client.Containers.CreateContainerAsync(parameters);
         Debug.WriteLine("Container created");
     }
@@ -218,25 +233,39 @@ public class DockerService : IDockerService
         return inspectResponse;
     }
 
+    public async Task PullImage(CreateContainerParameters containerParameters)
+    {
+
+        if (client == null) CreateClient();
+
+        await client.Images.CreateImageAsync(new ImagesCreateParameters()
+        {
+
+            FromImage = containerParameters.Image
+        }, null, new Progress<JSONMessage>());
+
+        Debug.WriteLine("Image pulled");
+    }
+
     // TODO: creare un metodo per mostrare sullo schermo i log del container
     public async Task<Stream> GetContainerLogs(string containerID)
     {
-    
+
         if (client == null) CreateClient();
 
         // get the log stream from the container
         var logs = await client.Containers.GetContainerLogsAsync(containerID, new ContainerLogsParameters()
         {
-        
-                   ShowStderr = true,
-                   ShowStdout = true,
-                   Timestamps = true
-               });
+
+            ShowStderr = true,
+            ShowStdout = true,
+            Timestamps = true
+        });
 
         Debug.WriteLine(logs.ToString());
 
         return logs;
-    
+
     }
 
 

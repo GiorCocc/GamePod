@@ -20,4 +20,5 @@ public interface IDockerService
     Task CreateContainer(CreateContainerParameters containerParameters);
     Task<ContainerInspectResponse> GetContainerInspect(string containerName);
     Task<Stream> GetContainerLogs(string containerName);
+    Task PullImage(CreateContainerParameters containerParameters);
 }
