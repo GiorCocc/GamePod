@@ -22,6 +22,7 @@ internal class GameEngine
     public static readonly GameEngine UnityEditorCLI    = new("Unity Editor (command line)", "unityci/editor:2022.3.10f1-linux-il2cpp-2.0", "0", "unity-editor", "ms-appx:///Assets/GuidaUnityEditor.md");
     public static readonly GameEngine Unity             = new("Unity GUI (experimental)", "", "0", "UnityHub.AppImage", "ms-appx:///Assets/GuidaUnity.md");
     public static readonly GameEngine Godot             = new("Godot", "giorcocc/godot_fedora:2.0", "0", "godot", "ms-appx:///Assets/GuidaGodot.md");
+    public static readonly GameEngine Pygame            = new("PyGame", "giorcocc/pygame:1.5", "0", "python", "ms-appx:///Assets/GuidaPyGame.md");
 
     // Properties
     public string Name { get; private set; }
@@ -50,6 +51,7 @@ internal class GameEngine
             "Unity Editor (command line)" => UnityEditorCLI,
             "Unity GUI" => Unity,
             "Godot" => Godot,
+            "PyGame" => Pygame,
             _ => throw new ArgumentException("The game engine " + name + " is not supported"),
         };
     }
@@ -62,6 +64,7 @@ internal class GameEngine
             "unityci/editor:2022.3.10f1-linux-il2cpp-2.0" => UnityEditorCLI.GuidePath,
             "UnityHub.AppImage" => Unity.GuidePath,
             "giorcocc/godot_fedora:2.0" => Godot.GuidePath,
+            "giorcocc/pygame:1.5" => Pygame.GuidePath,
             _ => ""
         };
     }
@@ -75,6 +78,7 @@ internal class GameEngine
         names.Add(UnityEditorCLI.Name);
         names.Add(Unity.Name);
         names.Add(Godot.Name);
+        names.Add(Pygame.Name);
 
         return names;
 

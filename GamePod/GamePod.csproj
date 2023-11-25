@@ -18,6 +18,7 @@
     <None Update="Assets\GuidaUnity.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Remove="Assets\GuidaPyGame.md" />
     <None Remove="Views\ProgressDialog.xaml" />
   </ItemGroup>
 
@@ -42,6 +43,9 @@
 
   <ItemGroup>
     <Content Update="Assets\GuidaGodot.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\GuidaPyGame.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="Assets\GuidaUnity.md">
