@@ -80,6 +80,8 @@ internal class GameEngine
         names.Add(Godot.Name);
         names.Add(Pygame.Name);
 
+        names.Sort();
+
         return names;
 
     }

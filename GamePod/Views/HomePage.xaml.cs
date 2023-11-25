@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using AppUIBasics.Helper;
+using Docker.DotNet.Models;
 using GamePod.Models;
 using GamePod.ViewModels;
 using Microsoft.UI.Xaml;
@@ -13,18 +14,9 @@ namespace GamePod.Views;
 public sealed partial class MainPage : Page
 {
     // linux distributions for the ComboBox
-    public List<string> LinuxDistros
-    {
-        get;
-    }
-    public List<string> GameEngines
-    {
-        get;
-    }
-    public HomeViewModel ViewModel
-    {
-        get;
-    }
+    public List<string> LinuxDistros { get; }
+    public List<string> GameEngines { get; }
+    public HomeViewModel ViewModel { get; }
 
     public MainPage()
     {
@@ -111,7 +103,6 @@ public sealed partial class MainPage : Page
         // get the value inside the textbox only if the toggle switch is on
         if (Convert.ToBoolean(AddPortToggleSwitch.GetValue(ToggleSwitch.IsOnProperty)))
         {
-            Debug.WriteLine("PortToggleSwitch is on");
             port = PortTextBox.Text;
         }
 
@@ -124,8 +115,7 @@ public sealed partial class MainPage : Page
 
 
         // create a container object
-        var container = new Container(projectName, projectForlderPath, gameEngine, gameEngineVersion, destroyAfterUse, port, cpuCores, ram, otherFolder, destinationPath);
-        var command = container.RunCommand;
+        var container = new ContainerParameters(projectName, projectForlderPath, gameEngine, gameEngineVersion, destroyAfterUse, port, cpuCores, ram, otherFolder, destinationPath);
 
         // create the dialog with a title, a message, the command that will be executed in the terminal
         var dialog = new ContentDialog
@@ -140,8 +130,6 @@ public sealed partial class MainPage : Page
 
         // show 
         var result = await dialog.ShowAsync();
-        Debug.WriteLine("Command: " + command);
-        Debug.WriteLine("CreateContainerParameters: " + container.ContainerParameters.ToString());
 
         // if the developer clicks on the "Create" button
         if (result != ContentDialogResult.Primary)
@@ -155,7 +143,7 @@ public sealed partial class MainPage : Page
 
         try
         {
-            await ViewModel.CreateContainer(container.ContainerParameters);
+            await ViewModel.CreateContainer(container.ContainerParam);
             progressDialog.Hide();
             Frame.Navigate(typeof(HomePage));
         }
@@ -253,11 +241,10 @@ public sealed partial class MainPage : Page
 
 
             // create a container object
-            var container = new Container(projectName, projectForlderPath, gameEngine, gameEngineVersion, destroyAfterUse, port, cpuCores, ram, otherFolder, destinationPath);
-            var command = container.RunCommand;
+            var container = new ContainerParameters(projectName, projectForlderPath, gameEngine, gameEngineVersion, destroyAfterUse, port, cpuCores, ram, otherFolder, destinationPath);
 
             // Go to AdvancedContainerCreationPage
-            Frame.Navigate(typeof(AdvancedContainerCreationPage), command);
+            //Frame.Navigate(typeof(AdvancedContainerCreationPage), command);
         }
 
 
