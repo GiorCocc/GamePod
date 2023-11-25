@@ -101,7 +101,7 @@ public sealed partial class ContainerDetailsPage : Page
         // controlla se non è presente il file Markdown nella definizione del game engine
         if (container.ContainerGuidePath == "")
         {
-            GuideMarkdownTextBlock.Text = "> Pod " + container.ProjectName + " was not created with GamePod. No guide available.";
+            GuideMarkdownTextBlock.Text = "> Pod " + container.ContainerName + " was not created with GamePod. No guide available.";
             return;
         }
 
@@ -125,7 +125,7 @@ public sealed partial class ContainerDetailsPage : Page
 
         try
         {
-            await ViewModel.StartContainer(container.ProjectName);
+            await ViewModel.StartContainer(container.ContainerName);
             progressDialog.Hide();
             UpdateContainerInformationFromInspect();
         }
@@ -139,7 +139,7 @@ public sealed partial class ContainerDetailsPage : Page
 
     private async void StopButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        var containerName = container.ProjectName;
+        var containerName = container.ContainerName;
 
         var dialog = new ContentDialog
         {
@@ -176,7 +176,7 @@ public sealed partial class ContainerDetailsPage : Page
 
     private async void RestartButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        var containerName = container.ProjectName;
+        var containerName = container.ContainerName;
         Debug.WriteLine("Selected container: " + containerName);
 
         var dialog = new ContentDialog
@@ -212,7 +212,7 @@ public sealed partial class ContainerDetailsPage : Page
 
     private async void DeleteButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        var containerName = container.ProjectName;
+        var containerName = container.ContainerName;
         Debug.WriteLine("Selected container: " + containerName);
 
         var dialog = new ContentDialog
@@ -248,7 +248,7 @@ public sealed partial class ContainerDetailsPage : Page
 
     private async void PauseButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        var containerName = container.ProjectName;
+        var containerName = container.ContainerName;
 
         ProgressDialog progressDialog = new ProgressDialog();
         progressDialog.XamlRoot = this.Content.XamlRoot;
@@ -268,7 +268,7 @@ public sealed partial class ContainerDetailsPage : Page
 
     private void ExecButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        var containerName = container.ProjectName;
+        var containerName = container.ContainerName;
 
         // open the windows terminal
         Process process = new Process();

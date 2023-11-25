@@ -135,9 +135,11 @@
 
                         <controls:SettingsCard Header="Startup bash command" HeaderIcon="{ui:FontIcon Glyph=&#xE756;}" Description="Startup bash command for the container">
                             <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center" HorizontalAlignment="Center" >
-                                <TextBlock Text="{x:Bind ContainerCommand}" VerticalAlignment="Center"/>
-                                <Button Click="ExecButton_Click">
-                                    <FontIcon Glyph="&#xE756;" />
+                                <Button Click="ExecButton_Click" Style="{StaticResource AccentButtonStyle}">
+                                    <StackPanel Orientation="Horizontal" Spacing="5" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <FontIcon Glyph="&#xE756;" />
+                                        <TextBlock Text="{x:Bind ContainerCommand}"  VerticalAlignment="Center"/>
+                                    </StackPanel>
                                 </Button>
                             </StackPanel>
                         </controls:SettingsCard>
