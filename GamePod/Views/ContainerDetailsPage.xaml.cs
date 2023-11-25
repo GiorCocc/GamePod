@@ -266,6 +266,26 @@ public sealed partial class ContainerDetailsPage : Page
 
     }
 
+    private async void ExportButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        var containerName = container.ContainerName;
+
+        ProgressDialog progressDialog = new ProgressDialog();
+        progressDialog.XamlRoot = this.Content.XamlRoot;
+        var progressResult = progressDialog.ShowAsync();
+        try
+        {
+            await ViewModel.ExportContainer(containerName);
+            progressDialog.Hide();
+            UpdateContainerInformationFromInspect();
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("Exception: " + ex.Message);
+        }
+
+    }
+
     private void ExecButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
         var containerName = container.ContainerName;

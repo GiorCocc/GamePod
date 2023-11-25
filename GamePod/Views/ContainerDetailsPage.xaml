@@ -51,7 +51,7 @@
                         <AppBarButton Icon="Pause" Label="Pause" ToolTipService.ToolTip="Pause" Click="PauseButton_Click" />
                         <AppBarSeparator />
                         <AppBarButton Icon="Delete" Label="Delete" ToolTipService.ToolTip="Delete" Foreground="Red" Click="DeleteButton_Click" />
-                        <!--<AppBarButton Icon="Share" Label="Export" ToolTipService.ToolTip="Export" />-->
+                        <AppBarButton Icon="Share" Label="Export" ToolTipService.ToolTip="Export" Click="ExportButton_Click" />
                     </CommandBar.SecondaryCommands>
                 </CommandBar>
             </Grid>

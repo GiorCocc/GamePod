@@ -268,6 +268,13 @@ public class DockerService : IDockerService
 
     }
 
+    public async Task<Stream> ExportContainerAsTarObjectAsync(string containerName, string destinationPath)
+    {
+        if (client == null) CreateClient();
 
+        var stream = await client.Containers.ExportContainerAsync(containerName);
+
+        return stream;
+    }
 }
 

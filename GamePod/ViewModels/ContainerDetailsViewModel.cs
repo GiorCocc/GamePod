@@ -125,4 +125,33 @@ public partial class ContainerDetailsViewModel : ObservableRecipient
             Debug.WriteLine("Exception: " + e.Message);
         }
     }
+
+    internal async Task ExportContainer(string containerName)
+    {
+        if (containerName is not string)
+        {
+
+            Debug.WriteLine("Selected container is not a string: " + containerName);
+            return;
+        }
+
+        var container = await service.GetContainerInspect(containerName);
+        var projectPath = container.HostConfig.Binds[0];
+        projectPath = projectPath.Substring(0, projectPath.LastIndexOf(':'));
+
+        if (!Directory.Exists(projectPath + "/docker"))
+        {
+            Directory.CreateDirectory(projectPath + "/docker");
+        }
+
+        projectPath += "/docker";
+
+        var tar = await service.ExportContainerAsTarObjectAsync(containerName, projectPath + "/export.tar");
+
+        // salvo il file tar ricevuto nella cartella docker del progetto
+        using (var fileStream = File.Create(projectPath + "/export.tar"))
+        {
+            tar.CopyTo(fileStream);
+        }
+    }
 }

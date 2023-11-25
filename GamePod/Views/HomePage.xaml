@@ -65,7 +65,7 @@
                             Click="PickFolderButton_Click"
                             VerticalAlignment="Center" 
                             VerticalContentAlignment="Center"
-                            Margin="0,0,0,10"/>
+                            />
                     <controls:SettingsExpander.Items>
                         <controls:SettingsCard Header="Project forlder">
                             <TextBlock x:Name="PickFolderOutputTextBlock" 
@@ -147,8 +147,7 @@
                     <Button x:Name="PickFolderButton2"
                             Content="Open a folder"
                             Click="PickFolderButton_Click"
-                            VerticalAlignment="Center"
-                            Margin="0,0,0,10"/>
+                            VerticalAlignment="Center" />
                     <controls:SettingsExpander.Items>
                         <controls:SettingsCard Header="Selected folder">
                             <TextBlock  x:Name="PickFolderOutputTextBlock2"
