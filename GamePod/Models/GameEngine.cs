@@ -61,7 +61,7 @@ internal class GameEngine
             "unityci/hub:latest" => UnityHubCLI.GuidePath,
             "unityci/editor:2022.3.10f1-linux-il2cpp-2.0" => UnityEditorCLI.GuidePath,
             "UnityHub.AppImage" => Unity.GuidePath,
-            "godot" => Godot.GuidePath,
+            "giorcocc/godot_fedora:2.0" => Godot.GuidePath,
             _ => ""
         };
     }
