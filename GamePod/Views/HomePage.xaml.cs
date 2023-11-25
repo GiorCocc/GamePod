@@ -119,12 +119,12 @@ public sealed partial class MainPage : Page
         {
             cpuCores = CPUComboBox.SelectionBoxItem == null ? 0 : (Convert.ToInt32(CPUComboBox.SelectionBoxItem.ToString()) * 1000000000);
             ram = RAMComboBox.SelectionBoxItem == null ? "" : RAMComboBox.SelectionBoxItem.ToString().Substring(0, RAMComboBox.SelectionBoxItem.ToString().Length - 3) + "g";
-            gpu = GPUToggleSwitch.IsOn ? "all" : "";
+            
         }
 
 
         // create a container object
-        var container = new Container(projectName, projectForlderPath, gameEngine, gameEngineVersion, destroyAfterUse, port, cpuCores, ram, gpu, otherFolder, destinationPath);
+        var container = new Container(projectName, projectForlderPath, gameEngine, gameEngineVersion, destroyAfterUse, port, cpuCores, ram, otherFolder, destinationPath);
         var command = container.RunCommand;
 
         // create the dialog with a title, a message, the command that will be executed in the terminal
@@ -204,13 +204,11 @@ public sealed partial class MainPage : Page
             {
                 CPUSettingsCard.IsEnabled = true;
                 RAMSettingsCard.IsEnabled = true;
-                GPUSettingsCard.IsEnabled = true;
             }
             else
             {
                 CPUSettingsCard.IsEnabled = false;
                 RAMSettingsCard.IsEnabled = false;
-                GPUSettingsCard.IsEnabled = false;
             }
         }
     }
@@ -250,12 +248,12 @@ public sealed partial class MainPage : Page
             {
                 cpuCores = 0;
                 ram = RAMComboBox.SelectionBoxItem.ToString().Substring(0, RAMComboBox.SelectionBoxItem.ToString().Length - 3);
-                gpu = GPUToggleSwitch.IsOn ? "all" : "";
+                
             }
 
 
             // create a container object
-            var container = new Container(projectName, projectForlderPath, gameEngine, gameEngineVersion, destroyAfterUse, port, cpuCores, ram, gpu, otherFolder, destinationPath);
+            var container = new Container(projectName, projectForlderPath, gameEngine, gameEngineVersion, destroyAfterUse, port, cpuCores, ram, otherFolder, destinationPath);
             var command = container.RunCommand;
 
             // Go to AdvancedContainerCreationPage

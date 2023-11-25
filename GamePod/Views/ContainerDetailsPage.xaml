@@ -51,7 +51,7 @@
                         <AppBarButton Icon="Pause" Label="Pause" ToolTipService.ToolTip="Pause" Click="PauseButton_Click" />
                         <AppBarSeparator />
                         <AppBarButton Icon="Delete" Label="Delete" ToolTipService.ToolTip="Delete" Foreground="Red" Click="DeleteButton_Click" />
-                        <AppBarButton Icon="Share" Label="Share" ToolTipService.ToolTip="Share" />
+                        <!--<AppBarButton Icon="Share" Label="Export" ToolTipService.ToolTip="Export" />-->
                     </CommandBar.SecondaryCommands>
                 </CommandBar>
             </Grid>
@@ -94,10 +94,18 @@
                         </controls:SettingsExpander>
 
                         <controls:SettingsExpander Header="Binds" HeaderIcon="{ui:FontIcon Glyph=&#xE8B7;}" Description="Container folders binded to host folders">
+                            <Button x:Name="ProjectFolderHostButton" Click="ProjectFolderHostButton_Click" Style="{StaticResource AccentButtonStyle}">
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                    <SymbolIcon Symbol="MoveToFolder" />
+                                    <TextBlock Text="Move to Project folder" />
+                                </StackPanel>
+                                
+                            </Button>
                             <controls:SettingsExpander.Items>
                                 <controls:SettingsCard Header="Project" Description="Where the project is located in the host machine and where it is located in the container">
                                     <StackPanel Orientation="Horizontal" Spacing="15">
-                                        <TextBlock x:Name="ProjectFolderHostTextBlock" Text="{x:Bind ProjectFolderHost}" />
+                                        <TextBlock x:Name="ProjectFolderHostTextBlock" Text="{x:Bind ProjectFolderHost}" VerticalAlignment="Center" />
+                                        
                                     </StackPanel>
                                 </controls:SettingsCard>
                                 <controls:SettingsCard Header="Other" Description="Other binds necessary for the container to work">
@@ -150,7 +158,7 @@
 
                 <PivotItem Header="Inspect">
                     <Grid Background="Black" Margin="10" CornerRadius="10" Padding="10">
-                        <ScrollViewer MaxHeight="300">
+                        <ScrollViewer MaxHeight="375">
                             <RichTextBlock x:Name="ContainerDetailsRichTextBlock" FontSize="15" LineHeight="20" >
                                 <Paragraph>
                                     <Run x:Name="Inspect" Text="{x:Bind ContainerInspect}" />

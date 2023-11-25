@@ -55,9 +55,9 @@ public partial class SettingsViewModel : ObservableRecipient
         _themeSelectorService = themeSelectorService;
         _elementTheme = _themeSelectorService.Theme;
         _versionDescription = GetVersionDescription();
-        _wingetVersionNumber = GetVersionNumber("winget");
-        _dockerVersionNumber = GetVersionNumber("docker");
-        _wslVersionNumber = GetVersionNumber("wsl");
+        //_wingetVersionNumber = GetVersionNumber("winget");
+        //_dockerVersionNumber = GetVersionNumber("docker");
+        //_wslVersionNumber = GetVersionNumber("wsl");
 
         SwitchThemeCommand = new RelayCommand<ElementTheme>(
             async (param) =>

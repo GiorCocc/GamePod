@@ -84,9 +84,15 @@ public partial class HomeViewModel : ObservableRecipient
 
     public async Task CreateContainer(CreateContainerParameters containerParameters)
     {
+        // check if the image is already downloaded
+        
+        // if not, download it
         await dockerService.CreateContainer(containerParameters);
 
     }
 
-
+    internal async Task PullImage(CreateContainerParameters containerParameters)
+    {
+        await dockerService.PullImage(containerParameters);
+    }
 }

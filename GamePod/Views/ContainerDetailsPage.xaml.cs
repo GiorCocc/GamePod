@@ -308,4 +308,16 @@ public sealed partial class ContainerDetailsPage : Page
         // change the icon of the button to a check
         Icon.SetValue(SymbolIcon.SymbolProperty, Symbol.Accept);
     }
+
+    private void ProjectFolderHostButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        var path = ProjectFolderHostTextBlock.Text;
+        path = path.Remove(path.Length - 9);
+        
+        // open the file explorer to the project folder
+        Process process = new Process();
+        process.StartInfo.FileName = "explorer.exe";
+        process.StartInfo.Arguments = path;
+        process.Start();
+    }
 }

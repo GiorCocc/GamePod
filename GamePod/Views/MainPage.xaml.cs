@@ -445,4 +445,9 @@ public sealed partial class HomePage : Page
     {
         UpdateContainerList();
     }
+
+    private async void ExportButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        // TODO: implementare il metodo per esportare la configurazione di un container
+    }
 }

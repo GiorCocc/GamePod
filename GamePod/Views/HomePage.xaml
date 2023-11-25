@@ -51,6 +51,7 @@
                     
                     <TextBox x:Name="ProjectNameTextBox" 
                              PlaceholderText="Project name" 
+                             MinWidth="300"
                              Text="{x:Bind ViewModel.ProjectName, Mode=TwoWay}" />
                 
                 </controls:SettingsCard>
@@ -62,6 +63,8 @@
                     <Button x:Name="PickFolderButton" 
                             Content="Open a folder"
                             Click="PickFolderButton_Click"
+                            VerticalAlignment="Center" 
+                            VerticalContentAlignment="Center"
                             Margin="0,0,0,10"/>
                     <controls:SettingsExpander.Items>
                         <controls:SettingsCard Header="Project forlder">
@@ -73,7 +76,8 @@
                             <TextBox x:Name="ProjectDestinationPathTextBox"
                                      PlaceholderText="Path"
                                      Text=":/project"
-                                     TextWrapping="Wrap" 
+                                     TextWrapping="Wrap"
+                                     IsReadOnly="True"
                                      Padding="20,5,0,0"/>       
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
@@ -131,7 +135,8 @@
                                                Description="Set the port to be forwarded" 
                                                IsEnabled="False">
                             <TextBox x:Name="PortTextBox" 
-                                     PlaceholderText="Port:Container Port" 
+                                     PlaceholderText="Port:Container Port"
+                                     MinWidth="100"
                                      Text="{x:Bind ViewModel.Port, Mode=TwoWay}"/>
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
@@ -142,6 +147,7 @@
                     <Button x:Name="PickFolderButton2"
                             Content="Open a folder"
                             Click="PickFolderButton_Click"
+                            VerticalAlignment="Center"
                             Margin="0,0,0,10"/>
                     <controls:SettingsExpander.Items>
                         <controls:SettingsCard Header="Selected folder">
@@ -152,7 +158,8 @@
                         <controls:SettingsCard Header="Destination folder">
                             <TextBox x:Name="DestinationPathTextBox"
                                      PlaceholderText="Path"
-                                     TextWrapping="Wrap" 
+                                     TextWrapping="Wrap"
+                                     MinWidth="300"
                                      Padding="20,5,0,0"/>
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
@@ -190,12 +197,7 @@
                                 <ComboBoxItem Content="8 GB" />
                             </ComboBox>
                         </controls:SettingsCard>
-                        <controls:SettingsCard x:Name="GPUSettingsCard"
-                                               Header="GPU"
-                                               Description="Set the GPU to be used"
-                                               IsEnabled="False">
-                            <ToggleSwitch x:Name="GPUToggleSwitch" />
-                        </controls:SettingsCard>
+                        
                     </controls:SettingsExpander.Items>
                 </controls:SettingsExpander>
 
@@ -204,8 +206,9 @@
                                        Description="Add advanced option inside the command"
                                        Header="Advanced options"
                                        HeaderIcon="{ui:FontIcon Glyph=&#xE713;}"
-                                       IsClickEnabled="True"
-                                       Click="AdvancedContainerSettingsButton_Click"/>
+                                       IsClickEnabled="False"
+                                       Click="AdvancedContainerSettingsButton_Click"
+                                       IsEnabled="False"/>
                 <!--IsEnabled="{x:Bind IsCardEnabled, Mode=OneWay}"--> 
                                
 

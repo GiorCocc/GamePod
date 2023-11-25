@@ -32,12 +32,6 @@
                     <win:RepositionThemeTransition IsStaggeringEnabled="False" />
                 </win:StackPanel.ChildrenTransitions>
 
-                <!-- TODO: cose da inserire in questa schermata -->
-                <TextBlock Text="Cose da inserire in questa schermata"></TextBlock>
-                <TextBlock Text="- Controllo dell'installazione di winget"></TextBlock>
-                <TextBlock Text="- Controllo dell'installazione di docker e dello stato del demone"></TextBlock>
-                <TextBlock Text="- Controllo dell'installazione di WSL2"></TextBlock>
-
                 <!--Theme section-->
                 <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
 
@@ -79,7 +73,7 @@
                 </StackPanel>
 
                 <!--General section-->
-                <TextBlock Text="General" Style="{ThemeResource SubtitleTextBlockStyle}"></TextBlock>
+                <!--<TextBlock Text="General" Style="{ThemeResource SubtitleTextBlockStyle}"></TextBlock>
 
                 <controls:SettingsExpander x:Name="WingetExpander" Header="Winget">
                     <TextBlock Text="{x:Bind ViewModel.WingetVersionNumber, Mode=TwoWay}" HorizontalAlignment="Right"></TextBlock>
@@ -110,7 +104,7 @@
                             <Button Content="Update" Click="Update_Click" HorizontalAlignment="Right"></Button>
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
-                </controls:SettingsExpander>
+                </controls:SettingsExpander>-->
                     
                 
                 <!--About section-->

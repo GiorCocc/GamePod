@@ -53,6 +53,7 @@
                     <AppBarButton Icon="Stop" Label="Stop container" ToolTipService.ToolTip="Stop" Click="StopButton_Click"/>
                     <AppBarSeparator />-->
                     <AppBarButton Icon="RepeatAll" Label="Reload container list" ToolTipService.ToolTip="Reload" Click="ReloadContainerListButton_Click"/>
+                    <!--<AppBarButton Icon="Download" Label="Import container configuration" ToolTipService.ToolTip="Import" />-->
                     <!--<AppBarSeparator />
                     <AppBarButton Icon="Delete" Label="Delete" ToolTipService.ToolTip="Delete" Click="DeleteButton_Click"/>-->
                 </CommandBar.PrimaryCommands>
@@ -117,6 +118,11 @@
                                                     <SymbolIcon Symbol="Delete" Foreground="Red" />
                                                 </MenuFlyoutItem.Icon>
                                             </MenuFlyoutItem>
+                                            <!--<MenuFlyoutItem Text="Export" Click="ExportButton_Click">
+                                                <MenuFlyoutItem.Icon>
+                                                    <SymbolIcon Symbol="Share"/>
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>-->
                                             <MenuFlyoutItem Text="Info" Click="ContainerInfoButton_Click">
                                                 <MenuFlyoutItem.Icon>
                                                     <FontIcon Glyph="&#xE946;" />
