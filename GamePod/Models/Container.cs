@@ -156,10 +156,8 @@ internal class Container
         {
             IList<DeviceRequest> deviceRequestConfig = new List<DeviceRequest>();
 
-            if (GPU != "")
-            {
-                deviceRequestConfig.Add(new DeviceRequest { Driver = "nvidia", Count = 1, DeviceIDs = null, Capabilities = new List<IList<string>> { new List<string> { "gpu" } } });
-            }
+            deviceRequestConfig.Add(new DeviceRequest { Driver = "nvidia", Count = 1, DeviceIDs = null, Capabilities = new List<IList<string>> { new List<string> { "gpu" } } });
+            
 
             return deviceRequestConfig;
         }
@@ -175,7 +173,7 @@ internal class Container
         
     }
 
-    public Container(string projectName, string projectPath, string gameEngineName, string gameEngineVersion, bool destroyAfetrUse, string ports, long cpuCores, string ram, string gpu, string otherFolder, string destinationPath)
+    public Container(string projectName, string projectPath, string gameEngineName, string gameEngineVersion, bool destroyAfetrUse, string ports, long cpuCores, string ram, string otherFolder, string destinationPath)
     {
         ProjectName = projectName;
         ProjectPath = projectPath;
@@ -185,7 +183,6 @@ internal class Container
         Port = ports;
         CPUCores = cpuCores;
         RAM = ram == "" ? 0 : Convert.ToInt64(ram.Substring(0, ram.Length - 1)) * 1073741824;
-        GPU = gpu;
         OtherFolderPath = otherFolder;
         DestinationPath = destinationPath;
 
@@ -252,19 +249,13 @@ internal class Container
                 AutoRemove = DestroyAfterUse,
                 Binds = VolumeOptions,
                 PortBindings = PortBindingConfig,
-                // TODO:
-                // CpuQuota = CPU passata in fase di creazione
                 NanoCPUs = CPUCores,
-                // Memory = RAM passata in fase di creazione
                 Memory = RAM,
-                // Gpu = GPU passata in fase di creazione
                 DeviceRequests = DeviceRequestConfig,
 
             },
             Env = EnvironmentOptions,
             Cmd = new List<string> { "bash" },
-
-            // network: imposta le porte da aprire per il container (come nel comando docker run --port 8080:80)
             ExposedPorts = PortExposeConfig,
 
 
