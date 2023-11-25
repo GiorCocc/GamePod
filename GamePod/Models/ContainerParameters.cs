@@ -119,12 +119,6 @@ internal class ContainerParameters
         }
     }
 
-    private IDockerService service = App.GetService<IDockerService>();
-    public ContainerInspectResponse InspectResponse
-    {
-        get; private set;
-    }
-
     public ContainerParameters(string projectName, string projectPath, string gameEngineName, string gameEngineVersion, bool destroyAfetrUse, string ports, long cpuCores, string ram, string otherFolder, string destinationPath)
     {
         ProjectName = projectName;

@@ -31,7 +31,7 @@ internal class Container
     public string ContainerCommand { get; private set; } = string.Empty;
     public string ContainerGuidePath { get; private set; } = string.Empty;
 
-    private IDockerService service = App.GetService<IDockerService>();
+    private readonly IDockerService service = App.GetService<IDockerService>();
     public ContainerInspectResponse InspectResponse
     {
         get; private set;
@@ -50,7 +50,6 @@ internal class Container
         InspectResponse = await service.GetContainerInspect(container.ContainerName);
     }
 
-    // TODO: creare un metodo che prende tutte le informazioni dal container e le mette in un oggetto Container
     public void CompleteInformationFromInspect(ContainerInspectResponse inspectResponse)
     {
         if (inspectResponse == null) return;

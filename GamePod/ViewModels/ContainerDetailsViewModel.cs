@@ -149,9 +149,7 @@ public partial class ContainerDetailsViewModel : ObservableRecipient
         var tar = await service.ExportContainerAsTarObjectAsync(containerName, projectPath + "/export.tar");
 
         // salvo il file tar ricevuto nella cartella docker del progetto
-        using (var fileStream = File.Create(projectPath + "/export.tar"))
-        {
-            tar.CopyTo(fileStream);
-        }
+        using var fileStream = File.Create(projectPath + "/export.tar");
+        tar.CopyTo(fileStream);
     }
 }
