@@ -47,6 +47,8 @@ Upon container startup, Unity Editor is not yet authenticated with your Unity ac
     unity-editor -manualLicenseFile <activation file path>
     ```
 
+> **NOTE**: More information on how to activate the license can be found in the [official documentation](https://docs.unity3d.com/2023.3/Documentation/Manual/ManualActivationCmdMac.html)
+
 ## Container Usage
 
 The Unity Editor container is useful for managing Unity projects and running the game. To open the project, type the following command:
@@ -62,7 +64,12 @@ unity-editor unity-editor -projectPath <project path> -executeMethod <method nam
 ```
 
 > **NOTE**: More information on available commands and usage is available in the [official documentation](https://docs.unity3d.com/2023.3/Documentation/Manual/EditorCommandLineArguments.html#:~:text=On%20Windows%2C%20type%20the%20following%20into%20the%20Command,test%20suites%2C%20automated%20builds%20and%20other%20production%20tasks).
->
+
+Useful documentation on how to use Unity via the command line:
+
+- [Unity Standalone Player command line argumentsl](https://docs.unity3d.com/2023.3/Documentation/Manual/PlayerCommandLineArguments.html)
+- [Unity Editor command line arguments](https://docs.unity3d.com/2023.3/Documentation/Manual/EditorCommandLineArguments.html)
+
 > **NOTE**: Due to limitations imposed by Unity and the license used, simultaneous opening of the same project inside the container and on the host system cannot be executed; therefore, it is recommended to use this image only at the end of the project or as a debugging tool.
 >
 > **NOTE**: Container image created and distributed by [GameCI](https://game.ci/docs/docker/docker-images)
