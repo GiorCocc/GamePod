@@ -23,6 +23,7 @@ internal class GameEngine
     public static readonly GameEngine Unity             = new("Unity GUI (experimental)", "", "0", "UnityHub.AppImage", "ms-appx:///Assets/GuidaUnity.md");
     public static readonly GameEngine Godot             = new("Godot", "giorcocc/godot_fedora:2.0", "0", "godot", "ms-appx:///Assets/GuidaGodot.md");
     public static readonly GameEngine Pygame            = new("PyGame", "giorcocc/pygame:1.5", "0", "python", "ms-appx:///Assets/GuidaPyGame.md");
+    public static readonly GameEngine Enigma = new("Enigma", "giorcocc/enigma:1.1", "0", "enigma", "ms--appx:///Assets/GuidaEnigma.md");
 
     // Properties
     public string Name { get; private set; }
@@ -52,6 +53,7 @@ internal class GameEngine
             "Unity GUI" => Unity,
             "Godot" => Godot,
             "PyGame" => Pygame,
+            "Enigma" => Enigma,
             _ => throw new ArgumentException("The game engine " + name + " is not supported"),
         };
     }
@@ -65,6 +67,7 @@ internal class GameEngine
             "UnityHub.AppImage" => Unity.GuidePath,
             "giorcocc/godot_fedora:2.0" => Godot.GuidePath,
             "giorcocc/pygame:1.5" => Pygame.GuidePath,
+            "giorcocc/enigma:1.1" => Enigma.GuidePath,
             _ => ""
         };
     }
@@ -79,6 +82,7 @@ internal class GameEngine
         names.Add(Unity.Name);
         names.Add(Godot.Name);
         names.Add(Pygame.Name);
+        names.Add(Enigma.Name);
 
         names.Sort();
 
