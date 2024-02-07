@@ -25,3 +25,19 @@ See [releases](https://github.com/microsoft/TemplateStudio/releases) and [milest
 ## Feedback
 
 Bugs and feature requests should be filed at https://aka.ms/templatestudio.
+
+# Progetto
+
+- [ ] Creare una pagina con la visualizzazione dei dettagli di un container
+    - [ ] Nome, codice univoco e stato
+    - [ ] Pulsanti per la gestione del container
+    - [ ] Inspect della configurazione
+    - [ ] Log del container
+    - [ ] Volumi montati
+    - [ ] Guide per l'uso (come nel caso di container unityci)
+- [ ] Ricominciare la creazione di un container avanzato facendo in modo che sia possibile importare un file docker-compose.yml o un file Dockerfile per la creazione del container preconfigurato
+- [ ] Creare un pulsante per l'esportazione del container in un file docker-compose.yml o un file Dockerfile
+- [ ] Creare una voce nelle impostazioni per la configurazione di WSL2
+    - [ ] Avvio di WSL2 con un pulsante di avvio
+    - [ ] Installazione dei driver Nvidia per container
+

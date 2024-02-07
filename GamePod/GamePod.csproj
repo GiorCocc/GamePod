@@ -18,7 +18,11 @@
     <None Update="Assets\GuidaUnity.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Remove="Assets\GuidaBlender.md" />
+    <None Remove="Assets\GuidaDefold.md" />
     <None Remove="Assets\GuidaPyGame.md" />
+    <None Remove="Assets\GuidaStencyl.md" />
+    <None Remove="Assets\GuidaVassal.md" />
     <None Remove="Views\ProgressDialog.xaml" />
   </ItemGroup>
 
