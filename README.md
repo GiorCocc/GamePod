@@ -38,15 +38,15 @@
 
 ## ✨ Features
 
-🐳 **Containerized Development**: Create isolated, reproducible development environments for game projects
-🎮 **Multi-Engine Support**: Built-in support for popular game engines including Godot, Unity, Pygame, and Enigma
-🖥️ **Graphical Applications**: Run GUI applications seamlessly with WSLg integration
-⚙️ **Easy Management**: Intuitive interface to start, stop, restart, and manage containers
-📁 **Project Mounting**: Mount local project folders directly into containers for seamless development
-🔧 **Customizable Settings**: Configure port bindings, volume mounts, and performance settings per container
-📦 **One-Click Setup**: Automated container creation with pre-configured development environments
-🔄 **Container Updates**: Check for and apply updates to container images
-📋 **Project Templates**: Quick setup for new projects with engine-specific configurations
+- 🐳 **Containerized Development**: Create isolated, reproducible development environments for game projects
+- 🎮 **Multi-Engine Support**: Built-in support for popular game engines including Godot, Unity, Pygame, and Enigma
+- 🖥️ **Graphical Applications**: Run GUI applications seamlessly with WSLg integration
+- ⚙️ **Easy Management**: Intuitive interface to start, stop, restart, and manage containers
+- 📁 **Project Mounting**: Mount local project folders directly into containers for seamless development
+- 🔧 **Customizable Settings**: Configure port bindings, volume mounts, and performance settings per container
+- 📦 **One-Click Setup**: Automated container creation with pre-configured development environments
+- 🔄 **Container Updates**: Check for and apply updates to container images
+- 📋 **Project Templates**: Quick setup for new projects with engine-specific configurations
 
 ## 🎯 Supported Game Engines
 
